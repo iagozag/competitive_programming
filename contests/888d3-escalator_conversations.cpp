@@ -17,17 +17,15 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    int n, m; cin >> n >> m;
- 
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < m; j++) {
-            if(i % 2 == 0) 
-                cout << (n/2 + i/2)*m + j + 1 << " ";
-            else 
-                cout << (i/2)*m + j + 1 << " ";
-        }
-        cout << endl;
-    }
+    int n, m, k, h, ans = 0; cin >> n >> m >> k >> h;
+    vi v(n);
+    for(auto& x: v) cin >> x;
+
+    int extr = (m-1)*k;
+    for(auto& x: v)
+        if(abs(h-x)%k == 0 && abs(h-x) <= (m-1)*k && x != h) ans++;
+
+    cout << ans << endl;
 }
 
 int main(){ _

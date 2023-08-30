@@ -17,17 +17,28 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    int n, m; cin >> n >> m;
- 
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < m; j++) {
-            if(i % 2 == 0) 
-                cout << (n/2 + i/2)*m + j + 1 << " ";
-            else 
-                cout << (i/2)*m + j + 1 << " ";
+    int n, k; cin >> n >> k;
+    bool flag = false;
+    vi v(n);
+    for(auto& x: v) cin >> x;
+
+    if(v[0] == v[n-1] && count(all(v), v[0]) >= k)
+        flag = true;
+
+    int cnt = 0, idx = -1;
+    for(int i = 0; i < n; i++){
+        if(v[i] == v[0]) cnt++;
+        if(cnt >= k){
+            idx = i+1; 
+            break;
         }
-        cout << endl;
     }
+
+    if(idx != -1)
+        if(count(v.begin()+idx, v.end(), v[n-1]) >= k) flag = true;
+
+    (flag) ? cout << "YES" : cout << "NO";
+    cout << endl;
 }
 
 int main(){ _

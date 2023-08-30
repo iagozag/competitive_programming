@@ -1,5 +1,4 @@
 #include<bits/stdc++.h>
-#include <string>
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
@@ -18,16 +17,27 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    int k; cin >> k;
-    string str = "";
-    for(int i = 1; i < 2800; i++)
-        str += to_string(i);
+    int n; cin >> n;
+    vi v(n);
+    for(auto& x: v) cin >> x;
+    vi vb(v.begin(), v.end());
 
-    cout << str[k-1] << endl;
+    sort(all(v));
+
+    bool flag = true;
+    for(int i = 0; i < n; i++){
+        if((v[i]%2) != (vb[i]%2)){
+            flag = false;
+            break;
+        }
+    }
+
+    (flag) ? cout << "YES" : cout << "NO";
+    cout << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
