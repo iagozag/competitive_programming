@@ -2,6 +2,7 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define f first
 #define s second
@@ -15,26 +16,19 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-int MAX = 2*1e5+10;
-vi visitados;
+int n, m, k = 0, MAX = 110;
 vector<vi> v(MAX);
 vector<bool> vis(MAX);
 
-bool dfs(int x, int prev){
-    vis[x] = true;
-    visitados.pb(x);
-    
-    bool ans = false;
-    for(auto& ve: v[x]){
-        if(!vis[ve]) dfs(ve, x);
-        else if(ve != prev) ans = true;
-    }
+void dfs(int x, int prev){
+    vis[x] = true, k++;
 
-    return ans;
+    for(auto& ve: v[x])
+        if(!vis[ve]) dfs(ve, x);
 }
 
 void solve(){
-    int n, m; cin >> n >> m;
+    cin >> n >> m;
     for(int i = 0; i < m; i++){
         int a, b; cin >> a >> b; a--, b--;
 
@@ -42,19 +36,10 @@ void solve(){
         v[b].pb(a);
     }
 
-    int ans = 0;
-    for(int i = 0; i < n; i++) if(!vis[i]){
-        if(dfs(i, -1)){
-            for(auto& x: visitados) if(v[x].size() > 2){
-                ans--;
-                break;
-            }
-            ans++;
-            visitados.clear();
-        }
-    }
+    dfs(0, -1);
 
-    cout << ans << endl;
+    (k == n && n == m) ? cout << "FHTAGN!" : cout << "NO";
+    cout << endl;
 }
 
 int main(){ _
@@ -65,4 +50,3 @@ int main(){ _
 
     exit(0);
 }
-

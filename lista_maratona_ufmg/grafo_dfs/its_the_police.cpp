@@ -2,6 +2,7 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define f first
 #define s second
@@ -16,22 +17,7 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 int MAX = 2*1e5+10;
-vi visitados;
 vector<vi> v(MAX);
-vector<bool> vis(MAX);
-
-bool dfs(int x, int prev){
-    vis[x] = true;
-    visitados.pb(x);
-    
-    bool ans = false;
-    for(auto& ve: v[x]){
-        if(!vis[ve]) dfs(ve, x);
-        else if(ve != prev) ans = true;
-    }
-
-    return ans;
-}
 
 void solve(){
     int n, m; cin >> n >> m;
@@ -42,19 +28,17 @@ void solve(){
         v[b].pb(a);
     }
 
-    int ans = 0;
-    for(int i = 0; i < n; i++) if(!vis[i]){
-        if(dfs(i, -1)){
-            for(auto& x: visitados) if(v[x].size() > 2){
-                ans--;
-                break;
-            }
-            ans++;
-            visitados.clear();
-        }
+    int mi = INF, idx;
+    for(int i = 0; i < n; i++){
+        if(v[i].size() < mi) mi = v[i].size(), idx = i;
     }
 
-    cout << ans << endl;
+    vi ans(n, 1);
+    ans[idx] = 0;
+    for(auto& x: v[idx]) ans[x] = 0;
+
+    for(auto& x: ans) cout << x << " ";
+    cout << endl;
 }
 
 int main(){ _
@@ -65,4 +49,3 @@ int main(){ _
 
     exit(0);
 }
-
