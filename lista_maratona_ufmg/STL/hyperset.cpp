@@ -14,19 +14,31 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 int main(){ _
-    int n, m, points = 0, ans = 0; cin >> n >> m;
-    vector<vector<char>> s(n, vector<char>(m));
+    int n, m, ans = 0; cin >> n >> m;
+    vector<string> v;
     for(int i = 0; i < n; i++){
-        string c; cin >> c;
-        for(int j = 0; j < m; j++){
-            s.at(i).at(j) = c.at(j);
+        string a; cin >> a; v.pb(a);
+    }
+
+    string st1, st2, st3; bool flag;
+    for(int i = 0; i < n-2; i++){
+        st1 = v[i];
+        for(int j = i+1; j < n-1; j++){
+            st2 = v[j];
+            for(int l = j+1; l < n; l++){
+                st3 = v[l]; flag = true;
+                for(unsigned k = 0; k < st1.size(); k++){
+                    if((st1[k] == st2[k] && st3[k] != st1[k]) || 
+                       (st1[k] != st2[k] && (st3[k] == st1[k] || st3[k] == st2[k]))){
+                        flag = false; break;
+                    }
+                }
+                if(flag) ans++;
+            }
         }
     }
 
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < m; j++)
-            cout << s[i][j] << " ";
-        cout << endl;
-    }
+    cout << ans << endl;
+
     exit(0);
 }
