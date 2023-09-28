@@ -2,6 +2,7 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define f first
 #define s second
@@ -10,36 +11,18 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 typedef vector<int> vi;
+typedef vector<ll> vl;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-int m, n;
-map<vi,int> mp;
-vi ballons;
-
-bool is_possible(int c){
-    
-    return false;
-}
-
 void solve(){
-    cin >> m >> n;
-    for(int i = 0; i < n; i++){
-        vi temp(3);
-        for(int j = 0; j < 3; j++) cin >> temp[j];
-        mp.insert({temp,i});
+    string st; cin >> st;
+    for(auto& x: st){
+        if(x == 'H' || x == 'Q' || x == '9') { cout << "YES\n"; return; }
     }
 
-    int l = 0, r = 1e6;
-    while(l < r){
-        int m = (l+r)/2;
-
-        if(!is_possible(m)) l = m+1;
-        else r = m;
-    }
-
-    cout << l << endl;
+    cout << "NO\n"; return;
 }
 
 int main(){ _
