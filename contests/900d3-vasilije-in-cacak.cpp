@@ -1,4 +1,3 @@
-#include <algorithm>
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -18,33 +17,18 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    ll n, d; cin >> n >> d;
-    vector<pair<ll,ll>> v;
-    for(int i = 0; i < n; i++){
-        int a, b; cin >> a >> b;
-        v.pb({a,b});
-    }
-    sort(all(v));
+    ll n, k, x; cin >> n >> k >> x;
 
-    ll sum = 0, maxi = 0;
-    for(int i = 0, j = 0; i < n; ++i){
-        while(j < n && v[j].f-v[i].f < d){
-            sum += v[j].s, j++;
-        }
-
-        maxi = max(maxi, sum);
-        sum -= v[i].s;
-    }
-
-    cout << maxi << endl;
+    if(k*(k+1)/2 > x || (n*(n+1)/2 - (n-k)*(n-k+1)/2) < x)
+        cout << "NO\n";
+    else cout << "YES\n";
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
 
     exit(0);
 }
-
