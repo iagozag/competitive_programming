@@ -18,16 +18,16 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
     int n; cin >> n;
-    map<int,int> mp;
-    for(int i = 0; i < n; i++){
-        int a; cin >> a; mp[a]++;
+    vi v(n);
+    for(auto& x: v) cin >> x;
+
+    for(int i = 1; i < n; i++){
+        if(abs(v[i-1] - v[i]) == 1 || ((v[i-1]&1) == (v[i]&1))){
+            cout << "YES\n"; return;
+        }
     }
 
-    int maxi = -1, M = mp.size();
-    for(auto& x: mp) if(maxi < x.s) maxi = x.s;
-
-    (maxi == mp.size()) ? cout << maxi-1 : cout << min(maxi, M);
-    cout << endl;
+    cout << "NO\n";
 }
 
 int main(){ _

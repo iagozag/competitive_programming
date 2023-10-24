@@ -17,17 +17,14 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    int n; cin >> n;
-    map<int,int> mp;
-    for(int i = 0; i < n; i++){
-        int a; cin >> a; mp[a]++;
+    int n, m, k = 0; cin >> n >> m;
+    string x, s; cin >> x >> s;
+    for(int i = 0; i < 6; i++){
+        if(x.find(s) != string::npos) { cout << k << endl; return; }
+        x += x, k++;
     }
 
-    int maxi = -1, M = mp.size();
-    for(auto& x: mp) if(maxi < x.s) maxi = x.s;
-
-    (maxi == mp.size()) ? cout << maxi-1 : cout << min(maxi, M);
-    cout << endl;
+    cout << -1 << endl;
 }
 
 int main(){ _
