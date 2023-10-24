@@ -17,14 +17,15 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    ll n; cin >> n;
-    vl v(n); v[0] = 1, v[1] = 3, v[2] = 5;
-    for(int i = 3; i < n; i++){
-        v[i] = v[i-1]+1;
-    }
+    int n; cin >> n;
+    vi v(n);
+    for(auto& x: v) cin >> x;
+    sort(all(v));
 
-    for(auto& x: v) cout << x << " ";
-    cout << endl;
+    int min = 1001;
+    for(int i = 1; i < n; i++) if(v[i] - v[i-1] < min) min = v[i]-v[i-1];
+
+    cout << min << endl;
 }
 
 int main(){ _
@@ -35,4 +36,3 @@ int main(){ _
 
     exit(0);
 }
-

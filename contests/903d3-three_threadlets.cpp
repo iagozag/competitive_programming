@@ -17,14 +17,15 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    ll n; cin >> n;
-    vl v(n); v[0] = 1, v[1] = 3, v[2] = 5;
-    for(int i = 3; i < n; i++){
-        v[i] = v[i-1]+1;
-    }
+    vl v;
+    for(int i = 0; i < 3; i++) { ll a; cin >> a; v.pb(a); }
+    sort(all(v));
 
-    for(auto& x: v) cout << x << " ";
-    cout << endl;
+    int k = 0;
+    if(v[2] % v[0] == 0 && v[1] % v[0] == 0) k += v[2]/v[0] + v[1]/v[0] + 1;
+    else { cout << "NO\n"; return; }
+
+    (k > 6) ? cout << "NO\n" : cout << "YES\n";
 }
 
 int main(){ _
@@ -35,4 +36,3 @@ int main(){ _
 
     exit(0);
 }
-

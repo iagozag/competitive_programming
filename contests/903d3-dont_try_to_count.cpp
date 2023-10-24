@@ -17,14 +17,14 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    ll n; cin >> n;
-    vl v(n); v[0] = 1, v[1] = 3, v[2] = 5;
-    for(int i = 3; i < n; i++){
-        v[i] = v[i-1]+1;
+    int n, m, k = 0; cin >> n >> m;
+    string x, s; cin >> x >> s;
+    for(int i = 0; i < 6; i++){
+        if(x.find(s) != string::npos) { cout << k << endl; return; }
+        x += x, k++;
     }
 
-    for(auto& x: v) cout << x << " ";
-    cout << endl;
+    cout << -1 << endl;
 }
 
 int main(){ _
@@ -35,4 +35,3 @@ int main(){ _
 
     exit(0);
 }
-

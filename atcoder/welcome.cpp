@@ -17,22 +17,15 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    ll n; cin >> n;
-    vl v(n); v[0] = 1, v[1] = 3, v[2] = 5;
-    for(int i = 3; i < n; i++){
-        v[i] = v[i-1]+1;
-    }
-
-    for(auto& x: v) cout << x << " ";
-    cout << endl;
+    int a, b, c; string s; cin >> a >> b >> c >> s;
+    cout << a+b+c << " " << s << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
 
     exit(0);
 }
-

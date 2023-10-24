@@ -1,4 +1,6 @@
 #include<bits/stdc++.h>
+#include <cctype>
+#include <iterator>
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
@@ -17,22 +19,23 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void solve(){
-    ll n; cin >> n;
-    vl v(n); v[0] = 1, v[1] = 3, v[2] = 5;
-    for(int i = 3; i < n; i++){
-        v[i] = v[i-1]+1;
+    string st; cin >> st;
+    set<char> vowel = {'A', 'E', 'I', 'O', 'U', 'Y', 'a', 'e', 'i', 'o', 'u', 'y'};
+
+    for(size_t i = 0; i < st.size(); i++){
+        if(vowel.count(st[i])) st.erase(i, 1), i--;
+        else if(st[i] >= 'A' && st[i] <= 'Z' && !vowel.count(st[i]+32)) st[i]+=32, i--;
+        else if(st[i] >= 'a' && st[i] <= 'z' && !vowel.count(st[i])) st.insert(i, "."), i++;
     }
 
-    for(auto& x: v) cout << x << " ";
-    cout << endl;
+    cout << st << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
 
     exit(0);
 }
-
