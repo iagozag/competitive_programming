@@ -16,35 +16,27 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-int MAX = 2e5+10;
-vector<vi> v(MAX);
-vector<bool> vis(MAX);
-vector<int> cover;
-
-void dfs(int x){
-    vis[x] = true;
-
-    for(auto& ve: v[x]){
-        if(!vis[ve]) dfs(ve);
-    }
-}
-
 void solve(){
-    int n, m; cin >> n >> m;
+    int n; cin >> n;
+    vl v(n);
+    for(int i = 0; i < n; i++) cin >> v[i];
 
-
-    for(int i = 0; i < m; i++){
-        int a, b; cin >> a >> b; a--, b--;
-        v[a].pb(b);
-        v[b].pb(a);
+    int q; cin >> q;
+    while(q--){
+        int k, l; cin >> l >> k; l--;
+        vl w = v;
+        for(int i = 0; i < l; i++) w[i] = 0;
+        for(int i = l+1; i < n; i++) w[i] &= w[i-1];
+        
+        ll r = n;
+        while(l < r){
+            ll m = (l+r)/2;
+            if(w[m] >= k) l = m+1;
+            else r = m;
+        }
+        
+        (w[l-1] < k || l == 0) ? cout << -1 << " " : cout << l << " ";
     }
-
-    for(int i = 0; i < n; i++) if(!vis[i]){
-        dfs(i);
-    }
-
-    cout << cover.size() << endl;
-    for(auto& x: cover) cout << x+1 << " ";
     cout << endl;
 }
 
@@ -56,3 +48,4 @@ int main(){ _
 
     exit(0);
 }
+

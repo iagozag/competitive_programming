@@ -16,40 +16,32 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-int MAX = 2e5+10;
-vector<vi> v(MAX);
-vector<bool> vis(MAX);
-vector<int> cover;
+vi id, sz;
 
-void dfs(int x){
-    vis[x] = true;
+int find(int x){
+    return id[x] = (id[x] == x ? x : find(id[x]));
+}
 
-    for(auto& ve: v[x]){
-        if(!vis[ve]) dfs(ve);
-    }
+void unio(int a, int b){
+    a = find(a), b = find(b);
+    if(a == b) return;
+    if(sz[a] > sz[b]) swap(a,b);
+    id[a] = b, sz[b] += a;
 }
 
 void solve(){
     int n, m; cin >> n >> m;
-
-
+    id = vi(n); iota(all(id),0);
+    sz = vi(n,1);
     for(int i = 0; i < m; i++){
-        int a, b; cin >> a >> b; a--, b--;
-        v[a].pb(b);
-        v[b].pb(a);
+	    string st; int a, b; cin >> st >> a >> b; a--, b--;
+	    if(st == "union") unio(a,b);
+	    else cout << (find(a) == find(b) ? "YES\n" : "NO\n");
     }
-
-    for(int i = 0; i < n; i++) if(!vis[i]){
-        dfs(i);
-    }
-
-    cout << cover.size() << endl;
-    for(auto& x: cover) cout << x+1 << " ";
-    cout << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
