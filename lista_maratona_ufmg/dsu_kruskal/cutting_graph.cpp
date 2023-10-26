@@ -16,30 +16,40 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
+int n;
 vi id, sz;
+stack<ii> stk;
 
 int find(int x){
-    return (id[x] == x ? x : find(id[x]));
+    return id[x] = (id[x] == x ? x : find(id[x]));
 }
 
 void unio(int p, int q){
     p = find(p), q = find(q);
     if(p == q) return;
     if(sz[p] > sz[q]) swap(p, q);
-    id[p] = q, sz[q] += sz[q];
+    id[p] = q, sz[q] += sz[p];
 }
 
-void cut(int p, int q){
-    if(sz[p] > sz[q]) swap(p, q);
-    id[p] = p, sz[q] -= sz[p];
+void cut(int a, int b){
+    id = vi(n), sz = vi(n, 1); iota(all(id),0);
+    stack<ii> aux;
+    while(!stk.empty()){
+        ii p = stk.top(); stk.pop();
+        if((p.f == a && p.s == b) || (p.f == b && p.s == a)) continue;
+        unio(p.f, p.s); aux.push({p.f, p.s});
+    }
+
+    stk = aux;
 }
 
 void solve(){
-    int n, m, k; cin >> n >> m >> k;
-    id = vi(n), sz = vi(n); iota(all(id),0);
+    int m, k; cin >> n >> m >> k;
+    id = vi(n), sz = vi(n, 1); iota(all(id),0);
+
     for(int i = 0; i < m; i++) { 
         int a, b; cin >> a >> b; a--, b--; 
-        unio(a, b);
+        stk.push({a, b}); unio(a, b);
     }
 
     for(int i = 0; i < k; i++){
