@@ -16,7 +16,6 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-int n;
 vi id, sz;
 
 int find(int x){
@@ -31,27 +30,21 @@ void unio(int p, int q){
 }
 
 void solve(){
-    int m, k; cin >> n >> m >> k;
+    int n, k; cin >> n >> k;
     id = vi(n), sz = vi(n, 1); iota(all(id),0);
-
-    for(int i = 0; i < m; i++) { 
-        int a, b; cin >> a >> b; a--, b--;
-    }
-
-    stack<tuple<string,int,int>> stk; 
+    vector<tuple<int,int,int>> g;
     for(int i = 0; i < k; i++){
-        string st; int a, b; cin >> st >> a >> b; a--, b--;
-        stk.push({st, a, b});
+        int a, b, w; cin >> a >> b >> w; a--, b--;
+        g.push_back({w, a, b});
+    }
+    sort(all(g));
+
+    ll max = 0;
+    for(auto [w, a, b]: g){
+        if(find(a) != find(b)){ unio(a, b); max = w; }
     }
 
-    string ans[k]; int i = 0;
-    while(!stk.empty()){
-        tuple<string, int, int> q = stk.top(); stk.pop();
-        if(get<0>(q) == "ask") (find(get<1>(q)) == find(get<2>(q)) ? ans[i] = "YES" : ans[i] = "NO"), i++;
-        else unio(get<1>(q), get<2>(q));
-    }
-
-    for(int j = i-1; j >= 0; j--) cout << ans[j] << endl;
+    cout << max << endl; 
 }
 
 int main(){ _
@@ -62,3 +55,4 @@ int main(){ _
 
     exit(0);
 }
+
