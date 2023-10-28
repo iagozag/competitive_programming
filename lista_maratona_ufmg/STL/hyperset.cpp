@@ -20,22 +20,9 @@ int main(){ _
         string a; cin >> a; v.pb(a);
     }
 
-    string st1, st2, st3; bool flag;
-    for(int i = 0; i < n-2; i++){
-        st1 = v[i];
-        for(int j = i+1; j < n-1; j++){
-            st2 = v[j];
-            for(int l = j+1; l < n; l++){
-                st3 = v[l]; flag = true;
-                for(unsigned k = 0; k < st1.size(); k++){
-                    if((st1[k] == st2[k] && st3[k] != st1[k]) || 
-                       (st1[k] != st2[k] && (st3[k] == st1[k] || st3[k] == st2[k]))){
-                        flag = false; break;
-                    }
-                }
-                if(flag) ans++;
-            }
-        }
+    set<char> st;
+    for(int i = 0; i < n-1; i++){
+        
     }
 
     cout << ans << endl;

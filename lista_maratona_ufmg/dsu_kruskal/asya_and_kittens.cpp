@@ -29,8 +29,9 @@ int findc(int x){
 void unio(int a, int b){
     a = findp(a), b = findp(b);
     if(sz[a] < sz[b]) swap(a, b);
-    id[a] = findc(b), sz[b] += sz[a];
-    children[findc(b)] = a; 
+    int c = findc(b);
+    id[a] = c, sz[b] += sz[a];
+    children[c] = a; 
 }
 
 void solve(){
