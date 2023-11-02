@@ -16,32 +16,17 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-vi id;
-vector<vi> sts;
-
-int find(int x){
-    return id[x] = (id[x] == x ? x : find(id[x]));
-}
-
-void unio(int a, int b){
-    a = find(a), b = find(b);
-    if(sts[a].size() > sts[b].size()) swap(a, b);
-    for(auto& x: sts[a]) sts[b].pb(x); 
-    id[a] = b; 
-}
-
 void solve(){
-    int n; cin >> n;
-    id = vi(n); iota(all(id), 0); sts = vector<vi>(n); int k = 0;
-    for(auto& x: sts) x.pb(k), k++;
+    int n, sum = 0; cin >> n;
+    vi v(n);
+    for(auto& x: v) cin >> x;
 
     for(int i = 0; i < n-1; i++){
-        int a, b; cin >> a >> b; a--, b--;
-        unio(a, b);
+        if(v[i] == 0) sum++, v[i] = !v[i], v[i+1] = !v[i+1];
+        if(i > 0 && v[i-1] == 0) { cout << -1 << endl; return; }
     }
 
-    int p = find(0);
-    for(auto& x: sts[p]) { cout << x+1 << " "; }
+    (v[n-1] == 0) ? cout << -1 : cout << sum;
     cout << endl;
 }
 
