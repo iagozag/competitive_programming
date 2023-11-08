@@ -1,5 +1,4 @@
-#include<bits/stdc++.h>
-#include <ctime>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
@@ -37,7 +36,7 @@ template<class H, class... T> void DBGC(H h, T... t) {
     DBGC(t...);
 }
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 #define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
 #define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
 #else
@@ -64,10 +63,10 @@ void update(int node, int tl, int tr, int idx, int val){
         t[node] = val;
         return;
     }
-
     int tm = (tl+tr)>>1;
-    if(tl <= idx && idx <= tr) update(node*2+1, tl, tm, idx, val);
+    if(tl <= idx && idx <= tm) update(node*2+1, tl, tm, idx, val);
     else update(node*2+2, tm+1, tr, idx, val);
+
     t[node] = min(t[node*2+1], t[node*2+2]);
 }
 
@@ -84,8 +83,6 @@ void solve(){
     a = vi(n), t = vi(4*n);
     for(auto& x: a) cin >> x;
     build(0, 0, n-1);
-
-    dbgc(a, t);
 
     for(int i = 0; i < m; i++){
         int op; int a, b; cin >> op;
