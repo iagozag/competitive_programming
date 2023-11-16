@@ -36,7 +36,7 @@ template<class H, class... T> void DBGC(H h, T... t) {
     DBGC(t...);
 }
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 #define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
 #define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
 #else

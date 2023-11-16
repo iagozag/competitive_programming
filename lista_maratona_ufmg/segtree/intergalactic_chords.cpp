@@ -36,7 +36,7 @@ template<class H, class... T> void DBGC(H h, T... t) {
     DBGC(t...);
 }
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 #define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
 #define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
 #else
@@ -44,28 +44,30 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-int MAX = 1e5+10;
-vi v(MAX), lz(MAX);
-vector<ii> seg(4*MAX);
+vi v, lz;
+vector<vi> seg;
 
-ii combine(ii a, ii b){
-    if(a.s > b.s) return a;
-    if(b.s > a.s) return b;
-    if(a.f == b.f) return {a.f, a.s+b.s};
-    return (a.f > b.f) ? a : b;
+vi combine(vi a, vi b){
+    vi tmp(9);
+    for(int i = 0; i < 9; i++)
+        tmp[i] = a[i] + b[i];
+
+    return tmp;
 }
 
-ii build(int node, int tl, int tr){
-    if(tl == tr) return seg[node] = {v[tl], 1};
+vi build(int node, int tl, int tr){
+    if(tl == tr){
+        vi tmp(9); tmp[1]++;;
+        return seg[node] = tmp;
+    }
 
     int tm = (tl+tr)>>1;
     return seg[node] = combine(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
 }
 
 void unlazy(int node, int tl, int tr){
-    if(lz[node] != 0){
-        seg[node].f += (tr-tl+1) * lz[node];
-        seg[node].s = 1;
+    if(lz[node]){
+        rotate(seg[node].begin(), seg[node].begin()+seg[node].size()-lz[node], seg[node].end()); 
         if(tl != tr){
             lz[node*2] += lz[node];
             lz[node*2+1] += lz[node];
@@ -74,29 +76,60 @@ void unlazy(int node, int tl, int tr){
     }
 }
 
-void updateRange(int node, int tl, int tr, int idxl, int idxr, int val){
+void update(int node, int tl, int tr, int a, int b, int val){
     unlazy(node, tl, tr);
 
-    if(tl > idxr || tr < idxl) return;
-    if(tl == tr) seg[node] = {(seg[node].f + val)%9, 1};
+    if(tl > b || tr < a) return;
+    if(a <= tl && b >= tr){
+        lz[node] += val;
+        unlazy(node, tl, tr);
+    } else{
+        int tm = (tl+tr)>>1;
+        update(node*2, tl, tm, a, b, val);
+        update(node*2+1, tm+1, tr, a, b, val);
+
+        seg[node] = combine(seg[node*2], seg[node*2+1]);
+    }
+}
+
+vi query(int node, int tl, int tr, int a, int b){
+    unlazy(node, tl, tr);
+
+    if(b < tl || a > tr) return vi(9);
+    if(a <= tl && tr <= b) return seg[node];
 
     int tm = (tl+tr)>>1;
+    return combine(query(node*2, tl, tm, a, b), query(node*2+1, tm+1, tr, a, b));
+}
 
+int max(vi& tmp){
+    int max = tmp[0], idx = 0;
+    for(int i = 1; i < 9; i++)
+        if(max < tmp[i]) max = tmp[i], idx = i;
+
+    return idx;
 }
 
 void solve(){
     int n, m; cin >> n >> m;
-    for(int i = 0; i < n; i++) cin >> v[i];
-    ii max = build(1, 0, n-1);
+    v = vi(n, 1), lz = vi(4*n), seg = vector<vi>(4*n);
+    vi q = build(1, 0, n-1);
 
     for(int i = 0; i < m; i++){
         int a, b; cin >> a >> b;
-        ii tmp = updateRange(1, 0, n-1, a, b, max.f);
-        max = tmp;
+
+        cout << "input: " << a << " " << b << endl;
+        vi q = query(1, 0, n-1, a, b); 
+        dbgc(q); int maxi = max(q);
+        cout << "max rp: " << maxi << endl;
+        update(1, 0, n-1, a, b, maxi);
     }
+
+    dbgc(lz); 
+    for(int i = 0; i < n; i++) cout << max(seg[i]) << endl;
 }
 
-int main(){ _
+int main(){ // _
     int t = 1;
     while(t--){
         solve();

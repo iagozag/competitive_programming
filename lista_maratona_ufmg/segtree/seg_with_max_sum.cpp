@@ -12,6 +12,7 @@ typedef long long ll;
 typedef pair<int,int> ii;
 typedef vector<int> vi;
 typedef vector<ll> vl;
+typedef tuple<int,int,int> tp;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
@@ -45,37 +46,37 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 int MAX = 1e5+10;
-vl v(MAX); vector<pair<ll, ll>> seg(4*MAX);
+vl v(MAX); vector<tp> seg(4*MAX);
 
-pair<ll, ll> combine(ii a, ii b){
-    return {max(a.f, b.f), (a.s+b.s > 0) ? a.s+b.s : 0};
+tp combine(tp a, tp b){
+    
 }
 
-pair<ll, ll> build(int node, int tl, int tr){
-    if(tl == tr) return seg[node] = {v[tl], v[tl]};
+tp build(int node, int tl, int tr){
+    if(tl == tr) return seg[node] = {v[tl], v[tl], v[tl]};
 
     int tm = (tl+tr)>>1;
     return seg[node] = combine(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
 }
 
-pair<ll, ll> update(int node, int tl, int tr, int idx, ll val){
+tp update(int node, int tl, int tr, int idx, ll val){
     if(idx < tl || idx > tr) return seg[node];
-    if(tl == tr) return seg[node] = {val, val};
+    if(tl == tr) return seg[node] = {val, val, val};
 
     int tm = (tl+tr)>>1;
     return seg[node] = combine(update(node*2, tl, tm, idx, val), update(node*2+1, tm+1, tr, idx, val));
 }
 
 void solve(){
-    int n, m; cin >> n >> m;
+    int n, m, x; cin >> n >> m;
     for(int i = 0; i < n; i++) cin >> v[i];
-    auto [x, y] = build(1, 0, n-1);
-    cout << ((max(x, y) > 0) ? max(x, y) : 0) << endl;
+    x = get<2>(build(1, 0, n-1));
+    cout << (x > 0 ? x : 0) << endl;
 
     for(int i = 0; i < m; i++){
         int a, b; cin >> a >> b;
-        auto [x, y] = update(1, 0, n-1, a, b);
-        cout << ((max(x, y) > 0) ? max(x, y) : 0) << endl;
+        x = get<2>(update(1, 0, n-1, a, b));
+        cout << (x > 0 ? x : 0) << endl;
     }
 }
 
