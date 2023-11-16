@@ -45,37 +45,54 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 int MAX = 1e5+10;
-vl v(MAX); vector<pair<ll, ll>> seg(4*MAX);
+vi v(MAX), lz(MAX);
+vector<ii> seg(4*MAX);
 
-pair<ll, ll> combine(ii a, ii b){
-    return {max(a.f, b.f), (a.s+b.s > 0) ? a.s+b.s : 0};
+ii combine(ii a, ii b){
+    if(a.s > b.s) return a;
+    if(b.s > a.s) return b;
+    if(a.f == b.f) return {a.f, a.s+b.s};
+    return (a.f > b.f) ? a : b;
 }
 
-pair<ll, ll> build(int node, int tl, int tr){
-    if(tl == tr) return seg[node] = {v[tl], v[tl]};
+ii build(int node, int tl, int tr){
+    if(tl == tr) return seg[node] = {v[tl], 1};
 
     int tm = (tl+tr)>>1;
     return seg[node] = combine(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
 }
 
-pair<ll, ll> update(int node, int tl, int tr, int idx, ll val){
-    if(idx < tl || idx > tr) return seg[node];
-    if(tl == tr) return seg[node] = {val, val};
+void unlazy(int node, int tl, int tr){
+    if(lz[node] != 0){
+        seg[node].f += (tr-tl+1) * lz[node];
+        seg[node].s = 1;
+        if(tl != tr){
+            lz[node*2] += lz[node];
+            lz[node*2+1] += lz[node];
+        }
+        lz[node] = 0;
+    }
+}
+
+void updateRange(int node, int tl, int tr, int idxl, int idxr, int val){
+    unlazy(node, tl, tr);
+
+    if(tl > idxr || tr < idxl) return;
+    if(tl == tr) seg[node] = {(seg[node].f + val)%9, 1};
 
     int tm = (tl+tr)>>1;
-    return seg[node] = combine(update(node*2, tl, tm, idx, val), update(node*2+1, tm+1, tr, idx, val));
+
 }
 
 void solve(){
     int n, m; cin >> n >> m;
     for(int i = 0; i < n; i++) cin >> v[i];
-    auto [x, y] = build(1, 0, n-1);
-    cout << ((max(x, y) > 0) ? max(x, y) : 0) << endl;
+    ii max = build(1, 0, n-1);
 
     for(int i = 0; i < m; i++){
         int a, b; cin >> a >> b;
-        auto [x, y] = update(1, 0, n-1, a, b);
-        cout << ((max(x, y) > 0) ? max(x, y) : 0) << endl;
+        ii tmp = updateRange(1, 0, n-1, a, b, max.f);
+        max = tmp;
     }
 }
 
