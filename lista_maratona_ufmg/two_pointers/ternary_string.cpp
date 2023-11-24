@@ -44,46 +44,29 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-vi v, seg;
-
-int build(int node, int tl, int tr){
-    if(tl == tr) return seg[node] = v[tl];
-
-    int tm = (tl+tr)>>1;
-    return seg[node] = build(node*2, tl, tm) + build(node*2+1, tm+1, tr);
-}
-
-int update(int node, int tl, int tr, int idx){
-    if(idx < tl || idx > tr) return seg[node];
-    if(tl == tr) return seg[node] = !seg[node];
-
-    int tm = (tl+tr)>>1;
-    return seg[node] = update(node*2, tl, tm, idx) + update(node*2+1, tm+1, tr, idx);
-}
-
-int query(int node, int tl, int tr, int x){
-    if(tl == tr) return tl;
-
-    int tm = (tl+tr)>>1;
-    if(seg[node*2] >= x) return query(node*2, tl, tm, x);
-    else return query(node*2+1, tm+1, tr, x-seg[node*2]);
-}
-
 void solve(){
-    int n, m; cin >> n >> m;
-    v = vi(n), seg = vi(4*n);
-    for(int i = 0; i < n; i++) cin >> v[i];
-    build(1, 0, n-1);
-    
-    for(int i = 0; i < m; i++){
-        int op, a; cin >> op;
-        if(op == 1) { cin >> a; update(1, 0, n-1, a); }
-        else{ cin >> a; a++; cout << query(1, 0, n-1, a) << endl; }
+    string v; cin >> v;
+
+    int m = INF, N = v.size();
+    for(int i = 0, j = i+1; i < N-2; i++, j = i+1){
+        if(v[i] == v[j]) continue;
+
+        bool aux[3]; aux[0] = aux[1] = aux[2] = 0;
+        int cnt = 1; aux[(v[i]-'0')-1] = 1; 
+        while(j < N && cnt < 3){
+            if(!aux[(v[j]-'0')-1]) cnt++, aux[(v[j]-'0')-1] = 1;
+            j++;
+        }
+
+        if(cnt == 3) m = min(j-i, m);
+        else break;
     }
+
+    cout << (m == INF ? 0 : m) << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }

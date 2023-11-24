@@ -12,7 +12,6 @@ typedef long long ll;
 typedef pair<int,int> ii;
 typedef vector<int> vi;
 typedef vector<ll> vl;
-typedef tuple<ll,ll,ll,ll> tp;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
@@ -37,7 +36,7 @@ template<class H, class... T> void DBGC(H h, T... t) {
     DBGC(t...);
 }
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 #define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
 #define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
 #else
@@ -45,42 +44,46 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-int MAX = 1e5+10;
-vl v(MAX); vector<tp> seg(4*MAX);
+const int MAX = 1e5;
+typedef pair<int, bitset<MAX>> pp;
 
-tp combine(tp a, tp b){
-    auto [a1, a2, a3, a4] = a;
-    auto [b1, b2, b3, b4] = b;
+vi v; vector<pp> seg;
 
-    return {max(max(a1, b1), a4+b2), max(a2, a3+b2), a3+b3, max(a4+b3, b4)};
+pp combine(pp a, pp b){
+    bitset<MAX> c = a.s | b.s;
+    int cnt = a.f + b.f + (a.s&b.s).count();
+
+    return {cnt, c};
 }
 
-tp build(int node, int tl, int tr){
-    if(tl == tr) return seg[node] = {v[tl], v[tl], v[tl], v[tl]};
+pp build(int node, int tl, int tr){
+    if(tl == tr) return seg[node] = {0, bitset<MAX>().set(v[tl]-1)};
 
     int tm = (tl+tr)>>1;
     return seg[node] = combine(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
 }
 
-tp update(int node, int tl, int tr, int idx, ll val){
-    if(idx < tl || idx > tr) return seg[node];
-    if(tl == tr) return seg[node] = {val, val, val, val};
+pp query(int node, int tl, int tr, int a, int b){
+    if(a > tr || b < tl) return {0, bitset<MAX>()};
+    if(a <= tl && b >= tr) return seg[node];
 
     int tm = (tl+tr)>>1;
-    return seg[node] = combine(update(node*2, tl, tm, idx, val), update(node*2+1, tm+1, tr, idx, val));
+    return combine(query(node*2, tl, tm, a, b), query(node*2+1, tm+1, tr, a, b));
 }
 
 void solve(){
-    int n, m; ll x; cin >> n >> m;
-    for(int i = 0; i < n; i++) cin >> v[i];
-    x = get<0>(build(1, 0, n-1));
-    cout << max(x, 0LL) << endl;
-
-    for(int i = 0; i < m; i++){
-        int a, b; cin >> a >> b;
-        x = get<0>(update(1, 0, n-1, a, b));
-        cout << max(x, 0LL) << endl;
+    int n; cin >> n;
+    v = vi(2*n), seg = vector<pp>(8*n);
+    map<int,ii> mp;
+    for(int i = 0; i < 2*n; i++){
+        cin >> v[i];
+        if(!mp.count(v[i])) mp[v[i]] = {i, -1};
+        else mp[v[i]].s = i;
     }
+    build(1, 0, 2*n-1);
+
+    for(int i = 1; i <= n; i++) cout << query(1, 0, 2*n-1, mp[i].f+1, mp[i].s-1).f << " ";
+    cout << endl;
 }
 
 int main(){ _
@@ -91,5 +94,3 @@ int main(){ _
 
     exit(0);
 }
-
-
