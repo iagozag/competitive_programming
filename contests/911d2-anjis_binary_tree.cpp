@@ -45,19 +45,18 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 int MAX = 3e5+10; string st;
-vector<vi> g(MAX); vi ans(MAX);
+vector<vi> g(MAX); vi ans(MAX, INF);
 
 void dfs(int x){
     if(g[x][0] == -1 && g[x][1] == -1) return;
 
-    if(g[x][0] != -1)
-        dfs(x);
+    if(g[x][0] != -1) dfs(x);
     if(st[x] == 'L') ans[x] = min(ans[x], ans[g[x][0]]);
     else ans[x] = min(ans[x], ans[g[x][0]]+1);
 
-    if(g[x][1] != -1)
-        dfs(x);
-
+    if(g[x][1] != -1) dfs(x);
+    if(st[x] == 'R') ans[x] = min(ans[x], ans[g[x][1]]);
+    else ans[x] = min(ans[x], ans[g[x][1]]+1);
 }
 
 void solve(){

@@ -18,19 +18,14 @@ int * bolha(int cor[], int n, int saida[]){
     int cor_aux[n];
     for (int i =0; i<n; i++){
         aux[i] = saida[i];
-        escreveMemLog((long int)(&(aux[i])), sizeof(int), 1);
         cor_aux[i] = cor[i];
     }
 
     for(int i = 0; i < n-1; i++){
         for(int j=1;j<n-i;j++){
-            leMemLog((long int)(&(aux[j])), sizeof(int), 1);
-            leMemLog((long int)(&(aux[j - 1])), sizeof(int), 1);
             if (cor_aux[j] < cor_aux[j-1]){
                 troca(cor_aux[j],cor_aux[j-1]);
                 troca(aux[j],aux[j-1]);
-                escreveMemLog((long int)(&(aux[j - 1])), sizeof(int), 1);
-                escreveMemLog((long int)(&(aux[j])), sizeof(int), 1);
             } 
         }
     }
@@ -280,6 +275,7 @@ int * meuSort(int cores[], int corMax, int n){
     int k = 0;
     for(int i = 0; i <=corMax; i++){
         for(int j=0; j<n; j++){
+            leMemLog((long int)(&(cores[j])), sizeof(int), 1);
             if(cores[j] == i){
                 aux[k] = j;
                 escreveMemLog((long int)(&(aux[k])), sizeof(int), 1);

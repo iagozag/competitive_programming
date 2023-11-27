@@ -44,29 +44,42 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-int r, MAX = 2e5+10;
-vector<vector<vi>> v(MAX, vector<vi>(2, vi(2))); vector<vector<vi>> seg(4*MAX, vector<vi>(2, vi(2)));
+class Matrix{
+    public:
+        int m[2][2];
 
-vector<vi> multiply(vector<vi> m1, vector<vi> m2){
-    vector<vi> ans(2, vi(2));
+        Matrix(){
+            m[0][0] = 1, m[0][1] = 0, m[1][0] = 0, m[1][1] = 1;
+        }
+
+        Matrix(int a, int b, int c, int d){
+            m[0][0] = a, m[0][1] = b, m[1][0] = c, m[1][1] = d;
+        }
+};
+
+int r, MAX = 2e5+10;
+vector<Matrix> v(MAX); vector<Matrix> seg(4*MAX);
+
+Matrix multiply(Matrix m1, Matrix m2){
+    Matrix ans(0,0,0,0);
 
     for(int i = 0; i < 2; i++)
         for(int j = 0; j < 2; j++)
             for(int k = 0; k < 2; k++)
-                ans[i][j] = (ans[i][j] + ((m1[i][k] * m2[k][j]) % r)) % r;
+                ans.m[i][j] = (ans.m[i][j] + ((m1.m[i][k] * m2.m[k][j]) % r)) % r;
 
     return ans;
 }
 
-vector<vi> build(int node, int tl, int tr){
+Matrix build(int node, int tl, int tr){
     if(tl == tr) return seg[node] = v[tl];
 
     int tm = (tl+tr)>>1;
     return seg[node] = multiply(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
 }
 
-vector<vi> query(int node, int tl, int tr, int a, int b){
-    if(b < tl || a > tr) return {{1, 0}, {0, 1}};
+Matrix query(int node, int tl, int tr, int a, int b){
+    if(b < tl || a > tr) return Matrix(1,0,0,1);
     if(a <= tl && b >= tr) return seg[node];
 
     int tm = (tl+tr)>>1;
@@ -76,16 +89,16 @@ vector<vi> query(int node, int tl, int tr, int a, int b){
 void solve(){
     int n, m; cin >> r >> n >> m;
     for(int i = 0; i < n; i++)
-        cin >> v[i][0][0] >> v[i][0][1] >> v[i][1][0] >> v[i][1][1];
+        cin >> v[i].m[0][0] >> v[i].m[0][1] >> v[i].m[1][0] >> v[i].m[1][1];
 
     build(1, 0, n-1);
 
     for(int i = 0; i < m; i++){
         int a, b; cin >> a >> b; a--, b--;
-        vector<vi> ans = query(1, 0, n-1, a, b);
+        Matrix ans = query(1, 0, n-1, a, b);
 
-        for(auto& x: ans){
-            for(auto& y: x) cout << y << " ";
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < 2; j++) cout << ans.m[i][j] << " ";
             cout << endl;
         }
         cout << endl;

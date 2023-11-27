@@ -46,6 +46,7 @@ int main(){
     /*cria uma lista de adjacencia com as cores*/
     g.InsereCor();
 
+    int*organizado = new int[n];
     defineFaseMemLog(1);
     /*se for guloso, ordenar de acordo com o tipo de ordenação escolhido*/
     if(g.Guloso(n) == 0){
@@ -81,12 +82,14 @@ int main(){
         /*Imprime 1 e os vertices ordenados por cor e vértice*/
         cout << 1 << " ";
         for(int i =0; i<n; i++){
-        cout << organizado[i] << " ";
+            leMemLog((long int)(&(organizado[i])),sizeof(int),1);
+            cout << organizado[i] << " ";
         }
         cout<<endl;
     }
 
     defineFaseMemLog(2);
+    delete[] organizado;
     for(int i = 0; i < n; i++) g.ImprimeVizinhos(i);
     for(int i = 0; i < n; i++) g.ImprimeVizinhosCores(i);
 
