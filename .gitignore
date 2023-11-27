@@ -1,3 +1,6 @@
 projects/
 ijunior/
 **/main
+***/main
+.sync
+.stfolder/
