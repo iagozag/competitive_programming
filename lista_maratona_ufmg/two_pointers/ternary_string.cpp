@@ -44,22 +44,18 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
+// 122321
+
 void solve(){
     string v; cin >> v;
 
     int m = INF, N = v.size();
-    for(int i = 0, j = i+1; i < N-2; i++, j = i+1){
-        if(v[i] == v[j]) continue;
+    vector<int> arr(3);
+    for(int i = 0, j = 0; i < N; i++){
+        while(j < N && (!arr[0] || !arr[1] || !arr[2])) arr[v[j]-'1']++, j++;
 
-        bool aux[3]; aux[0] = aux[1] = aux[2] = 0;
-        int cnt = 1; aux[(v[i]-'0')-1] = 1; 
-        while(j < N && cnt < 3){
-            if(!aux[(v[j]-'0')-1]) cnt++, aux[(v[j]-'0')-1] = 1;
-            j++;
-        }
-
-        if(cnt == 3) m = min(j-i, m);
-        else break;
+        if(!arr[0] || !arr[1] || !arr[2]) break;
+        m = min(m, j-i), arr[v[i]-'1']--;
     }
 
     cout << (m == INF ? 0 : m) << endl;

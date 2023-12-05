@@ -1,7 +1,8 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define f first
 #define s second
@@ -15,22 +16,47 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void solve(){
-    int n, ans = 0; ll ms; cin >> n >> ms;
-    vl v(n);
-    for(auto& x: v) cin >> x;
+void DBG() {
+    cerr << "]" << endl;
+}
 
-    int l = 0; ll sum = 0;
-    for(int r = 0; r < n; r++){
+void DBGC() {
+    cerr << "]" << endl;
+}
+
+template<class H, class... T> void DBG(H h, T... t) {
+    cerr << to_string(h);
+    if(sizeof...(t)) cerr << ", ";
+    DBG(t...);
+}
+
+template<class H, class... T> void DBGC(H h, T... t) {
+    for(auto& x: h) cerr << x << " ";
+    if(sizeof...(t)) cerr << "], [ ";
+    DBGC(t...);
+}
+
+#ifndef _DEBUG
+#define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
+#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
+#else
+#define dbg(...) 0
+#define dbgc(...) 0
+#endif
+
+void solve(){
+    int n; ll k; cin >> n >> k;
+    vi v(n); for(auto& x: v) cin >> x;
+
+    int ma = 0; ll sum = 0;
+    for(int l = 0, r = 0; r < n; r++){
         sum += v[r];
-        while(sum > ms){
-            sum -= v[l];
-            l++;
-        }
-        ans = max(ans, r-l+1);
+        while(sum > k) sum -= v[l], l++;
+
+        ma = max(r-l+1, ma);
     }
 
-    cout << ans << endl;
+    cout << ma << endl;
 }
 
 int main(){ _
@@ -41,3 +67,4 @@ int main(){ _
 
     exit(0);
 }
+
