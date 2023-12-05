@@ -4,4 +4,5 @@ ijunior/
 ***/main
 .sync
 .stfolder/
+.stversions/
 .stignore
