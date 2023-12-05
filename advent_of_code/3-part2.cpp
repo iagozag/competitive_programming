@@ -46,44 +46,40 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 vector<string> matrix;
 
-bool is_symbol(char c){
-    return (c != '.' && (c < '0' || c > '9'));
+bool is_digit(char c){
+    return (c >= '0' && c <= '9');
 }
 
-bool check(int i, int begin, int end){
-    if(is_symbol(matrix[i][begin-1]) || is_symbol(matrix[i][end+1])) return true;
+bool check(int i, int idx){
+    int cnt = 0;
+    if(is_digit(matrix[i][idx-1]) || is_digit(matrix[i][idx+1])) cnt++;
 
-    for(int k = begin-1; k <= end+1; k++)
-        if(is_symbol(matrix[i-1][k]) || is_symbol(matrix[i+1][k])) return true;
+    for(int k = idx-1; k <= idx+1; k++){
+        if(is_digit(matrix[i-1][k]) || is_digit(matrix[i+1][k]))
+            while()cnt++;
 
-    return false;
+    }
+
+    return cnt == 2;
 }
 
 void solve(){
     string st; cin >> st;
-    int N = st.size(), L = 1;
+    int N = st.size();
 
     matrix.pb(string(N+2, '.'));
-    matrix.pb('.'+st+'.');
+    matrix.pb("."+st+".");
 
-    while(cin >> st) matrix.pb('.'+st+'.'), L++;
+    while(cin >> st) matrix.pb("."+st+".");
     matrix.pb(string(N+2, '.'));
 
-    ll sum = 0; N += 2, L += 2; 
-    string buffer = "";
-    for(int i = 1; i < L-1; i++){
+    ll sum = 0; N += 2; 
+
+    for(int i = 1; i < N-1; i++){
         for(int j = 1; j < N-1; j++){
-            if(matrix[i][j] == '.' || matrix[i][j] < '0' || matrix[i][j] > '9') continue;
+            if(matrix[i][j] != '*') continue;
 
-            int begin = j, end = j;
-            while(true){
-                buffer += matrix[i][j];
-                if(matrix[i][j+1] < '0' || matrix[i][j] > '9'){ end = j; break; }
-                j++;
-            }
-
-            if(check(i, begin, end)) sum += stoi(buffer);
-            buffer = "";
+            if(check(i, j)) sum += stol();
         }
     }
 
