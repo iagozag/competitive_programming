@@ -18,6 +18,7 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 int MAX = 1e5+10;
 vector<vi> v(MAX);
+vector<vi> adj(MAX);
 vector<bool> vis(MAX);
 
 void dfs(int x){
@@ -31,12 +32,12 @@ void solve(){
     int n, m; cin >> n >> m;
     for(int i = 0; i < m; i++){
         int a, b; cin >> a >> b; a--, b--;
-        v[a].pb(b);
+        v[a].pb(b); adj[b].pb(a);
     }
 
     int sum = 0;
     for(int i = 0; i < n; i++)
-        if(!vis[i]) sum++, dfs(i);
+        if(!vis[i] && adj[i].empty()) sum++, dfs(i);
 
     cout << sum << endl;
 }

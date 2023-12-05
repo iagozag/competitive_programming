@@ -16,40 +16,30 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-vector<vi> v(110);
-vi dist(110, -1);
+vi id, rk;
 
-void dfs(int x){
-    for(auto& ve: v[x]) if(dist[ve] == -1){
-        dist[ve] = dist[x]+1;
-        dfs(ve);
-    }
+int find(int x){
+    return (id[x] == x ? x : find(id[x]));
+}
+
+void unio(int a, int b){
+    a = find(a), b = find(b);
+    if(a == b) return;
+    if(rk[a] > rk[b]) swap(a, b);
+    id[a] = b, rk[b] += (rk[a] == rk[b] ? 1 : 0);
 }
 
 void solve(){
     int n, m; cin >> n >> m;
+    id = vi(n), rk = vi(n, 0); iota(all(id), 0);
+
     for(int i = 0; i < m; i++){
         int a, b; cin >> a >> b; a--, b--;
-        v[a].pb(b), v[b].pb(a);
-    } 
-
-    dist[0]= 0;
-    dfs(0);
-
-    int max= -1, pos = -1;
-    for(int i = 0; i < n; i++){
-        if(max < dist[i]) max = dist[i], pos = i;
+        unio(a, b); 
     }
 
-    dist = vi(100, -1); dist[pos] = 0;
-    dfs(pos);
-
-    max= -1;
-    for(int i = 0; i < n; i++)
-        if(max < dist[i]) max = dist[i];
-
-
-    cout << (max <= 6 ? "S\n" : "N\n"); 
+    cout << rk[find(0)] << endl;
+    cout << (rk[find(0)] > 6 ? "N\n" : "S\n"); 
 }
 
 int main(){ _
