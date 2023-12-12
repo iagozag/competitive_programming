@@ -50,17 +50,37 @@ bool is_digit(char c){
     return (c >= '0' && c <= '9');
 }
 
-bool check(int i, int idx){
-    int cnt = 0;
-    if(is_digit(matrix[i][idx-1]) || is_digit(matrix[i][idx+1])) cnt++;
+ll check(int i, int idx){
+    vi numbers; string buffer = "";
+    int j = idx-1;
+    while(is_digit(matrix[i][j])){ buffer = matrix[i][j] + buffer; j--; }
+    if(buffer != "") numbers.pb(stoi(buffer)), buffer = "";
+  
+    j = idx+1;
+    while(is_digit(matrix[i][j])){ buffer += matrix[i][j]; j++; }
+    if(buffer != "") numbers.pb(stoi(buffer)), buffer = "";
 
-    for(int k = idx-1; k <= idx+1; k++){
-        if(is_digit(matrix[i-1][k]) || is_digit(matrix[i+1][k]))
-            while()cnt++;
+    for(int k = i-1; k <= i+1; k+=2){
+        buffer = "";
+        if(matrix[k][idx] != '.'){
+            j = idx;
+            while(matrix[k][j] != '.') { buffer = matrix[k][j] + buffer; j--; }
+            j = idx+1;
+            while(matrix[k][j] != '.') { buffer += matrix[k][j]; j++; }
 
-    }
+            numbers.pb(stoi(buffer)), buffer = "";
+        } else{
+            j = idx-1;
+            while(matrix[k][j] != '.') { buffer = matrix[k][j] + buffer; j--; }
+            if(buffer != "") numbers.pb(stoi(buffer)), buffer = "";
 
-    return cnt == 2;
+            j = idx+1;
+            while(matrix[k][j] != '.') { buffer += matrix[k][j]; j++; }
+            if(buffer != "") numbers.pb(stoi(buffer)), buffer = "";
+        }
+    } 
+
+    return (numbers.size() != 2) ? 0LL : numbers[0]*numbers[1];
 }
 
 void solve(){
@@ -79,7 +99,7 @@ void solve(){
         for(int j = 1; j < N-1; j++){
             if(matrix[i][j] != '*') continue;
 
-            if(check(i, j)) sum += stol();
+            sum += check(i, j);
         }
     }
 
