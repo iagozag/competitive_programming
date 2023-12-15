@@ -48,14 +48,19 @@ void solve(){
     int n; cin >> n;
     vi v(n); for(auto& x: v) cin >> x;
     sort(all(v));
+    dbgc(v);
 
-    int i = n-1, j = n-2, ans = n;
-    while(i >= 0 && j >= 0){
-        if(v[i] == -1){ i--; continue; }
-        if(v[i] >= v[j]*2) ans--, v[j] = -1, i--;
-        j--;
+    int j = n-2, ans = n;
+    for(int i = n-1; i >= 0; i--){
+        if(v[i] == -1) continue;
+
+        while(j >= 0 && v[i] < v[j]*2) j--;
+
+        if(j == -1) break;
+        v[j] = -1, j--, ans--;
     }
 
+    dbgc(v);
     cout << ans << endl;
 }
 

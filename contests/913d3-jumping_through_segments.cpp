@@ -44,43 +44,38 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 1e5+10;
-vector<vi> v(MAX);
-vi dist;
+vector<ii> v;
 
-void dfs(int x){
-    for(auto& ve: v[x]) if(dist[ve] == -1){
-        dist[ve] = dist[x]+1;
-        dfs(ve);
+bool check(int k){
+    int dist = 0;
+
+    for(size_t i = 0; i < v.size(); i++){
+        
     }
+
+    return true;
 }
 
 void solve(){
-    int n, m; cin >> n >> m;
-    dist = vi(n, -1);
-    for(int i = 0; i < m; i++){
-        int a, b; cin >> a >> b; a--, b--;
-        v[a].pb(b), v[b].pb(a);
+    int n; cin >> n;
+    for(int i = 0; i < n; i++) cin >> v[i].f >> v[i].s;
+
+    int l = 0, r = 1e9+10;
+    while(l < r){
+        int m = (l+r)>>1;
+        if(!check(m)) l = m+1;
+        else r = m;
     }
 
-    int cnt = 0;
-    for(int i = 0; i < n; i++) if(v[i].size() == 1 && dist[i] == -1){
-        dist[i] = 0, cnt++;
-        if(cnt > 1){ cout << "N" << endl; return; }
-
-        dfs(i);
-        break;
-    }
-
-    int maxi = *max_element(all(dist));
-    cout << (maxi <= 6 ? "S" : "N") << endl;
+    cout << l << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
 
     exit(0);
 }
+
