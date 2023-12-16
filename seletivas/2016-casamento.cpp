@@ -44,36 +44,22 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 1e5+10;
-vector<vi> v(MAX);
-vi dist;
-
-void dfs(int x){
-    for(auto& ve: v[x]) if(dist[ve] == -1){
-        dist[ve] = dist[x]+1;
-        dfs(ve);
-    }
-}
+typedef pair<double,double> pp;
 
 void solve(){
-    int n, m; cin >> n >> m;
-    dist = vi(n, -1);
-    for(int i = 0; i < m; i++){
-        int a, b; cin >> a >> b; a--, b--;
-        v[a].pb(b), v[b].pb(a);
-    }
+    pp a, b, s;
+    cin >> a.f >> a.s >> b.f >> b.s >> s.f >> s.s;
 
-    int cnt = 0;
-    for(int i = 0; i < n; i++) if(v[i].size() == 1 && dist[i] == -1){
-        dist[i] = 0, cnt++;
-        if(cnt > 1){ cout << "N" << endl; return; }
+    pp median = {(a.f+b.f)/2, (a.s+b.s)/2};
 
-        dfs(i);
-        break;
-    }
+    double m1 = -1/((b.s-a.s)/(b.f-a.f)), m2 = (b.s-a.s)/(b.f-a.f);
+    pp perp_median = {m1, -median.f*m1 + median.s};
+    pp parallel_s = {m2, -s.f*m2 + s.s};
 
-    int maxi = *max_element(all(dist));
-    cout << (maxi <= 6 ? "S" : "N") << endl;
+    double x = -(perp_median.s - parallel_s.s)/(perp_median.f-parallel_s.f),
+           y = perp_median.f*x+perp_median.s;
+    x = trunc(x*100)/100, y = trunc(y*100)/100;
+    printf("%.2f %.2f\n", x, y); 
 }
 
 int main(){ _
@@ -84,3 +70,4 @@ int main(){ _
 
     exit(0);
 }
+

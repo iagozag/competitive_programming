@@ -44,36 +44,14 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 1e5+10;
-vector<vi> v(MAX);
-vi dist;
-
-void dfs(int x){
-    for(auto& ve: v[x]) if(dist[ve] == -1){
-        dist[ve] = dist[x]+1;
-        dfs(ve);
-    }
-}
+// ABC
+// BCA
 
 void solve(){
-    int n, m; cin >> n >> m;
-    dist = vi(n, -1);
-    for(int i = 0; i < m; i++){
-        int a, b; cin >> a >> b; a--, b--;
-        v[a].pb(b), v[b].pb(a);
-    }
+    string a, b; cin >> a >> b;
+    int N = a.size();
+    
 
-    int cnt = 0;
-    for(int i = 0; i < n; i++) if(v[i].size() == 1 && dist[i] == -1){
-        dist[i] = 0, cnt++;
-        if(cnt > 1){ cout << "N" << endl; return; }
-
-        dfs(i);
-        break;
-    }
-
-    int maxi = *max_element(all(dist));
-    cout << (maxi <= 6 ? "S" : "N") << endl;
 }
 
 int main(){ _
@@ -84,3 +62,4 @@ int main(){ _
 
     exit(0);
 }
+
