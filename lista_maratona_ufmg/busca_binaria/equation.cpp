@@ -45,23 +45,16 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 void solve(){
-    int n; cin >> n;
-    vi v(n); for(auto& x: v) cin >> x;
-    sort(all(v));
-    dbgc(v);
+    long double c; cin >> c;
 
-    int j = n-2, ans = n;
-    for(int i = n-1; i >= 0; i--){
-        if(v[i] == -1) continue;
-
-        while(j >= 0 && v[i] < v[j]*2) j--;
-
-        if(j == -1) break;
-        v[j] = -1, j--, ans--;
+    long double l = 1.0, r = sqrt(c), eps = 1e-6;
+    while(r - l > eps){
+        long double m = l+(r-l)/2;
+        if(m*m+sqrt(m) < c) l = m;
+        else r = m;
     }
 
-    dbgc(v);
-    cout << ans << endl;
+    printf("%Lf\n", (l+(r-l)/2)); 
 }
 
 int main(){ _
