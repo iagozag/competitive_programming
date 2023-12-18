@@ -44,30 +44,19 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-vector<ii> v;
-
-bool check(int k){
-    int dist = 0;
-
-    for(size_t i = 0; i < v.size(); i++){
-        
-    }
-
-    return true;
-}
-
 void solve(){
     int n; cin >> n;
-    for(int i = 0; i < n; i++) cin >> v[i].f >> v[i].s;
-
-    int l = 0, r = 1e9+10;
-    while(l < r){
-        int m = (l+r)>>1;
-        if(!check(m)) l = m+1;
-        else r = m;
+    vector<vi> v(n);
+    for(int i = 0; i < n-1; i++){
+        int a, b; cin >> a >> b; a--, b--;
+        v[a].pb(b), v[b].pb(a);
     }
 
-    cout << l << endl;
+    int k = 0;
+    for(int i = 0; i < n; i++) if(v[i].size() == 1)
+        k++;
+
+    cout << (k+1)/2 << endl;
 }
 
 int main(){ _
