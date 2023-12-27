@@ -46,14 +46,12 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 void solve(){
     int n, k; cin >> n >> k;
-    vi v(n), memo(n); for(auto& x: v) cin >> x;
+    vi v(n), memo(n, INF); for(auto& x: v) cin >> x;
 
     memo[0] = 0;
-    for(int i = 1; i < n; i++){
-        memo[i] = INF;
+    for(int i = 1; i < n; i++)
         for(int j = max(0, i-k); j < i; j++)
-            memo[i] = min(memo[i], memo[j] + abs(v[i]-v[j]));
-    }
+            memo[i] = min(memo[i], memo[j]+abs(v[i]-v[j]));
 
     cout << memo[n-1] << endl;
 }

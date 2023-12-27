@@ -25,8 +25,6 @@ int main(){ _
         diff.pb(diff.at(i));
 
     for(int i = 0; i < n+i; i++){
-
-
         if(n+1 >= diff.size()) break;
     }
 

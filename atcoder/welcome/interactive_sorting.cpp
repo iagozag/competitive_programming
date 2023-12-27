@@ -2,9 +2,6 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
-#define max3(a, b, c) max(a, max(b, c))
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define f first
@@ -48,14 +45,16 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 void solve(){
-    int n, w; cin >> n >> w;
-    vi v(n), wt(n); rep(i, 0, n) cin >> wt[i] >> v[i];
-    vl memo(w+1);
+    int n, q; cin >> n >> q;
+    string alp = "";
+    for(int i = 0; i < n; i++) alp[i] += 'A'+i;
 
-    rep(i, 0, n) repr(j, w, wt[i])
-        memo[j] = max(memo[j], memo[j-wt[i]] + v[i]);
-    
-    cout << memo[w] << endl;
+    for(int i = 0; i < n; i++){
+        for(int j = 1; j < n; j++){
+            cout << "? " << alp[i] << " " << alp[j] << endl;
+            char op; cin >> op;
+        }
+    }
 }
 
 int main(){ _

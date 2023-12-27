@@ -44,18 +44,31 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
+int n, k;
+vi v;
+
+bool check(double x){
+    double d = 0, u = 0;
+    for(auto& y: v){
+        if(y > x) u += y-x;
+        else d += x-y;
+    }
+
+    return u-u*k/100 >= d;
+}
+
 void solve(){
-    int n, k; cin >> n >> k;
-    int mi = INF, ma = -1;
-    for(int i = 0; i < n; i++){
-        int a; cin >> a; 
-        ma = max(ma, a), mi = min(mi, a);
-    }
+    cin >> n >> k; v = vi(n);
+    for(int i = 0; i < n; i++) cin >> v[i];
 
-    double l = 0, r = ma, eps = 1e-6;
+    double l = 0, r = 1e3+10, eps = 1e-7;
     while(r-l > eps){
-
+        double m = l+(r-l)/2;
+        if(check(m)) l = m;
+        else r = m;
     }
+
+    cout << setprecision(20) << l+(r-l)/2 << endl;
 }
 
 int main(){ _

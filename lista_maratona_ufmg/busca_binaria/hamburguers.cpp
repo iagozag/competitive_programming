@@ -2,9 +2,6 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
-#define max3(a, b, c) max(a, max(b, c))
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define f first
@@ -47,15 +44,41 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void solve(){
-    int n, w; cin >> n >> w;
-    vi v(n), wt(n); rep(i, 0, n) cin >> wt[i] >> v[i];
-    vl memo(w+1);
+vl need(3), a(3), b(3);
 
-    rep(i, 0, n) repr(j, w, wt[i])
-        memo[j] = max(memo[j], memo[j-wt[i]] + v[i]);
-    
-    cout << memo[w] << endl;
+bool check(ll x, ll k){
+    vl tmp = need;
+    for(auto& y: tmp) y *= x;
+
+    for(int i = 0; i < 3; i++) tmp[i] -= a[i];
+    for(int i = 0; i < 3; i++){
+        if(tmp[i] <= 0) continue;
+
+        k -= tmp[i]*b[i]; 
+    }
+
+    return k >= 0;
+}
+
+void solve(){
+    string st; cin >> st;
+    for(auto& x: st){
+        if(x == 'B') need[0]++;
+        else if(x == 'S') need[1]++;
+        else need[2]++;
+    }
+    for(auto& x: a) cin >> x;
+    for(auto& x: b) cin >> x;
+    ll k; cin >> k;
+
+    ll l = 0, r = 1e13, ans;
+    while(l <= r){
+        ll m = l+(r-l)/2;
+        if(check(m, k)) ans = m, l = m+1;
+        else r = m-1;
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _

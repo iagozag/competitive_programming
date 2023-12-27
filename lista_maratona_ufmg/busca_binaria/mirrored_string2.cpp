@@ -46,7 +46,7 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 string st; int n;
 // {A, H, I, M, O, T, U, V, W, X, Y}
-set<char> let = {'A', 'H', 'I', 'M', 'O', 'T', 'U', 'V', 'W', 'X', 'Y'};
+unordered_set<char> let = {'A', 'H', 'I', 'M', 'O', 'T', 'U', 'V', 'W', 'X', 'Y'};
 
 bool is_pal(string str){
     for(int i = 0, j = str.size()-1; i <= j; i++, j--)
@@ -58,7 +58,6 @@ bool is_pal(string str){
 bool check(int x){
     int l = 0;
     while(l+x-1 < n){
-        dbgc(st.substr(l, x));
         if(is_pal(st.substr(l, x))) return true;
         l++;
     }
@@ -66,17 +65,26 @@ bool check(int x){
     return false;
 }
 
-void solve(){
-    cin >> st; n = st.size();
-
-    int l = 0, r = n, ans;
+int bin_search(vi& v){
+    int l = 0, r = v.size()-1, ans;
     while(l <= r){
         int m = l+(r-l)/2;
-        if(check(m)) ans = m, l = m+1;
+        if(check(v[m])) ans = v[m], l = m+1;
         else r = m-1;
     }
 
-    cout << ans << endl;
+    return ans;
+}
+
+void solve(){
+    cin >> st; n = st.size();
+    vi odd, even;
+    for(int i = 0; i <= n; i++){
+        if(i&1) odd.pb(i);
+        else even.pb(i);
+    }
+
+    cout << max(bin_search(odd), bin_search(even)) << endl;
 }
 
 int main(){ _

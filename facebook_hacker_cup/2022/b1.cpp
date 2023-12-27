@@ -4,7 +4,6 @@ using namespace std;
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define rep(i,x,n) for(int i=x;i<n;i++)
 #define repr(i,n,x) for(int i=n;i>=x;i--)
-#define max3(a, b, c) max(a, max(b, c))
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define f first
@@ -47,23 +46,41 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void solve(){
-    int n, w; cin >> n >> w;
-    vi v(n), wt(n); rep(i, 0, n) cin >> wt[i] >> v[i];
-    vl memo(w+1);
 
-    rep(i, 0, n) repr(j, w, wt[i])
-        memo[j] = max(memo[j], memo[j-wt[i]] + v[i]);
-    
-    cout << memo[w] << endl;
+void solve(){
+    int r, c; cin >> r >> c;
+    vector<string> v(r);
+    rep(i, 0, r) cin >> v[i];
+
+    bool has_t = false;
+    rep(i, 0, r) rep(j, 0, c)
+        has_t = has_t || v[i][j] == '^';
+
+    if((r == 1 || c == 1) && has_t){
+        if(has_t) cout << "Impossible\n";
+        else{
+            cout << "Possible\n";
+            rep(i, 0, r) cout << v[i] << endl;
+        }
+
+        return;
+    }
+
+    cout << "Possible\n";
+    rep(i, 0, r){
+        rep(j, 0, c) cout << '^';
+        cout << endl;
+    }
 }
 
 int main(){ _
-    int t = 1;
-    while(t--){
+    int t; cin >> t;
+    rep(i, 1, t+1){
+        cout << "Case #" << i << ": ";
         solve();
     }
 
     exit(0);
 }
+
 

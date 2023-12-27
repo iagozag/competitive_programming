@@ -2,9 +2,6 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
-#define max3(a, b, c) max(a, max(b, c))
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define f first
@@ -47,15 +44,33 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void solve(){
-    int n, w; cin >> n >> w;
-    vi v(n), wt(n); rep(i, 0, n) cin >> wt[i] >> v[i];
-    vl memo(w+1);
+int n, c, t;
+vl v;
 
-    rep(i, 0, n) repr(j, w, wt[i])
-        memo[j] = max(memo[j], memo[j-wt[i]] + v[i]);
-    
-    cout << memo[w] << endl;
+bool check(ll x){
+    ll cc = 1, pops = t*x;
+    for(int i = 0; i < n; i++){
+        if(pops >= v[i]){ pops -= v[i]; continue; }
+
+        cc++, pops = t*x, i--;
+        if(cc > c) return false;
+    }
+
+    return true;
+}
+
+void solve(){
+    cin >> n >> c >> t; ll ma = -1;
+    v = vl(n); for(auto& x: v){ cin >> x; ma = max(ma, x); }
+
+    ll l = (ma+t-1)/t, r = 1e9+10, ans;
+    while(l <= r){
+        ll m = l+(r-l)/2;
+        if(check(m)) ans = m, r = m-1;
+        else l = m+1;
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _

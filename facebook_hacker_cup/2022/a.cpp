@@ -47,20 +47,25 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void solve(){
-    int n, w; cin >> n >> w;
-    vi v(n), wt(n); rep(i, 0, n) cin >> wt[i] >> v[i];
-    vl memo(w+1);
 
-    rep(i, 0, n) repr(j, w, wt[i])
-        memo[j] = max(memo[j], memo[j-wt[i]] + v[i]);
-    
-    cout << memo[w] << endl;
+void solve(){
+    int n, k; cin >> n >> k;
+    map<int, int> mp; rep(i, 0, n){ int a; cin >> a; mp[a]++; } 
+
+    for(auto& x: mp) if(x.s > 2){ cout << "NO\n"; return; }
+
+    ll sum = 0;
+    for(auto& x: mp)
+        sum += x.s;
+
+    if((sum+1)/2 > k) cout << "NO\n";
+    else cout << "YES\n";
 }
 
 int main(){ _
-    int t = 1;
-    while(t--){
+    int t; cin >> t;
+    rep(i, 1, t+1){
+        cout << "Case #" << i << ": ";
         solve();
     }
 
