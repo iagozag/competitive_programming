@@ -48,10 +48,28 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 void solve(){
+    int n; scanf("%d", &n); 
+    vector<ii> a(n); vi maxx(n);
+    rep(i, 0, n){ scanf("%d%d", &a[i].ff, &a[i].ss); maxx[i] = a[i].ss; }
+    sort(all(a)), sort(all(maxx));
 
+    ll ans = 0, len = n-1;
+    rep(i, 0, n-1){
+        int l = 0, r = len, idx;
+        while(l <= r){
+            int m = l+(r-l)/2;
+            if(maxx[m] <= a[i].ss) idx = m, l = m+1;
+            else r = m-1;
+        }
+
+        ans += idx, len--;
+        maxx.erase(maxx.begin()+idx);
+    }
+
+    cout << ans << endl;
 }
 
-int main(){ _
+int main(){
     int t; cin >> t;
     while(t--){
         solve();
@@ -59,4 +77,3 @@ int main(){ _
 
     exit(0);
 }
-

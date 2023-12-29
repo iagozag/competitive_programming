@@ -7,8 +7,8 @@ using namespace std;
 #define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define ff first
-#define ss second
+#define f first
+#define s second
 #define pb push_back
 
 typedef long long ll;
@@ -48,7 +48,17 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 void solve(){
+    int n; cin >> n;
+    ll sum = 0; rep(i, 0, n){ int x; cin >> x; sum += x; }
 
+    ll l = 0, r = 1e9+10, ans;
+    while(l <= r){
+        ll m = l+(r-l)/2;
+        if(m*m <= sum) ans = m, l = m+1;
+        else r = m-1;
+    }
+
+    cout << (ans*ans == sum ? "YES" : "NO") << endl;
 }
 
 int main(){ _

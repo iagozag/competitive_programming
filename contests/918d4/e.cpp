@@ -2,13 +2,13 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define rep(i,x,n) for(int i=x;i<n;++i)
+#define repr(i,n,x) for(int i=n;i>=x;--i)
 #define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define ff first
-#define ss second
+#define f first
+#define s second
 #define pb push_back
 
 typedef long long ll;
@@ -48,7 +48,16 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 void solve(){
+    int n; cin >> n;
+    vi v(n); forr(v) cin >> x;
 
+    rep(i, 0, n) if(!(i&1)) v[i] *= -1; 
+
+    vl pref_sum(n); pref_sum[0] = v[0];
+    rep(i, 1, n) pref_sum[i] = pref_sum[i-1]+v[i];
+
+    set<ll> st(all(pref_sum)); 
+    cout << (!st.count(0) && st.size() == n ? "NO" : "YES") << endl;
 }
 
 int main(){ _

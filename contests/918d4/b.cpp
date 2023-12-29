@@ -7,8 +7,8 @@ using namespace std;
 #define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define ff first
-#define ss second
+#define f first
+#define s second
 #define pb push_back
 
 typedef long long ll;
@@ -48,7 +48,18 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 void solve(){
+    char arr[3][3]; ii idx;
+    rep(i, 0, 3) rep(j, 0, 3){
+        cin >> arr[i][j];
+        if(arr[i][j] == '?') idx = {i, j};
+    }
 
+    map<char, int> mp;
+    mp['A'] = 0, mp['B'] = 0, mp['C'] = 0;
+
+    for(int j = 0; j < 3; j++) mp[arr[idx.f][j]]++;
+
+    forr(mp) if(x.s == 0) cout << x.f << endl;
 }
 
 int main(){ _

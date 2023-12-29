@@ -4,11 +4,10 @@ using namespace std;
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define rep(i,x,n) for(int i=x;i<n;i++)
 #define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define ff first
-#define ss second
+#define f first
+#define s second
 #define pb push_back
 
 typedef long long ll;
@@ -48,7 +47,16 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 void solve(){
+    ll n; cin >> n;
+   
+    ll l = 0, r = 1e9+10, ans;
+    while(l <= r){
+        ll m = l+(r-l)/2;
+        if(m*m >= n) r = m-1;
+        else ans = m, l = m+1;
+    }
 
+    cout << ans << endl;
 }
 
 int main(){ _
