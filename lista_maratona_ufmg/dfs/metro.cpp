@@ -47,17 +47,55 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+int MAX = 2*1e4+10, ans = -1, vert;
+vector<vi> g(MAX);
+vi dist(MAX, -1); 
+
+void visit_center(int x){
+    dist[x] = -2;
+
+    for(auto& ve: g[x]) if(dist[ve] == -1){
+        if(g[ve].size() >= 3){ vert = ve; continue; }
+        visit_center(ve);
+    }
+}
+
+void dfs(int x, int prev){
+    for(auto& ve: g[x]){
+        if(dist[ve] == -1){
+            dist[ve] = dist[x]+1;
+            dfs(ve, x);
+        } else if(dist[ve] == 0 and ve != prev){
+            ans = dist[x]+1; 
+            return;
+        }
+    }
+}
 
 void solve(){
+    int n, m; cin >> n >> m;
+    for(int i = 0; i < m; ++i){
+        int a, b; cin >> a >> b; a--, b--;
 
+        g[a].pb(b);
+        g[b].pb(a);
+    }
+
+    int center;
+    for(int i = 0; i < n; i++) if(g[i].size() >= 5){ center = i; break; }
+    visit_center(center);
+
+    dist[vert] = 0;
+    dfs(vert, -1);
+
+    cout << ans << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
 
-    exit(0);
+    return(0);
 }

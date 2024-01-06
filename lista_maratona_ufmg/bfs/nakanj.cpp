@@ -47,10 +47,41 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+vector<ii> moves = {{-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {-1, -2}, {1, -2}, {-1, 2}, {1, 2}};
+int grid[8][8];
+int dist[8][8];
+
+bool val(int i, int j){
+    return i >= 0 and i < 8 and j >= 0 and j < 8 and dist[i][j] == -1;
+}
+
+int bfs(ii s){
+    dist[s.ff][s.ss] = 0;
+
+    queue<ii> q; q.push(s);
+    while(!q.empty()){
+        ii v = q.front(); q.pop();
+        for(auto [x, y]: moves){
+            x += v.ff, y += v.ss;
+            if(!val(x, y)) continue;
+
+            if(grid[x][y] == 1) return dist[v.ff][v.ss]+1;
+
+            dist[x][y] = dist[v.ff][v.ss]+1;
+            q.push({x, y});
+        }
+    }
+
+    return 0;
+}
 
 void solve(){
+    char s1, s2, f1, f2; cin >> s1 >> s2 >> f1 >> f2;
+    memset(grid, 0, sizeof grid);
+    memset(dist, -1, sizeof dist);
+    grid[f1-'a'][(f2-'0')-1] = 1;
 
+    cout << bfs({s1-'a', (s2-'0')-1}) << endl;
 }
 
 int main(){ _
@@ -61,3 +92,4 @@ int main(){ _
 
     exit(0);
 }
+

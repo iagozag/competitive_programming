@@ -47,14 +47,49 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+const int MAX = 210;
+
+vector<vi> g(MAX);
+
+bool dfs(int a, int b){
+    if(a == b) return true;
+
+    bool ans = false;
+    for(auto& ve: g[a])
+        ans |= dfs(ve, b);
+
+    return ans;
+}
 
 void solve(){
+    int n, m, k = 0; cin >> n >> m;
+    map<string, int> mp;
+    vector<string> stat(2);
+    
+    rep(i, 0, n){
+        cin >> stat[0];
+        rep(j, 0, 4) cin >> stat[1];
+        if(!mp.count(stat[0])) mp[stat[0]] = k, k++;
+        if(!mp.count(stat[1])) mp[stat[1]] = k, k++;
 
+        g[mp[stat[0]]].pb(mp[stat[1]]);
+    }
+
+    rep(i, 0, m){
+        cin >> stat[0];
+        rep(j, 0, 4) cin >> stat[1];
+
+        if(!mp.count(stat[0]) || !mp.count(stat[1])){ cout << "Pants on Fire" << endl; continue; }
+
+        if(dfs(mp[stat[0]], mp[stat[1]])) cout << "Fact";
+        else if(dfs(mp[stat[1]], mp[stat[0]])) cout << "Alternative Fact";
+        else cout << "Pants on Fire";
+        cout << endl;
+    }
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

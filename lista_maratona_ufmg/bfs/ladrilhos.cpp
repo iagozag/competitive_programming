@@ -47,17 +47,55 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+int n, m; const int MAX = 210;
+vector<ii> moves = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+int grid[MAX][MAX];
+bool vis[MAX][MAX];
+
+bool val(int i, int j, int c){
+    return i >= 0 and i < n and j >= 0 and j < m and !vis[i][j] and grid[i][j] == c;
+}
+
+int bfs(ii s, int c){
+    int qnt = 1;
+    vis[s.ff][s.ss] = 1;
+
+    queue<ii> q; q.push(s);
+    while(!q.empty()){
+        ii v = q.front(); q.pop();
+        for(auto [x, y]: moves){
+            x += v.ff, y += v.ss;
+            if(!val(x, y, c)) continue;
+
+            vis[x][y] = 1, qnt++;
+            q.push({x, y});
+        }
+    } 
+
+    return qnt;
+}
 
 void solve(){
+    cin >> n >> m;
 
+    rep(i, 0, n) rep(j, 0, m){
+        cin >> grid[i][j];
+        if(!grid[i][j]) grid[i][j] = n*m+1;
+    }
+
+    int mi = INF;
+    rep(i, 0, n) rep(j, 0, m)
+        if(!vis[i][j]) mi = min(mi, bfs({i, j}, grid[i][j]));
+
+    cout << mi << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
 
     exit(0);
 }
+

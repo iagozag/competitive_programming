@@ -47,17 +47,59 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+const int MAX = 1e3+10;
+
+int n, m;
+vector<ii> moves = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+vector<vi> grid;
+int dist[MAX][MAX];
+bool vis[MAX][MAX];
+
+bool val(int i, int j){
+    return i >= 0 and i < n and j >= 0 and j < m and !vis[i][j] and grid[i][j] != 0;
+}
+
+int bfs(ii s){
+    vis[s.ff][s.ss] = 1, dist[s.ff][s.ss] = 1;
+
+    queue<ii> q; q.push(s);
+    while(!q.empty()){
+        ii v = q.front(); q.pop();
+        for(auto [x, y]: moves){
+            x += v.ff, y += v.ss;
+            if(!val(x, y)) continue;
+
+            if(grid[x][y] == 3) return dist[v.ff][v.ss]+1;
+
+            dist[x][y] = dist[v.ff][v.ss]+1, vis[x][y] = 1;
+            q.push({x, y});
+        }
+    }
+
+    return 0;
+}
 
 void solve(){
+    cin >> n >> m;
+    grid = vector<vi>(n, vi(m));
+    memset(vis, 0, sizeof vis);
+    memset(dist, -1, sizeof dist);
+    
+    ii source;
+    rep(i, 0, n) rep(j, 0, m){
+        cin >> grid[i][j];
+        if(grid[i][j] == 2) source = {i, j};
+    }
 
+    cout << bfs(source) << endl; 
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
 
     exit(0);
 }
+

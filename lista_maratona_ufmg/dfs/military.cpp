@@ -49,12 +49,41 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-void solve(){
+vector<vi> g(MAX);
+vi child;
+map<int,int> mp;
 
+void dfs(int u, vi& vert){
+    vert.pb(u), mp[u] = vert.size()-1;
+
+    if(g[u].size() == 0) child[u] = 0;
+    
+    for(auto ve: g[u]){
+        dfs(ve, vert);
+        child[u] += child[ve]+1;
+    }
+}
+
+void solve(){
+    int n, q; cin >> n >> q;
+    rep(i, 1, n){
+        int a; cin >> a; a--;
+        g[a].pb(i);
+    }
+
+    vi vert; child = vi(n);
+    dfs(0, vert);
+    dbgc(vert, child);
+
+    rep(i, 0, q){
+        int u, k; cin >> u >> k; u--, k--;
+
+        cout << (k <= child[u] ? vert[mp[u]+k]+1 : -1) <<endl;
+    }
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

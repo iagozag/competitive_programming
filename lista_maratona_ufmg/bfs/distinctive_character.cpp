@@ -50,11 +50,26 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
+    int n, m; cin >> n >> m;
+    char mtx[n][m];
 
+    rep(i, 0, n) rep(j, 0, m) cin >> mtx[i][j];
+
+    rep(i, 0, m){
+        int c0 = 0, c1 = 0;
+        rep(j, 0, n){
+            if(mtx[j][i] == '0') c0++;
+            else c1++;
+        }
+        
+        cout << (c0 > c1 ? 1 : 0);
+    }
+
+    cout << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

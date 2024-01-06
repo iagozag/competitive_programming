@@ -49,12 +49,42 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-void solve(){
+int n, m, a, b;
+vector<vi> g(MAX);
+int dist[MAX];
 
+int bfs(int s){
+    memset(dist, -1, sizeof dist);
+    dist[s] = 1;
+
+    int need = 0;
+    queue<int> q; q.push(s);
+    while(!q.empty()){
+        int v = q.front(); q.pop();
+        for(auto ve: g[v]) if(dist[ve] == -1){
+            if(ve == a || ve == b) need++;
+            if(need == 2) return dist[v]+1;
+
+            dist[ve] = dist[v]+1;
+            q.push(ve);
+        }
+    }
+
+    return 0;
+}
+
+void solve(){
+    cin >> n >> m >> a >> b;
+    rep(i, 0, m){
+        int va, vb; cin >> va >> vb;
+        g[a].pb(b);
+    }
+
+    cout << bfs(0) << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

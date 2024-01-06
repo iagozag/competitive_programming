@@ -47,17 +47,60 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+int MAX = 1e5+10;
+vector<vi> g(MAX);
+vector<bool> vis(MAX);
+vi id(MAX, -1);
+
+void bfs(int x){
+    vis[x] = 1, id[x] = x;
+
+    queue<int> q; q.push(x);
+    while(!q.empty()){
+        int v = q.front(); q.pop();
+
+        for(auto& ve: g[v]) if(!vis[ve]){
+            id[ve] = v, q.push(ve);
+            vis[ve] = 1;
+        }
+    }
+}
+
+vi vi_ans(int x){
+    vi ans = {x};
+    while(id[x] != x){
+        x = id[x];
+        ans.pb(x);
+    }
+    reverse(all(ans));
+
+    return ans;
+}
 
 void solve(){
+    int n, m; cin >> n >> m;
 
+    rep(i, 0, m){
+        int a, b; cin >> a >> b; a--, b--;
+        g[a].pb(b), g[b].pb(a);
+    }
+
+    bfs(0);
+
+    if(id[n-1] == -1){ cout << "IMPOSSIBLE\n"; return; }
+    
+    vi ans = vi_ans(n-1);
+    cout << ans.size() << endl;
+    forr(ans) cout << x+1 << " ";
+    cout << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
 
     exit(0);
 }
+

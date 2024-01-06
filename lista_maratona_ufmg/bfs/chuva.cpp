@@ -47,14 +47,55 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+int n, m;
+vector<ii> moves = {{0, -1}, {0, 1}};
+vector<string> grid;
+
+bool val(int i, int j){
+    return j >= 0 and j < m and grid[i][j] == '.';
+}
+
+void bfs(ii s){
+    queue<ii> q; q.push(s);
+    while(!q.empty()){
+        ii v = q.front(); q.pop();
+        if(v.ff == n-1) continue;
+
+        if(grid[v.ff+1][v.ss] == '.'){
+            grid[v.ff+1][v.ss] = 'o';
+            q.push({v.ff+1, v.ss});
+            continue;
+        }
+
+        if(grid[v.ff+1][v.ss] != '#') continue;
+
+        for(auto [x, y]: moves){
+            x += v.ff, y += v.ss;
+            if(!val(x, y)) continue;
+
+            grid[x][y] = 'o';
+            q.push({x, y});
+        }
+    }
+}
 
 void solve(){
+    cin >> n >> m;
+    grid = vector<string>(n);
+    rep(i, 0, n) cin >> grid[i];
 
+    ii idx;
+    rep(i, 0, m) if(grid[0][i] == 'o'){
+        idx = {0, i}; break; 
+    }
+    
+    bfs(idx);
+
+    forr(grid) cout << x << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

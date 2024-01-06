@@ -47,14 +47,60 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+const int MAX = 1e6+10;
 
-void solve(){
+int n;
+vector<vi> g;
+int st[MAX], par[MAX];
+bool guards[MAX];
 
+int bfs(vi s){
+    queue<int> q; int tot = 0;
+    forr(s){
+        guards[x] = 1, par[x] = x, tot++;
+        if(st[x] > 0) q.push(x);
+    }
+
+    while(!q.empty()){
+        int v = q.front(); q.pop();
+        if(!st[v]) break;
+
+        for(auto ve: g[v]){
+            if(par[ve] == par[v]) continue;
+            
+            if(guards[ve]) return -1;
+
+            guards[ve] = 1, st[ve] = st[v]-1, par[ve] = par[v], tot++;
+            q.push(ve);
+        }
+    }
+
+    return tot;
 }
 
-int main(){ _
-    int t; cin >> t;
+void solve(){
+    int r, m; scanf("%d%d%d", &n, &r, &m); 
+    g = vector<vi>(n);
+    memset(guards, 0, sizeof guards);
+    memset(par, -1, sizeof par);
+    memset(st, -1, sizeof st);
+
+    rep(i, 0, r){
+        int a, b; scanf("%d%d", &a, &b); a--, b--;
+        g[a].pb(b), g[b].pb(a);
+    }
+
+    vi sources;
+    rep(i, 0, m){
+        int a, b; scanf("%d%d", &a, &b); a--;
+        st[a] = b, sources.pb(a);
+    }
+
+    cout << (bfs(sources) == n ? "Yes" : "No") << endl;
+}
+
+int main(){ // _
+    int t; scanf("%d", &t);
     while(t--){
         solve();
     }

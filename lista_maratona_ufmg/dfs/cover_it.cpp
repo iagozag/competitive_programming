@@ -49,7 +49,23 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
+vector<vi> g;
+
 void solve(){
+    int n, m; cin >> n >> m;
+    g = vector<vi>(n);
+
+    rep(i, 0, m){
+        int a, b; cin >> a >> b; a--, b--;
+        g[a].pb(b), g[b].pb(a);
+    }
+
+    sort(all(g), 
+    [](const vi& a, const vi& b){
+        return a.size() > b.size();
+    });
+
+    int visited = 0;
 
 }
 
@@ -61,3 +77,4 @@ int main(){ _
 
     exit(0);
 }
+
