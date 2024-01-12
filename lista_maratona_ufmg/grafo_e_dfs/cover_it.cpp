@@ -50,31 +50,40 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi v(n*2); rep(i, 0, n){ int a; cin >> a; v[i] = v[n+i] = a; };
+    int n, m; scanf("%d%d", &n, &m);
+    vector<vi> g(n); vi dist(n, -1);
 
-    ll sum = 0, ma = 0; int cnt = 0;
-    rep(i, 0, n*2){
-        sum += v[i], cnt++;
-
-        ma = max(ma, sum);
-
-        if(cnt == n) --cnt, sum -= v[i-cnt];
-
-        ma = max(ma, sum);
-
-        if(sum <= 0)
-            sum = 0, cnt = 0;
+    rep(i, 0, m){
+        int a, b; scanf("%d%d", &a, &b); a--, b--;
+        g[a].pb(b), g[b].pb(a);
     }
 
-    cout << ma << endl;
+    int odd[n], even[n], k = 0, j = 0;
+    dist[0] = 0;
+
+    queue<int> q; q.push(0);
+    while(!q.empty()){
+        int v = q.front(); q.pop();
+
+        if(dist[v]&1) odd[k] = v+1, k++;
+        else even[j] = v+1, j++;
+
+        for(auto& ve: g[v]) if(dist[ve] == -1){
+            dist[ve] = dist[v]+1;
+            q.push(ve);
+        }
+    }
+
+    if(k <= j){ printf("%d\n", k); rep(i, 0, k) printf("%d ", odd[i]); printf("\n"); }
+    else { printf("%d\n", j); rep(i, 0, j) printf("%d ", even[i]); printf("\n"); }
 }
 
 int main(){ _
-    int t = 1;
+    int t; scanf("%d", &t);
     while(t--){
         solve();
     }
 
     exit(0);
 }
+

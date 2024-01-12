@@ -51,22 +51,15 @@ const int MAX = 2e5+10;
 
 void solve(){
     int n; cin >> n;
-    vi v(n*2); rep(i, 0, n){ int a; cin >> a; v[i] = v[n+i] = a; };
+    vi v(n); rep(i, 0, n) cin >> v[i];
 
-    ll sum = 0, ma = 0; int cnt = 0;
-    rep(i, 0, n*2){
-        sum += v[i], cnt++;
+    vi v_l(n), v_r(n);
+    v_l[0] = 1, v_r[n-1] = 1;
+    rep(i, 1, n) v_l[i] = min(v_l[i-1]+1, v[i]);
+    repr(i, n-2, 0) v_r[i] = min(v_r[i+1]+1, v[i]);
 
-        ma = max(ma, sum);
-
-        if(cnt == n) --cnt, sum -= v[i-cnt];
-
-        ma = max(ma, sum);
-
-        if(sum <= 0)
-            sum = 0, cnt = 0;
-    }
-
+    int ma = 1;
+    rep(i, 0, n) ma = max(ma, min(v_l[i], v_r[i]));
     cout << ma << endl;
 }
 

@@ -45,14 +45,23 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 const int MAX = 1e5+10;
-vector<vi> v(MAX);
+vector<vi> g(MAX);
 vi dist;
 
-void dfs(int x){
-    for(auto& ve: v[x]) if(dist[ve] == -1){
-        dist[ve] = dist[x]+1;
-        dfs(ve);
+int bfs(int x){
+    int ma = 0; dist[x] = 0;
+
+    queue<int> q; q.push(x);
+    while(!q.empty()){
+        int v = q.front(); q.pop();
+        
+        for(auto ve: g[v]) if(dist[ve] == -1){
+            ma = dist[ve] = dist[v]+1;
+            q.push(ve);
+        }
     }
+
+    return ma;
 }
 
 void solve(){
@@ -60,20 +69,19 @@ void solve(){
     dist = vi(n, -1);
     for(int i = 0; i < m; i++){
         int a, b; cin >> a >> b; a--, b--;
-        v[a].pb(b), v[b].pb(a);
+        g[a].pb(b), g[b].pb(a);
     }
 
-    int cnt = 0;
-    for(int i = 0; i < n; i++) if(v[i].size() == 1 && dist[i] == -1){
-        dist[i] = 0, cnt++;
-        if(cnt > 1){ cout << "N" << endl; return; }
+    bfs(0);
+    if(find(all(dist), -1) != dist.end()) { cout << 'N' << endl; return; }
 
-        dfs(i);
-        break;
-    }
+    int idx = 0;
+    for(int i = 1; i < n; i++) if(dist[idx] < dist[i]) idx = i;
 
-    int maxi = *max_element(all(dist));
-    cout << (maxi <= 6 ? "S" : "N") << endl;
+    fill(all(dist), -1);
+    bfs(idx);
+
+    cout << (*max_element(all(dist)) > 6 ? 'N' : 'S') << endl;
 }
 
 int main(){ _
