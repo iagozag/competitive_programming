@@ -50,35 +50,43 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n, m, d; cin >> n >> m >> d;
-    vi v(m); forr(v) cin >> x;
+    int n, m; cin >> n >> m;
+    vi a(n), b(m);
+    forr(a) cin >> x;
+    forr(b) cin >> x;
 
-    vi ans(n); int i, j, cnt = 0;
-    for(i = 0, j = 0; j < m; i++){
-        ans[i] = j+1, cnt++;
+    sort(all(a)), sort(all(b));
 
-        if(cnt == v[j]) j++, cnt = 0;
-    }
+    int la = 0, ra = n-1, lb = 0, rb = m-1; ll ans = 0;
+    rep(i, 0, n){
+        int l = abs(b[lb]-a[la]),
+            r = abs(b[rb]-a[la]),
+            l1 = abs(b[lb]-a[ra]),
+            r1 = abs(b[rb]-a[ra]);
+        vi v = {l, r, l1, r1};
 
-    int k = n-d; j = 0, i--;
-    for(; k >= 0 and j < m; k -= d-1){
-        if(ans[k] != 0) break;
-
-        for(int l = 0; l < v[j]; l++){
-            swap(ans[i], ans[k]), i--, k--;
+        int ma = max_element(all(v))-v.begin();
+        switch(ma){
+            case 0:
+                lb++, la++, ans += l;
+                break;
+            case 1:
+                rb--, la++, ans += r;
+                break;
+            case 2:
+                lb++, ra--, ans += l1;
+                break;
+            case 3:
+                rb--, ra--, ans += r1;
+                break;
         }
-        j++;
     }
 
-    forr(ans){
-        if(d == -1){ cout << "NO\n"; return; }
-        if(x != 0){ cout << "YES\n"; forr(ans) cout << x << " "; cout << endl; return; }
-        d--;
-    }
+    cout << ans << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }

@@ -2,13 +2,10 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define ff first
-#define ss second
+#define f first
+#define s second
 #define pb push_back
 
 typedef long long ll;
@@ -47,34 +44,39 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+const int MAX = 1e5+10;
+vector<vi> v(MAX);
+int dist[MAX];
+
+int bfs(int s){
+    dist[s] = 0;
+
+    int x;
+    queue<int> q; q.push(s);
+    while(!q.empty()){
+        x = q.front(); q.pop();
+        for(auto ve: v[x]) if(dist[ve] == -1){
+            dist[ve] = dist[x]+1;
+            q.push(ve);
+        }
+    }
+
+    return dist[x];
+}
 
 void solve(){
-    int n, m, d; cin >> n >> m >> d;
-    vi v(m); forr(v) cin >> x;
-
-    vi ans(n); int i, j, cnt = 0;
-    for(i = 0, j = 0; j < m; i++){
-        ans[i] = j+1, cnt++;
-
-        if(cnt == v[j]) j++, cnt = 0;
+    int n, m; cin >> n >> m;
+    for(int i = 0; i < m; i++){
+        int a, b; cin >> a >> b; a--, b--;
+        v[a].pb(b), v[b].pb(a);
     }
+    memset(dist, -1, sizeof dist);
 
-    int k = n-d; j = 0, i--;
-    for(; k >= 0 and j < m; k -= d-1){
-        if(ans[k] != 0) break;
+    int ma = -1;
+    for(int i = 0; i < n; i++) if(dist[i] == -1)
+        ma = max(ma, bfs(i));
 
-        for(int l = 0; l < v[j]; l++){
-            swap(ans[i], ans[k]), i--, k--;
-        }
-        j++;
-    }
-
-    forr(ans){
-        if(d == -1){ cout << "NO\n"; return; }
-        if(x != 0){ cout << "YES\n"; forr(ans) cout << x << " "; cout << endl; return; }
-        d--;
-    }
+    cout << (ma > 6 ? 'N' : 'S') << endl;
 }
 
 int main(){ _

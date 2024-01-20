@@ -50,31 +50,25 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n, m, d; cin >> n >> m >> d;
-    vi v(m); forr(v) cin >> x;
+    string a, b; cin >> a >> b;
+    
+    if(b.size() > a.size()){ cout << 0 << endl; return; }
 
-    vi ans(n); int i, j, cnt = 0;
-    for(i = 0, j = 0; j < m; i++){
-        ans[i] = j+1, cnt++;
-
-        if(cnt == v[j]) j++, cnt = 0;
+    int j = 0; vi pi(b.size());
+    rep(i, 1, b.size()){
+        while(j and b[i] != b[j]) j = pi[j-1];
+        if(b[i] == b[j]) j++;
+        pi[i] = j;
     }
 
-    int k = n-d; j = 0, i--;
-    for(; k >= 0 and j < m; k -= d-1){
-        if(ans[k] != 0) break;
-
-        for(int l = 0; l < v[j]; l++){
-            swap(ans[i], ans[k]), i--, k--;
-        }
-        j++;
+    int ans = 0; j = 0;
+    rep(i, 0, a.size()){
+        while(j and b[j] != a[i]) j = pi[j-1];
+        if(a[i] == b[j]) j++;
+        if(j == b.size()) ans++, j = pi[j-1];
     }
 
-    forr(ans){
-        if(d == -1){ cout << "NO\n"; return; }
-        if(x != 0){ cout << "YES\n"; forr(ans) cout << x << " "; cout << endl; return; }
-        d--;
-    }
+    cout << ans << endl; 
 }
 
 int main(){ _

@@ -50,35 +50,31 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n, m, d; cin >> n >> m >> d;
-    vi v(m); forr(v) cin >> x;
+    int n; cin >> n;
+    vi v(n); forr(v) cin >> x;
 
-    vi ans(n); int i, j, cnt = 0;
-    for(i = 0, j = 0; j < m; i++){
-        ans[i] = j+1, cnt++;
-
-        if(cnt == v[j]) j++, cnt = 0;
+    vi dist(n), distr(n); 
+    dist[0] = 0, dist[1] = 1;
+    rep(i, 1, n-1){
+        dist[i+1] = dist[i] + (v[i]-v[i-1] > v[i+1]-v[i] ? 1 : v[i+1]-v[i]);
     }
 
-    int k = n-d; j = 0, i--;
-    for(; k >= 0 and j < m; k -= d-1){
-        if(ans[k] != 0) break;
-
-        for(int l = 0; l < v[j]; l++){
-            swap(ans[i], ans[k]), i--, k--;
-        }
-        j++;
+    distr[n-1] = 0, distr[n-2] = 1;
+    repr(i, n-2, 1){
+        distr[i-1] = distr[i] + (v[i+1]-v[i] > v[i]-v[i-1] ? 1 : v[i]-v[i-1]); 
     }
 
-    forr(ans){
-        if(d == -1){ cout << "NO\n"; return; }
-        if(x != 0){ cout << "YES\n"; forr(ans) cout << x << " "; cout << endl; return; }
-        d--;
+    // dbgc(dist), dbgc(distr);
+
+    int m; cin >> m;
+    rep(i, 0, m){
+        int a, b; cin >> a >> b; a--, b--;
+        cout << (a < b ? dist[b]-dist[a] : distr[b]-distr[a]) << endl;
     }
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
