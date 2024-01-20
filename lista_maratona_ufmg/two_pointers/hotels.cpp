@@ -45,21 +45,17 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 void solve(){
-    int n; ll m; cin >> n >> m;
+    ll n, k; cin  >> n >> k;
     vi v(n); for(auto& x: v) cin >> x;
 
-    ll sum = v[0], ma = 0, j = 0;
-    for(int i = 1; i < n; i++){
-        if(sum <= m) ma = max(sum, ma);
+    int i = 0, j = 0; ll sum = 0, ma = 0;
+    while(i < n && j < n){
+        while(j < n && sum + v[j] <= k) sum += v[j], j++;
+        ma = max(ma, sum);
 
-        while(j < i && sum + v[i] > m) 
-            sum -= v[j], j++;
-
-        sum = max(sum, 0LL);
-        sum += v[i];
+        while(sum + v[j] > k){ sum -= v[i], i++; }
+        if(i > j) j = i;
     }
-
-    if(sum <= m) ma = max(ma, sum);
 
     cout << ma << endl;
 }

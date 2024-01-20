@@ -1,36 +1,80 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
+#define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define f first
-#define s second
+#define ff first
+#define ss second
 #define pb push_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
+typedef vector<int> vi;
+typedef vector<ll> vl;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
+void DBG() {
+    cerr << "]" << endl;
+}
+
+void DBGC() {
+    cerr << "]" << endl;
+}
+
+template<class H, class... T> void DBG(H h, T... t) {
+    cerr << to_string(h);
+    if(sizeof...(t)) cerr << ", ";
+    DBG(t...);
+}
+
+template<class H, class... T> void DBGC(H h, T... t) {
+    for(auto& x: h) cerr << x << " ";
+    if(sizeof...(t)) cerr << "], [ ";
+    DBGC(t...);
+}
+
+#ifndef _DEBUG
+#define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
+#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
+#else
+#define dbg(...) 0
+#define dbgc(...) 0
+#endif
+
+const int MAX = 2e5+10;
+
+void solve(){
+    int n; cin >> n;
+    vi v(n*2); rep(i, 0, n){ int a; cin >> a; v[i] = v[n+i] = a; };
+
+    ll sum = 0, ma = 0; int cnt = 0;
+    rep(i, 0, n*2){
+        sum += v[i], cnt++;
+
+        ma = max(ma, sum);
+
+        if(cnt == n) --cnt, sum -= v[i-cnt];
+
+        ma = max(ma, sum);
+
+        if(sum <= 0)
+            sum = 0, cnt = 0;
+    }
+
+    cout << ma << endl;
+}
+
 int main(){ _
-    int n, prev_sum, sum = 0, pieces = 0; cin >> n;
-    vector<int> diff;
-    for(int i = 0; i < n; i++){
-        int number; cin >> number;
-        diff.pb(number);
+    int t = 1;
+    while(t--){
+        solve();
     }
 
-    for(int i = 0; i < n; i++)
-        diff.pb(diff.at(i));
-
-    for(int i = 0; i < n+i; i++){
-
-
-        if(n+1 >= diff.size()) break;
-    }
-
-    (prev_sum > 0) ? cout << prev_sum << '\n' : cout << 0 << '\n';
-    
     exit(0);
 }

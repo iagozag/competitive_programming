@@ -1,61 +1,87 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
+#define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define f first
-#define s second
+#define ff first
+#define ss second
 #define pb push_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
+typedef vector<int> vi;
+typedef vector<ll> vl;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-int main(){ _
+void DBG() {
+    cerr << "]" << endl;
+}
+
+void DBGC() {
+    cerr << "]" << endl;
+}
+
+template<class H, class... T> void DBG(H h, T... t) {
+    cerr << to_string(h);
+    if(sizeof...(t)) cerr << ", ";
+    DBG(t...);
+}
+
+template<class H, class... T> void DBGC(H h, T... t) {
+    for(auto& x: h) cerr << x << " ";
+    if(sizeof...(t)) cerr << "], [ ";
+    DBGC(t...);
+}
+
+#ifndef _DEBUG
+#define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
+#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
+#else
+#define dbg(...) 0
+#define dbgc(...) 0
+#endif
+
+const int MAX = 2e5+10;
+
+void solve(){
     int n, m, d; cin >> n >> m >> d;
+    vi v(m); forr(v) cin >> x;
 
-    vector<int> c;
-    for(int i = 0; i < m; i++){
-        int a; cin >> a; c.pb(a-1);
+    vi ans(n); int i, j, cnt = 0;
+    for(i = 0, j = 0; j < m; i++){
+        ans[i] = j+1, cnt++;
+
+        if(cnt == v[j]) j++, cnt = 0;
     }
 
-    vector<int> ans(n);
-    int position = -1, plat = 0, w = 0;
-    while(m--){
-        plat++;
+    int k = n-d; j = 0, i--;
+    for(; k >= 0 and j < m; k -= d-1){
+        if(ans[k] != 0) break;
 
-        if(position+d >= n){
-            for(int i = 1; i <= m; i++){
-                ans[n-i] = plat;
-                plat++;
-            }
-            position++;
-            break;
+        for(int l = 0; l < v[j]; l++){
+            swap(ans[i], ans[k]), i--, k--;
         }
-
-        position += d;
-        if(position >= n){
-            ans[n-1] = plat;
-            position++;
-            break;
-        }
-
-        ans[position] = plat;
-        while(c[w]--){
-            position++;
-            ans[position] = plat;
-        }
-
-        w++;
+        j++;
     }
-    
-    position += d;
-    (position >= n) ? cout << "YES\n" : cout << "NO\n";
 
-    for(auto e: ans) cout << e << " ";
-    cout << endl;
+    forr(ans){
+        if(d == -1){ cout << "NO\n"; return; }
+        if(x != 0){ cout << "YES\n"; forr(ans) cout << x << " "; cout << endl; return; }
+        d--;
+    }
+}
+
+int main(){ _
+    int t = 1;
+    while(t--){
+        solve();
+    }
 
     exit(0);
 }

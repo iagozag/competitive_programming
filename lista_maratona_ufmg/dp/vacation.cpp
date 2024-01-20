@@ -2,6 +2,8 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x) for(int i=0;i<x;i++)
+#define repn(i,x) for(int i=1;i<=x;i++)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define f first
@@ -44,29 +46,24 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-int n;
-vi a, b, c;
-ll memo[3][100010];
-
-ll dp(int d, int act){
-    if(d == n) return 0;
-
-    ll& p = memo[act][d];
-    if(p != -1) return p;
-
-    if(act == 0) return p = max(dp(d+1, 1)+b[d], dp(d+1, 2)+c[d]);
-    else if(act == 1) return p = max(dp(d+1, 0)+a[d], dp(d+1, 2)+c[d]);
-    return p = max(dp(d+1, 0)+a[d], dp(d+1, 1)+b[d]);
-}
-
 void solve(){
-    cin >> n;
-    a = b = c = vi(n);
-    for(int i = 0; i < n; i++) cin >> a[i] >> b[i] >> c[i];
+    int n; cin >> n;
+    ll memo[n][3]; vector<vi> a(n, vi(3));
+    rep(i, n) for(int j = 0; j < 3; j++) cin >> a[i][j];
 
-    memset(memo, -1, sizeof memo);
+    memset(memo, 0, sizeof memo);
+    rep(i, 3) memo[0][i] = a[0][i];
 
-    cout << max(dp(0, 0), max(dp(0, 1), dp(0, 2))) << endl;
+    for(int i = 1; i < n; i++) rep(j, 3)
+        rep(k, 3){
+            if(k == j) continue;
+
+            memo[i][j] = max(memo[i][j], memo[i-1][k]+a[i][j]);
+        }
+
+    ll ans = 0;
+    rep(i, 3) ans = max(ans, memo[n-1][i]);
+    cout << ans << endl;
 }
 
 int main(){ _
