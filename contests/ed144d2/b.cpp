@@ -50,12 +50,27 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int a, b; cin >> a >> b;
-    cout << a-b << endl;
+    string a, b; cin >> a >> b;
+    if(a[0] == b[0]) cout << "YES\n" << a[0] << "*" << endl;
+    else if(a[a.size()-1] == b[b.size()-1]) cout << "YES\n" << "*" << a[a.size()-1] << endl;
+    else{
+        unordered_set<string> st;
+        rep(i, 0, a.size()-1){
+            string s = ""; s += a[i], s+= a[i+1];
+            st.insert(s);
+        }
+
+        rep(i, 0, b.size()-1){
+            string s = ""; s += b[i], s+= b[i+1];
+            if(st.count(s)){ cout << "YES\n" << "*" << s << "*" << endl; return; }
+        }
+
+        cout << "NO\n";
+    }
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
