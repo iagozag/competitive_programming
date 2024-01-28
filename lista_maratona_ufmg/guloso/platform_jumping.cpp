@@ -62,11 +62,8 @@ void solve(){
 
     int k = n-d; j = 0, i--;
     for(; k >= 0 and j < m; k -= d-1){
-        if(ans[k] != 0) break;
-
-        for(int l = 0; l < v[j]; l++){
+        for(int l = 0; l < v[j]; l++)
             swap(ans[i], ans[k]), i--, k--;
-        }
         j++;
     }
 

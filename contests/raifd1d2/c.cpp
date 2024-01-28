@@ -50,38 +50,22 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi v(n); forr(v) cin >> x;
+    string st; cin >> st; int n = st.size();
+    vi prefa(n), prefb(n);
+    if(st[0] == 'A') prefa[0] = 1;
+    else prefb[0] = 1;
 
-    vector<vi> pref(n+1, vi(30)); 
-    rep(i, 0, n)
-        rep(j, 0, 30){
-            if(v[i] & (1<<j)) pref[i+1][j] = pref[i][j]+1;
-            else pref[i+1][j] = pref[i][j];
-        }
+    rep(i, 1, n){
+        if(st[i] == 'A') prefa[i] = prefa[i-1]+1, prefb[i] = prefb[i-1];
+        else prefa[i] = prefa[i-1], prefb[i] = prefb[i-1]+1;
+    } 
 
-    // rep(i, 0, n){ rep(j, 0, 30) cout << pref[i][j] << " "; cout << endl; }
+    int lb = lower_bound(all(prefb), prefb[n-1]) - prefb.begin(), ans = n;
+    if(prefa[lb] > prefb[lb]) ans -= prefb[lb]*2;
+    else prefb[lb] -= prefa[lb], ans -= prefa[lb]*2+(prefb[lb]/2)*2;
 
-    int m; cin >> m;
-    rep(i, 0, m){
-        int l, k; cin >> l >> k; l--;
-        if(v[l] < k){ cout << -1 << " "; continue; }
+    cout << ans << endl;
 
-        int ll = l, r = n, ans;
-        while(ll <= r){
-            int m = ll+(r-ll)/2, sum = 0;
-            rep(j, 0, 30){
-                if(pref[m][j]-pref[l][j] == m-l) sum += (1<<j);
-            }
-
-            if(sum >= k) ans = m, ll = m+1;
-            else r = m-1;
-        }
-
-        cout << ans << " ";
-    }
-
-    cout << endl;
 }
 
 int main(){ _

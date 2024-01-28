@@ -51,44 +51,32 @@ const int MAX = 2e5+10;
 
 void solve(){
     int n; cin >> n;
-    vi v(n); forr(v) cin >> x;
+    vector<int[3]> sums(n); vl v(n);
 
-    vector<vi> pref(n+1, vi(30)); 
-    rep(i, 0, n)
-        rep(j, 0, 30){
-            if(v[i] & (1<<j)) pref[i+1][j] = pref[i][j]+1;
-            else pref[i+1][j] = pref[i][j];
-        }
-
-    // rep(i, 0, n){ rep(j, 0, 30) cout << pref[i][j] << " "; cout << endl; }
-
-    int m; cin >> m;
-    rep(i, 0, m){
-        int l, k; cin >> l >> k; l--;
-        if(v[l] < k){ cout << -1 << " "; continue; }
-
-        int ll = l, r = n, ans;
-        while(ll <= r){
-            int m = ll+(r-ll)/2, sum = 0;
-            rep(j, 0, 30){
-                if(pref[m][j]-pref[l][j] == m-l) sum += (1<<j);
-            }
-
-            if(sum >= k) ans = m, ll = m+1;
-            else r = m-1;
-        }
-
-        cout << ans << " ";
+    rep(i, 0, n){
+        int a, b, c; cin >> sums[i][0] >> sums[i][1] >> sums[i][2];
+        sort(sums[i], sums[i]+3);
+        v[i] = sums[i][0]+sums[i][1]+2;
     }
+
+    sort(all(v));
+
+    rep(i, 0, n){
+        int ans = upper_bound(all(v), 1LL*sums[i][0]+sums[i][1]+sums[i][2])-v.begin();
+
+        if(sums[i][2] >= 2) ans--;
+        cout << ans << " ";
+    } 
 
     cout << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
 
     exit(0);
 }
+

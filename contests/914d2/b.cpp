@@ -51,36 +51,26 @@ const int MAX = 2e5+10;
 
 void solve(){
     int n; cin >> n;
-    vi v(n); forr(v) cin >> x;
+    vl v(n); forr(v) cin >> x;
+    map<ll,ll> mp;
 
-    vector<vi> pref(n+1, vi(30)); 
-    rep(i, 0, n)
-        rep(j, 0, 30){
-            if(v[i] & (1<<j)) pref[i+1][j] = pref[i][j]+1;
-            else pref[i+1][j] = pref[i][j];
-        }
+    vl sorted = v;
+    sort(all(sorted));
 
-    // rep(i, 0, n){ rep(j, 0, 30) cout << pref[i][j] << " "; cout << endl; }
+    vl pref(n); pref[0] = sorted[0];
+    rep(i, 1, n) pref[i] = pref[i-1]+sorted[i];
 
-    int m; cin >> m;
-    rep(i, 0, m){
-        int l, k; cin >> l >> k; l--;
-        if(v[l] < k){ cout << -1 << " "; continue; }
+    int i = n-1; mp[sorted[i]] = i;
+    while(sorted[i] == sorted[i-1]) i--;
+    i--;
 
-        int ll = l, r = n, ans;
-        while(ll <= r){
-            int m = ll+(r-ll)/2, sum = 0;
-            rep(j, 0, 30){
-                if(pref[m][j]-pref[l][j] == m-l) sum += (1<<j);
-            }
-
-            if(sum >= k) ans = m, ll = m+1;
-            else r = m-1;
-        }
-
-        cout << ans << " ";
+    for(; i >= 0; i--){
+        if(pref[i] >= sorted[i+1]) mp[sorted[i]] = mp[sorted[i+1]];
+        else mp[sorted[i]] = i;
+        while(i > 0 and sorted[i] == sorted[i-1]) i--;
     }
 
+    forr(v) cout << mp[x] << " ";
     cout << endl;
 }
 

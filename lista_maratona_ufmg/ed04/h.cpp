@@ -53,39 +53,24 @@ void solve(){
     int n; cin >> n;
     vi v(n); forr(v) cin >> x;
 
-    vector<vi> pref(n+1, vi(30)); 
-    rep(i, 0, n)
-        rep(j, 0, 30){
-            if(v[i] & (1<<j)) pref[i+1][j] = pref[i][j]+1;
-            else pref[i+1][j] = pref[i][j];
+    int i = 0, j = n-1, a = 0, b = 0; bool is_a = true;
+    while(i <= j){
+        if(v[i] >= v[j]){
+            if(is_a) a+=v[i], is_a = 0;
+            else b+=v[i], is_a = 1;
+            i++;
+        } else{
+            if(is_a) a+=v[j], is_a = 0;
+            else b+=v[j], is_a = 1;
+            j--;
         }
-
-    // rep(i, 0, n){ rep(j, 0, 30) cout << pref[i][j] << " "; cout << endl; }
-
-    int m; cin >> m;
-    rep(i, 0, m){
-        int l, k; cin >> l >> k; l--;
-        if(v[l] < k){ cout << -1 << " "; continue; }
-
-        int ll = l, r = n, ans;
-        while(ll <= r){
-            int m = ll+(r-ll)/2, sum = 0;
-            rep(j, 0, 30){
-                if(pref[m][j]-pref[l][j] == m-l) sum += (1<<j);
-            }
-
-            if(sum >= k) ans = m, ll = m+1;
-            else r = m-1;
-        }
-
-        cout << ans << " ";
     }
 
-    cout << endl;
+    cout << a << " " << b << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

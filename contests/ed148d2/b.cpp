@@ -50,38 +50,18 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
+    int n, k; cin >> n >> k;
     vi v(n); forr(v) cin >> x;
+    sort(all(v));
 
-    vector<vi> pref(n+1, vi(30)); 
-    rep(i, 0, n)
-        rep(j, 0, 30){
-            if(v[i] & (1<<j)) pref[i+1][j] = pref[i][j]+1;
-            else pref[i+1][j] = pref[i][j];
-        }
+    vl pref(n); pref[0] = v[0];
+    rep(i, 1, n) pref[i] = pref[i-1]+v[i];
 
-    // rep(i, 0, n){ rep(j, 0, 30) cout << pref[i][j] << " "; cout << endl; }
+    int i = 1, j = n-k; ll ans = pref[j-1];
+    while((i+1)/2 <= k)
+        ans = max(ans, pref[j]-pref[i]), i += 2, j++;
 
-    int m; cin >> m;
-    rep(i, 0, m){
-        int l, k; cin >> l >> k; l--;
-        if(v[l] < k){ cout << -1 << " "; continue; }
-
-        int ll = l, r = n, ans;
-        while(ll <= r){
-            int m = ll+(r-ll)/2, sum = 0;
-            rep(j, 0, 30){
-                if(pref[m][j]-pref[l][j] == m-l) sum += (1<<j);
-            }
-
-            if(sum >= k) ans = m, ll = m+1;
-            else r = m-1;
-        }
-
-        cout << ans << " ";
-    }
-
-    cout << endl;
+    cout << ans << endl;
 }
 
 int main(){ _

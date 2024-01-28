@@ -49,43 +49,38 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-void solve(){
-    int n; cin >> n;
-    vi v(n); forr(v) cin >> x;
+string st;
 
-    vector<vi> pref(n+1, vi(30)); 
-    rep(i, 0, n)
-        rep(j, 0, 30){
-            if(v[i] & (1<<j)) pref[i+1][j] = pref[i][j]+1;
-            else pref[i+1][j] = pref[i][j];
+bool check(int x){
+    vi c(26);
+    for(int i = 0; i < st.size()-x; i++){
+        int j = i; unordered_set<char> s;
+        while(j < i+x){
+            if(!s.count(st[j])) s.insert(st[j]), c[st[j]-'a']++;
+            j++;
         }
 
-    // rep(i, 0, n){ rep(j, 0, 30) cout << pref[i][j] << " "; cout << endl; }
-
-    int m; cin >> m;
-    rep(i, 0, m){
-        int l, k; cin >> l >> k; l--;
-        if(v[l] < k){ cout << -1 << " "; continue; }
-
-        int ll = l, r = n, ans;
-        while(ll <= r){
-            int m = ll+(r-ll)/2, sum = 0;
-            rep(j, 0, 30){
-                if(pref[m][j]-pref[l][j] == m-l) sum += (1<<j);
-            }
-
-            if(sum >= k) ans = m, ll = m+1;
-            else r = m-1;
-        }
-
-        cout << ans << " ";
+        i = j;
     }
 
-    cout << endl;
+    return (find(all(c), x) != c.end());
+}
+
+void solve(){
+    cin >> st;
+
+    int l = 1, r = st.size()/2+1, ans = r;
+    while(l <= r){
+        int m = l+(r-l)/2;
+        if(check(m)) ans = m, r = m-1;
+        else l = m+1;
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
