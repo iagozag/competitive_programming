@@ -47,75 +47,63 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+const int MAX = 1e5+10;
 
-int n, m, a, b;
+int n, m, d;
 vector<vi> g(MAX);
-vector<vi> par(MAX);
-vi dist(MAX, -1);
-unordered_set<int> s;
+vi dist(MAX), par(MAX);
+map<ii, int> mp;
 
-int bfs(int x){
-    dist[x] = 0, par[x].pb(x);
+vi make_path(int s){
+    vi ans;
+    while(par[s] != s) ans.pb(s), s = par[s];
+    ans.pb(0);
+
+    reverse(all(ans));
+    return ans;
+}
+
+bool bfs(int x){
+    dist[0] = 0;
 
     int v;
-    queue<int> q; q.push(x);
+    queue<int> q; q.push(0);
     while(!q.empty()){
         v = q.front(); q.pop();
 
-        if(v == a or v == b) break;
-
         for(auto ve: g[v]){
-            if(dist[ve] == -1){
-                dist[ve] = dist[v]+1, par[ve].pb(v);
+            if(mp[{v, ve}] > x) continue;
+
+            dist[ve] = dist[v]+1, par[ve] = v;
+            if(dist[ve] <= d){
+                if(ve == n-1) return 1;
                 q.push(ve);
             }
-            else if(dist[v] == dist[par[ve][0]]) par[ve].pb(v);
         }
     }
 
-    return dist[v];
-}
-
-int bfs2(int obj){
-    queue<int> q;
-    forr(s) q.push(x), dist[x] = 0;
-
-    while(!q.empty()){
-        int v = q.front(); q.pop();
-        if(v == obj) break;
-
-        for(auto ve: g[v])
-            if(dist[ve] == INF) dist[ve] = min(dist[ve], dist[v]+1), q.push(ve);
-    }
-
-    return dist[obj];
-}
-
-void make_path(int source){
-    queue<int> q; q.push(source), s.insert(source);
-    int v = q.front();
-    while(!q.empty()){
-        v = q.front(); q.pop();
-
-        for(auto ve: par[v])
-            if(!s.count(ve)) s.insert(ve), q.push(ve);
-    }
+    return 0;
 }
 
 void solve(){
-    cin >> n >> m >> a >> b;
+    int ma = -1, mi = INF; cin >> n >> m >> d;
     rep(i, 0, m){
-        int va, vb; cin >> va >> vb;
-        g[va].pb(vb);
+        int a, b, x; cin >> a >> b >> x; a--, b--;
+        g[a].pb(b), mp[{a, b}] = x, ma = max(ma, x), mi = min(mi, x);
     }
 
-    int ans = bfs(0); int source = (ans == dist[a] ? a : b);
-    
-    make_path(source);
+    int l = mi, r = ma; vi ans = {-1};
+    while(l <= r){
+        int m = l+(r-l)/2;
+        if(bfs(m)) r = m-1, ans = make_path(n-1);
+        else l = m+1;
+    }
 
-    fill(all(dist), INF);
-    cout << ans + bfs2(source == a ? b : a) << endl;
+    if(ans[0] != -1){
+        cout << ans.size()-1 << endl;
+        forr(ans) cout << x+1 << " ";
+    } else cout << -1;
+    cout << endl;
 }
 
 int main(){ _

@@ -13,8 +13,6 @@ using namespace std;
 
 typedef long long ll;
 typedef pair<int,int> ii;
-typedef vector<int> vi;
-typedef vector<ll> vl;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
@@ -50,23 +48,19 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi a(n), b(n); forr(a) cin >> x; forr(b) cin >> x;
+    float a; cin >> a;
+    float b; cin >> b;
+    float result;
+    if(b <= 5) result = a*0.5;
+    else if(b < 18) result = a*0.95;
+    else if(b < 60) result = a*1.1;
+    else result = a*0.85;
 
-    map<int,int> mp;
-    rep(i, 0, n){
-        mp[a[i]] = b[i];
-    }
-    sort(all(a));
-
-    forr(a) cout << x << " ";
-    cout << endl;
-    rep(i, 1, n+1) cout << mp[i] << " ";
-    cout << endl;
+    cout << fixed << setprecision(2) << round(result * 100) / 100 << endl; 
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

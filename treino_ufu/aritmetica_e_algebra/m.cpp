@@ -51,22 +51,15 @@ const int MAX = 2e5+10;
 
 void solve(){
     int n; cin >> n;
-    vi a(n), b(n); forr(a) cin >> x; forr(b) cin >> x;
-
-    map<int,int> mp;
-    rep(i, 0, n){
-        mp[a[i]] = b[i];
+    ll sum = 0, aux = 1;
+    while(n--){
+        sum += aux, aux*=2;
     }
-    sort(all(a));
-
-    forr(a) cout << x << " ";
-    cout << endl;
-    rep(i, 1, n+1) cout << mp[i] << " ";
-    cout << endl;
+    cout << sum << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

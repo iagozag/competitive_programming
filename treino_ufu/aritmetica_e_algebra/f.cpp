@@ -49,24 +49,34 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-void solve(){
-    int n; cin >> n;
-    vi a(n), b(n); forr(a) cin >> x; forr(b) cin >> x;
-
-    map<int,int> mp;
-    rep(i, 0, n){
-        mp[a[i]] = b[i];
+bool is_prime(ll x){
+    for(int i = 2; i*i <= x; i++){
+        if(x%i == 0) return 0;
     }
-    sort(all(a));
 
-    forr(a) cout << x << " ";
-    cout << endl;
-    rep(i, 1, n+1) cout << mp[i] << " ";
-    cout << endl;
+    return 1;
+}
+
+void solve(){
+    ll a, b; cin >> a >> b;
+
+    vi ans;
+    if(a == 2) ans.pb(2), a++;
+
+    if(a%2 == 0 and a != b) a++;
+    if(b%2 == 0 and a != b) b--;
+    for(ll i = a; i <= b; i+=2){
+        if(is_prime(i)) ans.pb(i); 
+    }
+
+    if(ans.size() > 0){
+        forr(ans) cout << x << " ";
+        cout << endl;
+    }
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

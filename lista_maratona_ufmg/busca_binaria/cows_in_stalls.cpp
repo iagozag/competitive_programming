@@ -47,26 +47,48 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+const int MAX = 1e5+10;
+
+int n, k;
+vi v, pref;
+
+bool check(int x){
+    int c = 1, d = 0, i = 0;
+    while(true){
+        i = upper_bound(pref.begin()+i, pref.end(), d+x)-pref.begin();
+        
+        if(i == n){
+            if(pref[i-1] >= d+x) c++;
+            break;
+        }
+
+        d = pref[i-1] >= d+x ? pref[i-1] : pref[i], c++;
+    } 
+
+    return c >= k;
+}
 
 void solve(){
-    int n; cin >> n;
-    vi a(n), b(n); forr(a) cin >> x; forr(b) cin >> x;
+    cin >> n >> k;
 
-    map<int,int> mp;
-    rep(i, 0, n){
-        mp[a[i]] = b[i];
+    v = pref = vi(n);
+    cin >> v[0];
+
+    int prev = v[0], mi = INF;
+    rep(i, 1, n) cin >> v[i], mi = min(mi, v[i]-prev), prev = v[i], pref[i] = v[i]-v[0];
+
+    int l = mi, r = 1e9, ans;
+    while(l <= r){
+        int m = l+(r-l)/2;
+        if(check(m)) l = m+1, ans = m;
+        else r = m-1;
     }
-    sort(all(a));
 
-    forr(a) cout << x << " ";
-    cout << endl;
-    rep(i, 1, n+1) cout << mp[i] << " ";
-    cout << endl;
+    cout << ans << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

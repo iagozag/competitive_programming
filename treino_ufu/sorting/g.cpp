@@ -50,23 +50,27 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi a(n), b(n); forr(a) cin >> x; forr(b) cin >> x;
+    string s; getline(cin, s);
+    istringstream ss(s);
+    vi v; int n;
+    while(ss >> n)
+        v.pb(n);
 
-    map<int,int> mp;
-    rep(i, 0, n){
-        mp[a[i]] = b[i];
+    sort(all(v));
+    forr(v){
+        if(x == 1) cout << 'A';
+        else if(x == 11) cout << 'J';
+        else if(x == 12) cout << 'Q';
+        else if(x == 13) cout << 'K';
+        else cout << x;
+        cout << ' ';
     }
-    sort(all(a));
 
-    forr(a) cout << x << " ";
-    cout << endl;
-    rep(i, 1, n+1) cout << mp[i] << " ";
     cout << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

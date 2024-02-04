@@ -50,23 +50,34 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi a(n), b(n); forr(a) cin >> x; forr(b) cin >> x;
+    int n, q, ans = 0; cin >> n >> q;
+    string s; cin >> s; s = s;
 
-    map<int,int> mp;
-    rep(i, 0, n){
-        mp[a[i]] = b[i];
+    rep(i, 0, n-2){
+        if(s[i] == 'a' and s[i+1] == 'b' and s[i+2] == 'c') ans++, i += 2;
     }
-    sort(all(a));
 
-    forr(a) cout << x << " ";
-    cout << endl;
-    rep(i, 1, n+1) cout << mp[i] << " ";
-    cout << endl;
+    rep(i, 0, q){
+        int a; char c; cin >> a >> c; a--;
+        int l = max(0, a-2), r = a+1; bool ok1 = 0, ok2 = 0;
+        rep(i, l, r){
+            if(s[i] == 'a' and s[i+1] == 'b' and s[i+2] == 'c'){ ok1 = 1; break; }
+        }
+
+        s[a] = c;
+        rep(i, l, r){
+            if(s[i] == 'a' and s[i+1] == 'b' and s[i+2] == 'c'){ ok2 = 1; break; }
+        }
+
+        if(ok1 == ok2) cout << ans;
+        else if(!ok1 and ok2) cout << ++ans;
+        else cout << --ans;
+        cout << endl;
+    }
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

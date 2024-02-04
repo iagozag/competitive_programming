@@ -49,20 +49,19 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
+bool checkRightAngled(int X1, int Y1, int X2, int Y2, int X3, int Y3){
+    int A = (int)pow((X2 - X1), 2) + (int)pow((Y2 - Y1), 2);
+
+    int B = (int)pow((X3 - X2), 2) + (int)pow((Y3 - Y2), 2);
+
+    int C = (int)pow((X3 - X1), 2) + (int)pow((Y3 - Y1), 2);
+
+    return ((A > 0 and B > 0 and C > 0) and (A == (B + C) or B == (A + C) or C == (A + B)));
+}
+
 void solve(){
-    int n; cin >> n;
-    vi a(n), b(n); forr(a) cin >> x; forr(b) cin >> x;
-
-    map<int,int> mp;
-    rep(i, 0, n){
-        mp[a[i]] = b[i];
-    }
-    sort(all(a));
-
-    forr(a) cout << x << " ";
-    cout << endl;
-    rep(i, 1, n+1) cout << mp[i] << " ";
-    cout << endl;
+    int a, b, c, d, e, f; cin >> a >> b >> c >> d >> e >> f;
+    cout << (checkRightAngled(a, b, c, d, e, f) ? "sim\n" : "nao\n");
 }
 
 int main(){ _

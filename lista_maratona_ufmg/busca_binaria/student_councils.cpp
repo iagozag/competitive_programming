@@ -44,18 +44,21 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-int n, k, MAX = 60;
+ll n, k;
 
-bool check(ll x, vi v){
-    
+bool check(ll x, vl v){
+    ll slots = x*k;
+    for(int i = 0; i < n; i++)
+        slots -= min(x, v[i]);
+
+    return slots <= 0;
 }
 
 void solve(){
     cin >> k >> n;
-    vi v(51); for(int i = 0; i < n; i++) cin >> v[i];
-    sort(all(v), greater<int>());
+    vl v(n); for(int i = 0; i < n; i++) cin >> v[i];
 
-    ll l = 1, r = 1e18, ans;
+    ll l = 1, r = 1e11, ans = 0;
     while(l <= r){
         ll m = l+(r-l)/2;
         if(check(m, v)) ans = m, l = m+1;
