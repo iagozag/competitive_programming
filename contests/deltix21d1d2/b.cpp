@@ -50,11 +50,30 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    int sum = 0, aux = 1;
-    rep(i, 0, 7){ sum += aux, aux *= 2;}
-    dbg(sum);
-    cout << (n >= sum ? "YES" : "NO") << endl;
+    int n, q, ans = 0; cin >> n >> q;
+    string s; cin >> s; s = s;
+
+    rep(i, 0, n-2){
+        if(s[i] == 'a' and s[i+1] == 'b' and s[i+2] == 'c') ans++, i += 2;
+    }
+
+    rep(i, 0, q){
+        int a; char c; cin >> a >> c; a--;
+        int l = max(0, a-2), r = a+1; bool ok1 = 0, ok2 = 0;
+        rep(i, l, r){
+            if(s[i] == 'a' and s[i+1] == 'b' and s[i+2] == 'c'){ ok1 = 1; break; }
+        }
+
+        s[a] = c;
+        rep(i, l, r){
+            if(s[i] == 'a' and s[i+1] == 'b' and s[i+2] == 'c'){ ok2 = 1; break; }
+        }
+
+        if(ok1 == ok2) cout << ans;
+        else if(!ok1 and ok2) cout << ++ans;
+        else cout << --ans;
+        cout << endl;
+    }
 }
 
 int main(){ _
