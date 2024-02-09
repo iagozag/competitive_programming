@@ -2,10 +2,13 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define f first
-#define s second
+#define ff first
+#define ss second
 #define pb push_back
 
 typedef long long ll;
@@ -44,24 +47,40 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-ll n, k;
+const int MAX = 1e5+10;
 
-bool check(ll x, vl v){
-    ll slots = x*k;
-    for(int i = 0; i < n; i++)
-        slots -= min(x, v[i]);
+int n, k;
+vi v, pref;
 
-    return slots <= 0;
+bool check(int x){
+    int c = 1, d = 0, i = 0;
+    while(true){
+        i = upper_bound(pref.begin()+i, pref.end(), d+x)-pref.begin();
+        
+        if(i == n){
+            if(pref[i-1] >= d+x) c++;
+            break;
+        }
+
+        d = pref[i-1] >= d+x ? pref[i-1] : pref[i], c++;
+    } 
+
+    return c >= k;
 }
 
 void solve(){
-    cin >> k >> n;
-    vl v(n); for(int i = 0; i < n; i++) cin >> v[i];
+    cin >> n >> k;
 
-    ll l = 1, r = 1e11, ans = 0;
+    v = pref = vi(n);
+    cin >> v[0];
+
+    int prev = v[0], mi = INF;
+    rep(i, 1, n) cin >> v[i], mi = min(mi, v[i]-prev), prev = v[i], pref[i] = v[i]-v[0];
+
+    int l = mi, r = 1e9, ans;
     while(l <= r){
-        ll m = l+(r-l)/2;
-        if(check(m, v)) ans = m, l = m+1;
+        int m = l+(r-l)/2;
+        if(check(m)) l = m+1, ans = m;
         else r = m-1;
     }
 
@@ -76,4 +95,3 @@ int main(){ _
 
     exit(0);
 }
-

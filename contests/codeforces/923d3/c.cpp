@@ -2,10 +2,13 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define f first
-#define s second
+#define ff first
+#define ss second
 #define pb push_back
 
 typedef long long ll;
@@ -44,36 +47,35 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-ll n, k;
-
-bool check(ll x, vl v){
-    ll slots = x*k;
-    for(int i = 0; i < n; i++)
-        slots -= min(x, v[i]);
-
-    return slots <= 0;
-}
+const int MAX = 2e5+10;
 
 void solve(){
-    cin >> k >> n;
-    vl v(n); for(int i = 0; i < n; i++) cin >> v[i];
+    int n, m, k; cin >> n >> m >> k;
+    set<int> a, b;
+    rep(i, 0, n){ int x; cin >> x; a.insert(x); }
+    rep(i, 0, m){ int x; cin >> x; b.insert(x); }
 
-    ll l = 1, r = 1e11, ans = 0;
-    while(l <= r){
-        ll m = l+(r-l)/2;
-        if(check(m, v)) ans = m, l = m+1;
-        else r = m-1;
+    int ka = 0, kb = 0, kc = 0;
+    rep(i, 1, k+1){
+        if(a.count(i) and !b.count(i)){ 
+            if(ka < k/2) ka++;
+            else{ cout << "NO" << endl; return; }
+        } else if(!a.count(i) and b.count(i)){ 
+            if(kb < k/2) kb++;
+            else{ cout << "NO" << endl; return; }
+        } else if(a.count(i) and b.count(i)){
+            kc++;
+        } else{ cout << "NO" << endl; return; }
     }
 
-    cout << ans << endl;
+    cout << (ka+kb+kc == k ? "YES" : "NO") << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
 
     exit(0);
 }
-

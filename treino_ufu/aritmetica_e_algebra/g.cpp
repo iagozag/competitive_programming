@@ -2,10 +2,13 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define f first
-#define s second
+#define ff first
+#define ss second
 #define pb push_back
 
 typedef long long ll;
@@ -44,36 +47,28 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-ll n, k;
+const int MAX = 2e5+10;
 
-bool check(ll x, vl v){
-    ll slots = x*k;
-    for(int i = 0; i < n; i++)
-        slots -= min(x, v[i]);
+bool checkRightAngled(int X1, int Y1, int X2, int Y2, int X3, int Y3){
+    int A = (int)pow((X2 - X1), 2) + (int)pow((Y2 - Y1), 2);
 
-    return slots <= 0;
+    int B = (int)pow((X3 - X2), 2) + (int)pow((Y3 - Y2), 2);
+
+    int C = (int)pow((X3 - X1), 2) + (int)pow((Y3 - Y1), 2);
+
+    return ((A > 0 and B > 0 and C > 0) and (A == (B + C) or B == (A + C) or C == (A + B)));
 }
 
 void solve(){
-    cin >> k >> n;
-    vl v(n); for(int i = 0; i < n; i++) cin >> v[i];
-
-    ll l = 1, r = 1e11, ans = 0;
-    while(l <= r){
-        ll m = l+(r-l)/2;
-        if(check(m, v)) ans = m, l = m+1;
-        else r = m-1;
-    }
-
-    cout << ans << endl;
+    int a, b, c, d, e, f; cin >> a >> b >> c >> d >> e >> f;
+    cout << (checkRightAngled(a, b, c, d, e, f) ? "sim\n" : "nao\n");
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
 
     exit(0);
 }
-

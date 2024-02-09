@@ -50,19 +50,24 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi v(n); ll sum = 0;
-    forr(v) cin >> x, sum += x;
+    map<int,int> mp;
+    rep(i, 0, 6){
+        int a; cin >> a; mp[a]++;
+    }
 
-    set<ll> div;
-    for(int i = 2; i <= sqrt(sum) and i <= n; i++)
-        if(sum%i == 0) div.insert(i);
+    bool b = 0;
+    forr(mp){
+        if(x.ss >= 4){ b = 1; if(x.ss == 4) mp.erase(x.ff); break; }
+    }
 
-    dbgc(div);
+    if(!b){ cout << "Alien\n"; return; }
+
+    if(mp.size() == 1) cout << "Elephant\n";
+    else cout << "Bear\n";
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }

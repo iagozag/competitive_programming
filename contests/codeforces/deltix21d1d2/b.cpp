@@ -2,10 +2,13 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define f first
-#define s second
+#define ff first
+#define ss second
 #define pb push_back
 
 typedef long long ll;
@@ -44,28 +47,33 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-ll n, k;
-
-bool check(ll x, vl v){
-    ll slots = x*k;
-    for(int i = 0; i < n; i++)
-        slots -= min(x, v[i]);
-
-    return slots <= 0;
-}
+const int MAX = 2e5+10;
 
 void solve(){
-    cin >> k >> n;
-    vl v(n); for(int i = 0; i < n; i++) cin >> v[i];
+    int n, q, ans = 0; cin >> n >> q;
+    string s; cin >> s; s = s;
 
-    ll l = 1, r = 1e11, ans = 0;
-    while(l <= r){
-        ll m = l+(r-l)/2;
-        if(check(m, v)) ans = m, l = m+1;
-        else r = m-1;
+    rep(i, 0, n-2){
+        if(s[i] == 'a' and s[i+1] == 'b' and s[i+2] == 'c') ans++, i += 2;
     }
 
-    cout << ans << endl;
+    rep(i, 0, q){
+        int a; char c; cin >> a >> c; a--;
+        int l = max(0, a-2), r = a+1; bool ok1 = 0, ok2 = 0;
+        rep(i, l, r){
+            if(s[i] == 'a' and s[i+1] == 'b' and s[i+2] == 'c'){ ok1 = 1; break; }
+        }
+
+        s[a] = c;
+        rep(i, l, r){
+            if(s[i] == 'a' and s[i+1] == 'b' and s[i+2] == 'c'){ ok2 = 1; break; }
+        }
+
+        if(ok1 == ok2) cout << ans;
+        else if(!ok1 and ok2) cout << ++ans;
+        else cout << --ans;
+        cout << endl;
+    }
 }
 
 int main(){ _
@@ -76,4 +84,3 @@ int main(){ _
 
     exit(0);
 }
-

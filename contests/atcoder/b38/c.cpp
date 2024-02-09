@@ -2,10 +2,13 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define f first
-#define s second
+#define ff first
+#define ss second
 #define pb push_back
 
 typedef long long ll;
@@ -44,25 +47,25 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-ll n, k;
-
-bool check(ll x, vl v){
-    ll slots = x*k;
-    for(int i = 0; i < n; i++)
-        slots -= min(x, v[i]);
-
-    return slots <= 0;
-}
+const int MAX = 2e5+10;
 
 void solve(){
-    cin >> k >> n;
-    vl v(n); for(int i = 0; i < n; i++) cin >> v[i];
+    ll n, ma = -1; cin >> n;
+    vl q(n), a(n), b(n);
+    forr(q) cin >> x, ma = max(ma, x);
+    forr(a) cin >> x;
+    forr(b) cin >> x;
 
-    ll l = 1, r = 1e11, ans = 0;
-    while(l <= r){
-        ll m = l+(r-l)/2;
-        if(check(m, v)) ans = m, l = m+1;
-        else r = m-1;
+    ll ans = 0;
+    rep(x, 0, ma+1){
+        ll y = LINF; 
+        rep(i, 0, n){
+            ll rest = q[i]-a[i]*x;
+            if(rest < 0){ y = -LINF; break; }
+            if(b[i]) y = min(y, rest/b[i]);
+        }
+
+        ans = max(ans, x+y);
     }
 
     cout << ans << endl;
@@ -76,4 +79,3 @@ int main(){ _
 
     exit(0);
 }
-

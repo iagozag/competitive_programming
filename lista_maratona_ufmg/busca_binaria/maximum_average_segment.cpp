@@ -2,10 +2,13 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define f first
-#define s second
+#define ff first
+#define ss second
 #define pb push_back
 
 typedef long long ll;
@@ -44,28 +47,34 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-ll n, k;
+const int MAX = 2e5+10;
 
-bool check(ll x, vl v){
-    ll slots = x*k;
-    for(int i = 0; i < n; i++)
-        slots -= min(x, v[i]);
+int n, d;
+vi v;
 
-    return slots <= 0;
+ii check(int x){
+    ii ans; int mean = 0;
+    rep(i, 0, d) mean += v[i];
+    mean/=d;
+    
+    if(mean >= x) return {0, d-1};
+
+    int l = 0, 
 }
 
 void solve(){
-    cin >> k >> n;
-    vl v(n); for(int i = 0; i < n; i++) cin >> v[i];
+    cin >> n >> d;
+    v.resize(n); forr(v) cin >> x;
 
-    ll l = 1, r = 1e11, ans = 0;
+    int l = 0, r = 100; ii ans;
     while(l <= r){
-        ll m = l+(r-l)/2;
-        if(check(m, v)) ans = m, l = m+1;
+        int m = l+(r-l)/2; ii tmp = check(m);
+
+        if(ans.ff != -1) l=m+1, ans = tmp;
         else r = m-1;
     }
 
-    cout << ans << endl;
+    cout << ans.ff+1 << " " << ans.ss+1 << endl;
 }
 
 int main(){ _
@@ -76,4 +85,3 @@ int main(){ _
 
     exit(0);
 }
-
