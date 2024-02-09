@@ -49,39 +49,29 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-ll value(double x, int y, int k){
-    ll l = x+1, r = 1e12, ans;
-    while(l <= r){
-        ll m = l+(r-l)/2;
-        if(y/(double)k <= m/100.0) ans = m, r = m-1;
-        else l = m+1;
-    }
-
-    return ans;
-}
-
 void solve(){
-    ll n, k; cin >> n >> k;
+    int n; cin >> n;
     vl v(n); forr(v) cin >> x;
 
-    ll ans = 0;
-    rep(i, 0, n-1){
-        if(v[i+1]/(double)k <= v[i]/100.0) v[i+1] += v[i];
-        else{
-            ll need = value(v[i], v[i+1], k);
-            ans += need-v[i], v[i] = need, v[i+1] += v[i];
-        }
+    ll ma = v[0], idx = 0;
+    rep(i, 1, n){
+        if(v[i]+i > ma) ma = v[i]+i, idx = i;
     }
 
-    cout << ans << endl;
+    ma = -1;
+    rep(i, 0, n){
+        if(i == idx) continue;
+        if(v[i]+v[idx]+abs(idx-i) > ma) ma = v[i]+v[idx]+abs(idx-i);
+    }
+
+    cout << ma << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
 
     exit(0);
 }
-

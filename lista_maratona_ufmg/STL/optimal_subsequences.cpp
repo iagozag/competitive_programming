@@ -49,39 +49,32 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-ll value(double x, int y, int k){
-    ll l = x+1, r = 1e12, ans;
-    while(l <= r){
-        ll m = l+(r-l)/2;
-        if(y/(double)k <= m/100.0) ans = m, r = m-1;
-        else l = m+1;
-    }
-
-    return ans;
-}
-
 void solve(){
-    ll n, k; cin >> n >> k;
-    vl v(n); forr(v) cin >> x;
-
-    ll ans = 0;
-    rep(i, 0, n-1){
-        if(v[i+1]/(double)k <= v[i]/100.0) v[i+1] += v[i];
-        else{
-            ll need = value(v[i], v[i+1], k);
-            ans += need-v[i], v[i] = need, v[i+1] += v[i];
-        }
+    int n; cin >> n;
+    vi v(n); map<int,vi, greater<int>> mp;
+    rep(i, 0, n){
+        int a; cin >> a; v[i] = a;
+        mp[a].pb(i);
     }
 
-    cout << ans << endl;
+    int q; cin >> q;
+    rep(i, 0, q){
+        int k, p; cin >> k >> p; p--;
+        set<int> pos; 
+        forr(mp){
+            if(k<=x.ss.size()){ pos.insert(x.ss.begin(), x.ss.begin()+k); break; }
+            else k -= x.ss.size(), pos.insert(all(x.ss));
+        }
+
+        cout << v[*next(pos.begin(), p)] << endl;
+    }
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
 
     exit(0);
 }
-
