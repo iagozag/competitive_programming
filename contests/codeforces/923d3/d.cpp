@@ -47,65 +47,31 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 1e5+10;
-
-int n, m, d;
-vector<vi> g;
-vi dist, par;
-map<ii, int> mp;
-
-vi make_path(int s){
-    vi ans = {s};
-    while(par[s] != s) s = par[s], ans.pb(s);
-
-    reverse(all(ans));
-    return ans;
-}
-
-bool bfs(int x){
-    fill(all(dist), INF);
-    dist[0] = 0;
-
-    queue<int> q; q.push(0);
-    while(!q.empty()){
-        int v = q.front(); q.pop();
-
-        for(auto ve: g[v]){
-            if(mp[{v, ve}] > x) continue;
-
-            if(dist[ve] > dist[v]+1) dist[ve] = dist[v]+1, par[ve] = v, q.push(ve);
-        }
-    }
-
-    return dist[n-1] <= d;
-}
+const int MAX = 2e5+10;
 
 void solve(){
-    int ma = -1, mi = INF; cin >> n >> m >> d;
-    g.resize(n), dist.resize(n), par.resize(n);
+    int n; cin >> n;
+    vi a(n), p(n, -1);
 
-    rep(i, 0, m){
-        int a, b, x; cin >> a >> b >> x; a--, b--;
-        g[a].pb(b), mp[{a, b}] = x, 
-        ma = max(ma, x), mi = min(mi, x);
+    cin >> a[0];
+    for (int i = 1; i < n; ++i) {
+        cin >> a[i];
+        p[i] = (a[i - 1] != a[i]) ? i-1 : p[i-1];
     }
 
-    int l = mi, r = ma; vi ans = {-1};
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(bfs(mid)) r = mid-1, ans = make_path(n-1);
-        else l = mid+1;
+    int q; cin >> q;
+    rep(i, 0, q){
+        int l, r; cin >> l >> r; l--, r--;
+        if(p[r] >= l) cout << p[r]+1 << " " << r+1 << endl;
+        else cout << -1 << " " << -1 << endl;
     }
 
-    if(ans[0] != -1){
-        cout << ans.size()-1 << endl;
-        forr(ans) cout << x+1 << " ";
-    } else cout << -1;
+    dbgc(p);
     cout << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }

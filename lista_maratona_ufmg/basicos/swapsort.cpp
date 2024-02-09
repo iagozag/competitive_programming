@@ -12,11 +12,6 @@ int main(){
         arr0[i] = aux;
     }
     sort(arr, arr + n);
-
-    //for(int i = 0; i < n; i++) cout << arr[i] << " ";
-    //cout << "\n";
-    //for(int i = 0; i < n; i++) cout << arr0[i] << " ";
-    //cout << "\n";
     
     for(int i = 0; i < n; i++){
         for(int j = i; j < n; j++){
@@ -25,20 +20,11 @@ int main(){
                     swaps.push_back({i, j});
                     swap(arr0[i], arr0[j]);
                     break;
-                } //else if(arr0[j] > arr0[j+1]){
-                    //swaps.push_back({j, j+1});
-                    //swap(arr0[j], arr0[j+1]);
-                    //break;
-                //}
+                }
             }
         }
     }
 
-    //print answer
     cout << swaps.size() << endl;
     for(auto i: swaps) cout << i.first << " " << i.second << endl;
-
-    //for(int i = 0; i < n; i++) cout << arr0[i] << " ";
-    //cout << "\n";
-
 }

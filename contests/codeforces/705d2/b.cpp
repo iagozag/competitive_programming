@@ -47,65 +47,39 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 1e5+10;
-
-int n, m, d;
-vector<vi> g;
-vi dist, par;
-map<ii, int> mp;
-
-vi make_path(int s){
-    vi ans = {s};
-    while(par[s] != s) s = par[s], ans.pb(s);
-
-    reverse(all(ans));
-    return ans;
-}
-
-bool bfs(int x){
-    fill(all(dist), INF);
-    dist[0] = 0;
-
-    queue<int> q; q.push(0);
-    while(!q.empty()){
-        int v = q.front(); q.pop();
-
-        for(auto ve: g[v]){
-            if(mp[{v, ve}] > x) continue;
-
-            if(dist[ve] > dist[v]+1) dist[ve] = dist[v]+1, par[ve] = v, q.push(ve);
-        }
-    }
-
-    return dist[n-1] <= d;
-}
+const int MAX = 2e5+10;
 
 void solve(){
-    int ma = -1, mi = INF; cin >> n >> m >> d;
-    g.resize(n), dist.resize(n), par.resize(n);
+    int hour, mi; cin >> hour >> mi;
+    map<int, int> mp;
+    mp[0] = 0;
+    mp[1] = 1;
+    mp[2] = 5;
+    mp[5] = 2;
+    mp[8] = 8; 
 
-    rep(i, 0, m){
-        int a, b, x; cin >> a >> b >> x; a--, b--;
-        g[a].pb(b), mp[{a, b}] = x, 
-        ma = max(ma, x), mi = min(mi, x);
+    string s; cin >> s;
+    string tmp = ""; tmp += s[0], tmp += s[1];
+    int h = stoi(tmp);
+    tmp = ""; tmp += s[3], tmp += s[4];
+    int m = stoi(tmp);
+
+    while(!mp.count(m%10) or !mp.count((m-m%10)/10) or
+          !mp.count(h%10) or !mp.count((h-h%10)/10) or
+          (mp[m%10])*10+mp[(m-m%10)/10] >= hour or
+          (mp[h%10])*10+mp[(h-h%10)/10] >= mi){
+        if((m+1)%mi == 0) h = (h+1)%hour;
+        m = (m+1)%mi;
     }
 
-    int l = mi, r = ma; vi ans = {-1};
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(bfs(mid)) r = mid-1, ans = make_path(n-1);
-        else l = mid+1;
-    }
-
-    if(ans[0] != -1){
-        cout << ans.size()-1 << endl;
-        forr(ans) cout << x+1 << " ";
-    } else cout << -1;
-    cout << endl;
+    if(to_string(h).size() == 1) cout << "0" << h << ":";
+    else cout << h << ":";
+    if(to_string(m).size() == 1) cout << "0" << m << endl;
+    else cout << m << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
