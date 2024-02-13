@@ -58,7 +58,7 @@ void solve(){
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }

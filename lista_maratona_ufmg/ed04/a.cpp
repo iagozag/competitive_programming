@@ -47,43 +47,23 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
-
 const int MAX = 2e5+10;
 
+ll n, m, k, l;
+
 void solve(){
-    int n; cin >> n;
-    vector<ii> v(n); vi vv(n);
-    rep(i, 0, n){
-        int a; cin >> a; v[i] = {a, i}, vv[i] = a;
-    }
-    sort(all(v), [](const ii &a, const ii &b){
-        if(a.ff != b.ff) return a.ff > b.ff;
-        else return a.ss < b.ss;
-    });
+    cin >> n >> m >> k >> l;
 
-    int q; cin >> q;
-    vector<pair<ii, int>> queries; 
-    rep(i, 0, q){
-        int k, p; cin >> k >> p; p--;
-        queries.pb({{k, p}, i});
-    }
-    sort(all(queries));
+    if(m > n or l+k > n){ cout << -1 << endl; return; }
 
-    ordered_set os;
-    vi ans(q); int len = 0;
-    rep(i, 0, q){
-        while(len < queries[i].ff.ff){
-            os.insert(v[len].ss), len++;
-        }
-
-        ans[queries[i].ss] = vv[*(os.find_by_order(queries[i].ff.ss))];
+    ll le = 1, ri = n/m, ans = LINF;
+    while(le <= ri){
+        ll mid = le+(ri-le)/2;
+        if(m*mid >= k+l) ri = mid-1, ans = mid;
+        else le = mid+1;
     }
 
-    forr(ans) cout << x << endl;
+    cout << (ans == LINF ? -1 : ans) << endl;
 }
 
 int main(){ _

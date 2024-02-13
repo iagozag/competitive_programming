@@ -50,7 +50,13 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
+    int a, b; cin >> a >> b;
+    if(a < b) swap(a, b);
 
+    if(a%2 == 0 and b%2 == 0) cout << "YES\n";
+    else if(a%2 == 1 and b%2 == 1) cout << "NO\n";
+    else if(a%2 == 0 and a/2 == b) cout << "NO" << endl;
+    else cout << "YES" << endl;
 }
 
 int main(){ _

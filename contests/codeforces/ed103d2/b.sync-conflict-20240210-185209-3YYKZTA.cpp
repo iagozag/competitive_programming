@@ -47,47 +47,37 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
-
 const int MAX = 2e5+10;
 
+ll value(double x, int y, int k){
+    ll l = x+1, r = 1e12, ans;
+    while(l <= r){
+        ll m = l+(r-l)/2;
+        if(y/(double)k <= m/100.0) ans = m, r = m-1;
+        else l = m+1;
+    }
+
+    return ans;
+}
+
 void solve(){
-    int n; cin >> n;
-    vector<ii> v(n); vi vv(n);
-    rep(i, 0, n){
-        int a; cin >> a; v[i] = {a, i}, vv[i] = a;
-    }
-    sort(all(v), [](const ii &a, const ii &b){
-        if(a.ff != b.ff) return a.ff > b.ff;
-        else return a.ss < b.ss;
-    });
+    ll n, k; cin >> n >> k;
+    vl v(n); forr(v) cin >> x;
 
-    int q; cin >> q;
-    vector<pair<ii, int>> queries; 
-    rep(i, 0, q){
-        int k, p; cin >> k >> p; p--;
-        queries.pb({{k, p}, i});
-    }
-    sort(all(queries));
-
-    ordered_set os;
-    vi ans(q); int len = 0;
-    rep(i, 0, q){
-        while(len < queries[i].ff.ff){
-            os.insert(v[len].ss), len++;
+    ll ans = 0;
+    rep(i, 0, n-1){
+        if(v[i+1]/(double)k <= v[i]/100.0) v[i+1] += v[i];
+        else{
+            ll need = value(v[i], v[i+1], k);
+            ans += need-v[i], v[i] = need, v[i+1] += v[i];
         }
-
-        ans[queries[i].ss] = vv[*(os.find_by_order(queries[i].ff.ss))];
     }
 
-    forr(ans) cout << x << endl;
+    cout << ans << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }

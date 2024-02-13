@@ -51,13 +51,23 @@ const int MAX = 2e5+10;
 
 void solve(){
     int n, m; cin >> n >> m;
-    if(m%2 == 1) m--;
+    vi v(n+1);
+    rep(i, 1, n+1) cin >> v[i];
 
-    cout << (m/2)*n << endl;
+    int ans = 0;
+    rep(i, 1, n+1){
+        if(v[i] < v[i-1]){
+            int diffant = m-v[i-1]+v[i-2]+ (v[i]<v[i-2] ? v[i-2]-v[i]: 0), diffcur = v[i-1]-v[i];
+            if(diffant <= diffcur){ ans = max(ans, diffant); if(v[i]<v[i-2]) v[i] = v[i-2]; }
+            else ans = max(ans, diffcur), v[i] = v[i-1];
+        }
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
     while(t--){
         solve();
     }
