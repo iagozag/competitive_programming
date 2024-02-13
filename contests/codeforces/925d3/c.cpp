@@ -50,28 +50,11 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi v(n); map<int,vi, greater<int>> mp;
-    rep(i, 0, n){
-        int a; cin >> a; v[i] = a;
-        mp[a].pb(i);
-    }
 
-    int q; cin >> q;
-    rep(i, 0, q){
-        int k, p; cin >> k >> p; p--;
-        set<int> pos; 
-        forr(mp){
-            if(k<=x.ss.size()){ pos.insert(x.ss.begin(), x.ss.begin()+k); break; }
-            else k -= x.ss.size(), pos.insert(all(x.ss));
-        }
-
-        cout << v[*next(pos.begin(), p)] << endl;
-    }
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
