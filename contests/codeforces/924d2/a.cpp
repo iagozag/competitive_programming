@@ -47,47 +47,20 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
-
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vector<ii> v(n); vi vv(n);
-    rep(i, 0, n){
-        int a; cin >> a; v[i] = {a, i}, vv[i] = a;
-    }
-    sort(all(v), [](const ii &a, const ii &b){
-        if(a.ff != b.ff) return a.ff > b.ff;
-        else return a.ss < b.ss;
-    });
+    int a, b; cin >> a >> b;
+    if(a < b) swap(a, b);
 
-    int q; cin >> q;
-    vector<pair<ii, int>> queries; 
-    rep(i, 0, q){
-        int k, p; cin >> k >> p; p--;
-        queries.pb({{k, p}, i});
-    }
-    sort(all(queries));
-
-    ordered_set os;
-    vi ans(q); int len = 0;
-    rep(i, 0, q){
-        while(len < queries[i].ff.ff){
-            os.insert(v[len].ss), len++;
-        }
-
-        ans[queries[i].ss] = vv[*(os.find_by_order(queries[i].ff.ss))];
-    }
-
-    forr(ans) cout << x << endl;
+    if(a%2 == 0 and b%2 == 0) cout << "YES\n";
+    else if(a%2 == 1 and b%2 == 1) cout << "NO\n";
+    else if(a%2 == 0 and a/2 == b) cout << "NO" << endl;
+    else cout << "YES" << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }

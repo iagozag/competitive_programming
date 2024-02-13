@@ -47,43 +47,41 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
-
 const int MAX = 2e5+10;
 
-void solve(){
-    int n; cin >> n;
-    vector<ii> v(n); vi vv(n);
-    rep(i, 0, n){
-        int a; cin >> a; v[i] = {a, i}, vv[i] = a;
-    }
-    sort(all(v), [](const ii &a, const ii &b){
-        if(a.ff != b.ff) return a.ff > b.ff;
-        else return a.ss < b.ss;
-    });
+string s;
+unordered_set<char> st;
 
-    int q; cin >> q;
-    vector<pair<ii, int>> queries; 
-    rep(i, 0, q){
-        int k, p; cin >> k >> p; p--;
-        queries.pb({{k, p}, i});
-    }
-    sort(all(queries));
+bool check(int x){
+    for(auto& c: st){
+        bool can = true; int prev = 0, j = s.find(c);
+        if(j >= x) continue;
 
-    ordered_set os;
-    vi ans(q); int len = 0;
-    rep(i, 0, q){
-        while(len < queries[i].ff.ff){
-            os.insert(v[len].ss), len++;
+        for(; j < s.size(); j++){
+             if(s[j] == c){
+                 if(j-prev > x){ can = false; break; }
+                 prev = j;
+             }
         }
 
-        ans[queries[i].ss] = vv[*(os.find_by_order(queries[i].ff.ss))];
+        if(can and j-prev <= x) return true;
     }
 
-    forr(ans) cout << x << endl;
+    return false;
+}
+
+void solve(){
+    cin >> s;
+    forr(s) st.insert(x);
+
+    int l = 1, r = s.size()/2+1, ans;
+    while(l <= r){
+        int m = l+(r-l)/2;
+        if(check(m)) r = m-1, ans = m;
+        else l = m+1;
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
