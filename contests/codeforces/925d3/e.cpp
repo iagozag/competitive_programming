@@ -51,26 +51,30 @@ const int MAX = 2e5+10;
 
 void solve(){
     int n, m; cin >> n >> m;
-    vi v(n+1);
-    rep(i, 1, n+1) cin >> v[i];
+    vector<pair<string,int>> v(n); 
+    forr(v){
+        string s; cin >> s; x.ff = s; 
 
-    int ans = 0;
-    rep(i, 1, n+1){
-        if(v[i] < v[i-1]){
-            int diffant = m-v[i-1]+v[i-2], diffcur = v[i-1]-v[i];
-            if(v[i]<v[i-2] and v[i]-v[i-2] > diffant) diffant += v[i]-v[i-2]-diffant;
-
-            if(diffant < diffcur){ ans = max(ans, diffant); if(v[i]<v[i-2]) v[i] = v[i-2]; }
-            else if(diffant > diffcur) ans = max(ans, diffcur), v[i] = v[i-1];
-            else ans = max(ans, diffant), dbg(v[i]), v[i] = min(v[i-1], v[i-2]);
+        x.ss = 0;
+        for(size_t i = s.size()-1; i >= 0; i--){
+            if(s[i] == '0') x.ss++;
+            else break;
         }
     }
+    sort(all(v), [](const pair<string, int> &a, const pair<string,int> &b){
+        return a.ss > b.ss;
+    });
 
-    cout << ans << endl;
+    ll chars = 0;
+    for(int i = 0; i < n; i++){
+        chars += v[i].ff.size() - ((i&1) == 0 ? v[i].ss : 0);
+    } 
+
+    cout << (chars > m ? "Sasha" : "Anna") << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }

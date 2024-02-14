@@ -50,7 +50,28 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
+    int n; cin >> n;
+    vi v(n); forr(v) cin >> x;
 
+    int i = 0, j = n-1;
+    while(i+1 < n and v[i] == v[i+1]) i++;
+    if(i == n-1){ cout << 0 << endl; return; }
+
+    while(j-1 >= 0 and v[j] == v[j-1]) j--;
+
+    if(v[i] != v[j]){
+        if(i == 0 and j == n-1) cout << n-1 << endl;
+        else cout << min(n-i-1, j) << endl;
+        return;
+    }
+
+    int num;
+    if(v[i] == v[j]) num = v[0];
+    else num = (i >= n-j-1 ? v[0] : v[n-1]);
+    while(v[i] == num) i++;
+    while(v[j] == num) j--;
+
+    cout << j-i+1 << endl;
 }
 
 int main(){ _

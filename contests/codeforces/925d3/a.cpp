@@ -50,7 +50,13 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-
+    int n; cin >> n;
+    rep(i, 1, 27)
+        if(n-i <= 52){ char c = (i-1)+'a'; cout << c; n -= i; break; }
+    rep(i, 1, 27)
+        if(n-i <= 26){ char c = (i-1)+'a'; cout << c; n -= i; break; }
+    char c = (n-1)+'a';
+    cout << c << endl;
 }
 
 int main(){ _

@@ -50,7 +50,20 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
+    int n; cin >> n;
+    ll sum = 0;
+    vi v(n); forr(v) cin >> x, sum += x;
 
+    int need = sum/n; sum = 0;
+    rep(i, 0, n){
+        if(v[i] < need){
+            if(v[i]+sum >= need) sum -= need-v[i];
+            else{ cout << "NO\n"; return; }
+        }
+        else if(v[i] > need) sum += v[i]-need;
+    }
+
+    cout << "YES\n";
 }
 
 int main(){ _

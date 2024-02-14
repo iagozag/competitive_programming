@@ -50,27 +50,31 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n, m; cin >> n >> m;
-    vi v(n+1);
-    rep(i, 1, n+1) cin >> v[i];
+    int n, x, y; cin >> n >> x >> y;
+    vector<ii> v(n);
+    rep(i, 0, n){
+        int a; cin >> a;
+        v[i].ff = a%x, v[i].ss = a%y;
+    }
+    sort(all(v));
 
-    int ans = 0;
-    rep(i, 1, n+1){
-        if(v[i] < v[i-1]){
-            int diffant = m-v[i-1]+v[i-2], diffcur = v[i-1]-v[i];
-            if(v[i]<v[i-2] and v[i]-v[i-2] > diffant) diffant += v[i]-v[i-2]-diffant;
+    ll ans = 0;
+    rep(i, 0, n){
+        ii need = {(x-v[i].ff)%x, v[i].ss};
 
-            if(diffant < diffcur){ ans = max(ans, diffant); if(v[i]<v[i-2]) v[i] = v[i-2]; }
-            else if(diffant > diffcur) ans = max(ans, diffcur), v[i] = v[i-1];
-            else ans = max(ans, diffant), dbg(v[i]), v[i] = min(v[i-1], v[i-2]);
-        }
+        int lb = lower_bound(all(v), need)-v.begin();
+        if(v[lb] != need) continue;
+
+        int ub = upper_bound(all(v), need)-v.begin();
+
+        ans += ub-lb-(v[i] == need ? 1 : 0);
     }
 
-    cout << ans << endl;
+    cout << ans/2 << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }
