@@ -4,12 +4,12 @@ using namespace std;
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define rep(i,x,n) for(int i=x;i<n;i++)
 #define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -55,9 +55,8 @@ void solve(){
 
 int main(){ _
     int t; cin >> t;
-    while(t--){
-        solve();
-    }
+
+    while(t--) solve();
 
     exit(0);
 }

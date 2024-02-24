@@ -4,12 +4,12 @@ using namespace std;
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define rep(i,x,n) for(int i=x;i<n;i++)
 #define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -50,35 +50,27 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n, m, d; cin >> n >> m >> d;
-    vi v(m); forr(v) cin >> x;
-    
-    vi ans(n); int i = n-1, j = m, cnt = 0;
-    for(; i >= 0; i--){
-        ans[i] = j, cnt++;
-        if(cnt == v[j-1]) cnt = 0, j--;
-        if(j == 0) break;
+    int n, k; cin >> n >> k;
+    string a; cin >> a; cout << a;
+    int buffer = a.size();
+    rep(i, 1, n){
+        cin >> a;
+        int sz = a.size(); 
+        if(buffer+sz > k) cout << endl << a, buffer = a.size();
+        else cout << " " << a, buffer += sz;
     }
-
-    int k = 0;
-    for(j = d-1; j < n; j += d-1){
-        if(ans[j]) break;
-        while(v[k]--) swap(ans[j], ans[i]), j++, i++;
-        k++; if(k == m) break;
-    }
-
-    if(ans[n-1] or j-1+d >= n){
-        cout << "YES" << endl;
-        forr(ans) cout << x << " ";
-        cout << endl;
-    } else cout << "NO" << endl;
+    cout << endl;
 }
 
 int main(){ _
+    if (fopen("word.in", "r")) {
+		freopen("word.in", "r", stdin);
+		freopen("word.out", "w", stdout);
+	}
+
     int t = 1;
-    while(t--){
-        solve();
-    }
+
+    while(t--) solve();
 
     exit(0);
 }

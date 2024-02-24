@@ -49,29 +49,49 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
+void makeCombiUtil(vector<vector<int> >& ans,
+    vector<int>& tmp, int n, int left, int k)
+{
+    if(k == 0) {
+        ans.push_back(tmp);
+        return;
+    }
+
+    for (int i = left; i <= n; ++i){
+        tmp.push_back(i);
+        makeCombiUtil(ans, tmp, n, i + 1, k - 1);
+        tmp.pop_back();
+    }
+}
+
+vector<vector<int> > makeComb(int n, int k){
+    vector<vector<int> > ans;
+    vector<int> tmp;
+    makeCombiUtil(ans, tmp, n, 1, k);
+    return ans;
+}
+
 void solve(){
-    int n, m, d; cin >> n >> m >> d;
-    vi v(m); forr(v) cin >> x;
+    string s; getline(cin, s);
+    vector<string> v;
+
+    string buffer = "";
+    rep(i, 0, s.size()){
+        if(s[i] == ',') v.pb(buffer), buffer = "";
+        else buffer += s[i];
+    }
+
+    rep(i, 1, s.size()+1)
+        cout << v[i] << endl;
     
-    vi ans(n); int i = n-1, j = m, cnt = 0;
-    for(; i >= 0; i--){
-        ans[i] = j, cnt++;
-        if(cnt == v[j-1]) cnt = 0, j--;
-        if(j == 0) break;
+    rep(i, 2, s.size()){
+        vector<vi> ans = makeComb(s.size(), i);
+        for (int i = 0; i < ans.size(); i++)
+            for (int j = 0; j < ans[i].size(); j++)
+                cout << ans.at(i).at(j) << (j == ans[i].size()-1 ? '\n' : ',');
     }
 
-    int k = 0;
-    for(j = d-1; j < n; j += d-1){
-        if(ans[j]) break;
-        while(v[k]--) swap(ans[j], ans[i]), j++, i++;
-        k++; if(k == m) break;
-    }
-
-    if(ans[n-1] or j-1+d >= n){
-        cout << "YES" << endl;
-        forr(ans) cout << x << " ";
-        cout << endl;
-    } else cout << "NO" << endl;
+    cout << s << endl;
 }
 
 int main(){ _

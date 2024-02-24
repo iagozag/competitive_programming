@@ -4,12 +4,12 @@ using namespace std;
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define rep(i,x,n) for(int i=x;i<n;i++)
 #define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -50,31 +50,26 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi v(n); map<int,vi, greater<int>> mp;
+    int n, m, k; cin >> n >> m >> k;
+    vector<string> grid(n); forr(x, grid) cin >> x;
+
     rep(i, 0, n){
-        int a; cin >> a; v[i] = a;
-        mp[a].pb(i);
-    }
-
-    int q; cin >> q;
-    rep(i, 0, q){
-        int k, p; cin >> k >> p; p--;
-        set<int> pos; 
-        forr(mp){
-            if(k<=x.ss.size()){ pos.insert(x.ss.begin(), x.ss.begin()+k); break; }
-            else k -= x.ss.size(), pos.insert(all(x.ss));
-        }
-
-        cout << v[*next(pos.begin(), p)] << endl;
+        string s = "";
+        rep(j, 0, m) s += string(k, grid[i][j]);
+        rep(j, 0, k) cout << s << endl;
     }
 }
 
 int main(){ _
+    if (fopen("cowsignal.in", "r")) {
+		freopen("cowsignal.in", "r", stdin);
+		freopen("cowsignal.out", "w", stdout);
+	}
+
     int t = 1;
-    while(t--){
-        solve();
-    }
+
+    while(t--) solve();
 
     exit(0);
 }
+

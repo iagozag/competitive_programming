@@ -49,33 +49,52 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
+vector<string> v(7);
+vector<ii> moves = {{1, -1}, {-1, -1}, {-1, 1}, {1, 1}};
+
+bool is_valid(int i, int j){
+    return i >= 0 and i < 7 and j >= 0 and j < 7 and v[i][j] == 'B';
+}
+
+bool is_center(int i, int j){
+     for(auto u: moves) if(!is_valid(u.ff+i, u.ss+j)) return false;
+     return true;
+}
+
+struct cmp{
+    bool operator() (pair<ii, int>& a, pair<ii, int>& b) {
+        return a.ss > b.ss;
+    }
+};
+
 void solve(){
-    int n, m, d; cin >> n >> m >> d;
-    vi v(m); forr(v) cin >> x;
-    
-    vi ans(n); int i = n-1, j = m, cnt = 0;
-    for(; i >= 0; i--){
-        ans[i] = j, cnt++;
-        if(cnt == v[j-1]) cnt = 0, j--;
-        if(j == 0) break;
-    }
+    rep(i, 0, 7) cin >> v[i]; 
+    vector<vi> qnt(7, vi(7));
 
-    int k = 0;
-    for(j = d-1; j < n; j += d-1){
-        if(ans[j]) break;
-        while(v[k]--) swap(ans[j], ans[i]), j++, i++;
-        k++; if(k == m) break;
-    }
+    rep(i, 1, 6) rep(j, 1, 6)
+        if(v[i][j] == 'B'){
+            if(!is_center(i, j)) continue;
+            qnt[i][j]++; for(auto u: moves) qnt[u.ff+i][u.ss+j]++;
+        }
 
-    if(ans[n-1] or j-1+d >= n){
-        cout << "YES" << endl;
-        forr(ans) cout << x << " ";
-        cout << endl;
-    } else cout << "NO" << endl;
+    set<pair<ii, int>, cmp> st;
+    rep(i, 0, 7) rep(j, 0, 7)
+        st.insert({{i, j}, qnt[i][j]});
+
+    while(st.begin()->second > 0){
+        auto it = st.begin();
+        int i = it->ff.ff, j = it->ff.ss;
+        if(is_center(i, j)){
+            st.insert({{i, j}, it->ss-1});
+            st.erase(it);
+
+            for(auto u: moves)
+        }
+    }
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }

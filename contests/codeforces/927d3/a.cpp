@@ -50,32 +50,20 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n, m, d; cin >> n >> m >> d;
-    vi v(m); forr(v) cin >> x;
-    
-    vi ans(n); int i = n-1, j = m, cnt = 0;
-    for(; i >= 0; i--){
-        ans[i] = j, cnt++;
-        if(cnt == v[j-1]) cnt = 0, j--;
-        if(j == 0) break;
+    int n; cin >> n;
+    string s; cin >> s;
+
+    ll ans = 0;
+    rep(i, 0, n){
+        if(i > 0 and s[i] == '*' and s[i-1] == '*') break;
+        else if(s[i] == '@') ans++;
     }
 
-    int k = 0;
-    for(j = d-1; j < n; j += d-1){
-        if(ans[j]) break;
-        while(v[k]--) swap(ans[j], ans[i]), j++, i++;
-        k++; if(k == m) break;
-    }
-
-    if(ans[n-1] or j-1+d >= n){
-        cout << "YES" << endl;
-        forr(ans) cout << x << " ";
-        cout << endl;
-    } else cout << "NO" << endl;
+    cout << ans << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
     while(t--){
         solve();
     }

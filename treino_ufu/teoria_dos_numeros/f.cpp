@@ -4,12 +4,12 @@ using namespace std;
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define rep(i,x,n) for(int i=x;i<n;i++)
 #define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -49,36 +49,37 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
+bool is_perfect(ll n){
+    ll sum = 1;
+    for (int i = 2; i*i <= n; i++) { 
+        if (n % i == 0){
+            if(i*i!=n) sum = sum + i + n/i;
+            else sum=sum+i;
+        }
+    }
+
+    return sum == n;
+}
+
 void solve(){
-    int n, m, d; cin >> n >> m >> d;
-    vi v(m); forr(v) cin >> x;
-    
-    vi ans(n); int i = n-1, j = m, cnt = 0;
-    for(; i >= 0; i--){
-        ans[i] = j, cnt++;
-        if(cnt == v[j-1]) cnt = 0, j--;
-        if(j == 0) break;
-    }
+    ll n; cin >> n;
 
-    int k = 0;
-    for(j = d-1; j < n; j += d-1){
-        if(ans[j]) break;
-        while(v[k]--) swap(ans[j], ans[i]), j++, i++;
-        k++; if(k == m) break;
-    }
+    vi ans;
+    rep(i, 2, n) if(is_perfect(i)) ans.eb(i);
+    if(is_perfect(n)) cout << "sim" << endl, ans.eb(n);
+    else cout << "nao" << endl;
 
-    if(ans[n-1] or j-1+d >= n){
-        cout << "YES" << endl;
-        forr(ans) cout << x << " ";
+    if(ans.size() > 0){
+        rep(i, 0, ans.size()-1) cout << ans[i] << " ";
+        cout << ans[ans.size()-1];
         cout << endl;
-    } else cout << "NO" << endl;
+    }
 }
 
 int main(){ _
     int t = 1;
-    while(t--){
-        solve();
-    }
+
+    while(t--) solve();
 
     exit(0);
 }
