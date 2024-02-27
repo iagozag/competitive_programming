@@ -49,12 +49,38 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-void solve(){
+struct cmp{
+    bool operator ()(const ii& a, const ii& b) const{
+        if(a.ff != b.ff) return a.ff < b.ff;
+        return a.ss < b.ss;
+    }
+};
 
+struct cmp2{
+    bool operator ()(const ii& a, const ii& b) const{
+        if(a.ss != b.ss) return a.ss < b.ss;
+        return a.ff < b.ff;
+    }
+};
+
+void solve(){
+    int q; cin >> q;
+
+    map<ii,int,cmp> mp; map<ii,int,cmp2> mp2;
+    rep(i, 0, q){
+        char c; int a, b; cin >> c >> a >> b;
+        if(c == '+') mp[{a, b}]++, mp2[{a, b}]++;
+        else{
+            mp[{a, b}]--, mp2[{a, b}]--;
+            if(mp[{a, b}] == 0) mp.erase({a, b}), mp2.erase({a, b});
+        }
+        
+        cout << (mp.size() > 1 and mp.rbegin()->ff.ff > mp2.begin()->ff.ss ? "YES\n" : "NO\n");
+    }
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
 
     while(t--) solve();
 

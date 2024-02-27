@@ -2,8 +2,8 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(auto i=x;i<n;i++)
-#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
 #define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
@@ -50,11 +50,21 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
+    string s, g; cin >> s >> g;
 
+    size_t found = s.find(g);
+    while(found != string::npos) s.erase(found, g.size()), found = s.find(g);
+    
+    cout << s << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    if (fopen("censor.in", "r")) {
+		freopen("censor.in", "r", stdin);
+		freopen("censor.out", "w", stdout);
+	}
+
+    int t = 1;
 
     while(t--) solve();
 

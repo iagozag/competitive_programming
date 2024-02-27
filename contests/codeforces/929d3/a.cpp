@@ -50,7 +50,11 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
+    int n; cin >> n;
+    ll sum = 0;
+    rep(i, 0, n){ int a; cin >> a; sum += abs(a); }
 
+    cout << sum << endl;
 }
 
 int main(){ _

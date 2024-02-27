@@ -50,7 +50,24 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
+    ll a, b, l; cin >> a >> b >> l;
 
+    ll ans = 0; set<int> dd;
+
+    int loga = 0, logb = 0, mult = 1;
+    while(mult <= l) mult *= a, loga++;
+    mult = 1;
+    while(mult <= l) mult *= b, logb++;
+
+    for(int i = 0; i < loga; i++)
+        for(int j = 0; j < logb; j++){
+            ll ma = 1, mb = 1;
+            rep(k, 0, i) ma *= a;
+            rep(k, 0, j) mb *= b;
+            if(l%(ma*mb) == 0) if(!dd.count(l/(ma*mb))) ans++, dd.insert(l/(ma*mb));
+        }
+
+    cout << ans << endl;
 }
 
 int main(){ _

@@ -50,7 +50,11 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
+    int n; cin >> n;
+    vi v(n); forr(x, v) cin >> x;
+    sort(all(v));
 
+    if(v[0] < v[1]){ cout << "YES" << endl; return; }
 }
 
 int main(){ _
