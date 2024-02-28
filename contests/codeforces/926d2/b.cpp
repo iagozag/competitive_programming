@@ -2,14 +2,14 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(auto i=x;i<n;i++)
-#define repr(i,n,x) for(auto i=n;i>=x;i--)
-#define forr(x, v) for(auto& x: v)
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
-#define eb emplace_back
+#define pb push_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -50,20 +50,23 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi v(n); forr(x, v) cin >> x;
-    sort(all(v));
+    ll n, k; cin >> n >> k;
 
-    if(v[0] < v[1]){ cout << "YES" << endl; return; }
-
-    rep(i, 0, n) if(v[i]%v[0] != 0){ cout << "YES" << endl; return; }
-    cout << "NO" << endl;
+    if(n*2 >= k) cout << (k+1)/2 << endl;
+    else{
+        ll ans = 0; ans += n, k -= n*2;
+        if((n-2)*2 >= k){ cout << ans+(k+1)/2 << endl; return; }
+        
+        ans += n-2, k -= (n-2)*2;
+        cout << ans+k << endl;
+    }
 }
 
 int main(){ _
     int t; cin >> t;
-
-    while(t--) solve();
+    while(t--){
+        solve();
+    }
 
     exit(0);
 }

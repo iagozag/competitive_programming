@@ -2,14 +2,14 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(auto i=x;i<n;i++)
-#define repr(i,n,x) for(auto i=n;i>=x;i--)
-#define forr(x, v) for(auto& x: v)
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
+#define forr(v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
-#define eb emplace_back
+#define pb push_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -50,20 +50,34 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi v(n); forr(x, v) cin >> x;
-    sort(all(v));
+    int n, m; cin >> n >> m;
+    string s; vi a(n); ll sum = 0;
+    cin >> s; forr(a) cin >> x, sum += x;
 
-    if(v[0] < v[1]){ cout << "YES" << endl; return; }
+    vi add(n);
+    rep(i, 0, n){
+        if(s[i] == 'L') add[i == 0 ? n-1 : i-1] += min(a[i], m);
+        else add[i == n-1 ? 0 : i+1] += min(a[i], m);
+    }
 
-    rep(i, 0, n) if(v[i]%v[0] != 0){ cout << "YES" << endl; return; }
-    cout << "NO" << endl;
+    rep(i, 0, n){
+        add[i] -= min(a[i]+(max(add[i], 0)), m);
+    }
+
+    dbgc(add);
+
+    rep(i, 0, n){
+        sum -= add[i];
+    }
+
+    cout << sum << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
-
-    while(t--) solve();
+    int t = 1;
+    while(t--){
+        solve();
+    }
 
     exit(0);
 }

@@ -2,8 +2,8 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(auto i=x;i<n;i++)
-#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
 #define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
@@ -50,14 +50,27 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    int n; cin >> n;
-    vi v(n); forr(x, v) cin >> x;
-    sort(all(v));
+    ll n, k; cin >> n >> k;
+    vector<ii> v(n);
+    rep(i, 0, n){ cin >> v[i].ff; }
+    rep(i, 0, n){ cin >> v[i].ss; }
+    sort(all(v), [&](const ii a, const ii b){
+        return abs(a.ss) < abs(b.ss);
+    });
 
-    if(v[0] < v[1]){ cout << "YES" << endl; return; }
+    int cnt = 0, i = 0;
+    while(i < n){
+        if(abs(v[i].ss)-cnt <= 0){ cout << "NO" << endl; return; }
+        
+        int b = k;
+        while(i < n and b > 0){
+            if(b >= v[i].ff) b -= v[i].ff, i++;
+            else{ v[i].ff -= b; break; }
+        }
+        cnt++;
+    }
 
-    rep(i, 0, n) if(v[i]%v[0] != 0){ cout << "YES" << endl; return; }
-    cout << "NO" << endl;
+    cout << "YES" << endl;
 }
 
 int main(){ _

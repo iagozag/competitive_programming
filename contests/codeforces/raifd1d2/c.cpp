@@ -50,22 +50,14 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 void solve(){
-    string st; cin >> st; int n = st.size();
-    vi prefa(n), prefb(n);
-    if(st[0] == 'A') prefa[0] = 1;
-    else prefb[0] = 1;
+    string st; cin >> st;
 
-    rep(i, 1, n){
-        if(st[i] == 'A') prefa[i] = prefa[i-1]+1, prefb[i] = prefb[i-1];
-        else prefa[i] = prefa[i-1], prefb[i] = prefb[i-1]+1;
-    } 
+    rep(i, 0, st.size()){
+        if(i < st.size()-1 and st[i] == 'A' and st[i+1] == 'B') st.erase(i, 2), i-= i == 0 ? 1 : 2;
+        else if(i < st.size()-1 and st[i] == 'B' and st[i+1] == 'B') st.erase(i, 2), i-= i == 0 ? 1 : 2;
+    }
 
-    int lb = lower_bound(all(prefb), prefb[n-1]) - prefb.begin(), ans = n;
-    if(prefa[lb] > prefb[lb]) ans -= prefb[lb]*2;
-    else prefb[lb] -= prefa[lb], ans -= prefa[lb]*2+(prefb[lb]/2)*2;
-
-    cout << ans << endl;
-
+    cout << st.size() << endl;
 }
 
 int main(){ _

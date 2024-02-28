@@ -2,8 +2,8 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(auto i=x;i<n;i++)
-#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define rep(i,x,n) for(int i=x;i<n;i++)
+#define repr(i,n,x) for(int i=n;i>=x;i--)
 #define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
@@ -51,13 +51,20 @@ const int MAX = 2e5+10;
 
 void solve(){
     int n; cin >> n;
-    vi v(n); forr(x, v) cin >> x;
-    sort(all(v));
 
-    if(v[0] < v[1]){ cout << "YES" << endl; return; }
+    int idxmi = INF, idxma = -1;
+    vi v(n); rep(i, 0, n){ cin >> v[i]; if(v[i] == 1) idxmi = min(idxmi, i), idxma = max(idxma, i); }
 
-    rep(i, 0, n) if(v[i]%v[0] != 0){ cout << "YES" << endl; return; }
-    cout << "NO" << endl;
+    int ans = 0;
+    for(int i = idxma; i > idxmi; i--){
+        if(v[i] == 0) continue;
+
+        int j = i-1;
+        while(j > idxmi and v[j] == 1) j--;
+        if(j > idxmi and !v[j]){ swap(v[i], v[j]), ans++; }
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
