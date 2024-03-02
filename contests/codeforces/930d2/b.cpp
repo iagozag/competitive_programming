@@ -2,14 +2,14 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
+#define rep(i,x,n) for(auto i=x;i<n;i++)
+#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -49,51 +49,41 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-int n, m;
-vi v(MAX), seg(4*MAX);
-
-ll combine(ll a, ll b){
-    return ((a%m)*(b%m))%m;
-}
-
-ll build(int node, int tl, int tr){
-    if(tl == tr) return seg[node] = v[tl];
-
-    int tm = tl+(tr-tl)/2;
-    return seg[node] = combine(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
-}
-
-ll query(int node, int tl, int tr, int a, int b){
-    if(a > tr or b < tl) return 1;
-    if(a <= tl and b >= tr) return seg[node];
-
-    int tm = tl+(tr-tl)/2;
-    return combine(query(node*2, tl, tm, a, b), query(node*2+1, tm+1, tr, a, b));
-}
-
 void solve(){
-    cin >> n >> m;
-    rep(i, 0, n) cin >> v[i];
+    int n; cin >> n;
+    string grid[2]; cin >> grid[0] >> grid[1];
 
-    build(1, 0, n-1);
+    string l = ""; l += grid[0][0];
+    int i = 1, j = 0; bool down = false;
+    while(i < n and j < n){
+        if(down){
+            while(j < n) l += grid[1][j], j++;
+            break;
+        }
 
-    string s; int l = 0, r = n-1; cin >> s;
-    if(n == 1){ cout << v[0]%m << endl; return; }
+        if(grid[0][i] <= grid[1][j]) l += grid[0][i];
+        else l += grid[1][j], down = true;
+        i++, j++;
+    }
+    if(l.size() == grid[0].size()) l += grid[1][n-1];
 
-    rep(i, 0, n){
-        cout << query(1, 0, n-1, l, r) << " \n"[i == n-1];
-        if(s[i] == 'L') l++;
-        else r--;
+    int last = n-1;
+    while(last >= 0 and l[last+1] == grid[1][last]) last--;
+    last++;
+
+    ll ans = 1;
+    rep(k, last, n-1){
+        if(grid[0][k+1] == grid[1][k]) ans++;
+        else break;
     }
 
-    v.clear(), seg.clear();
+    cout << l << endl << ans << endl;
 }
 
 int main(){ _
     int t; cin >> t;
-    while(t--){
-        solve();
-    }
+
+    while(t--) solve();
 
     exit(0);
 }

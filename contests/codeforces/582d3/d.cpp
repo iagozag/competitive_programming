@@ -2,14 +2,14 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
+#define rep(i,x,n) for(auto i=x;i<n;i++)
+#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -49,51 +49,41 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-int n, m;
-vi v(MAX), seg(4*MAX);
-
-ll combine(ll a, ll b){
-    return ((a%m)*(b%m))%m;
-}
-
-ll build(int node, int tl, int tr){
-    if(tl == tr) return seg[node] = v[tl];
-
-    int tm = tl+(tr-tl)/2;
-    return seg[node] = combine(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
-}
-
-ll query(int node, int tl, int tr, int a, int b){
-    if(a > tr or b < tl) return 1;
-    if(a <= tl and b >= tr) return seg[node];
-
-    int tm = tl+(tr-tl)/2;
-    return combine(query(node*2, tl, tm, a, b), query(node*2+1, tm+1, tr, a, b));
-}
-
 void solve(){
-    cin >> n >> m;
-    rep(i, 0, n) cin >> v[i];
+    ll n, k; cin >> n >> k;
+    vl v(n); forr(x, v) cin >> x;
+    sort(all(v));
 
-    build(1, 0, n-1);
-
-    string s; int l = 0, r = n-1; cin >> s;
-    if(n == 1){ cout << v[0]%m << endl; return; }
-
+    ll ans = INF;
     rep(i, 0, n){
-        cout << query(1, 0, n-1, l, r) << " \n"[i == n-1];
-        if(s[i] == 'L') l++;
-        else r--;
-    }
+        int lb = lower_bound(all(v), v[i])-v.begin();
+        int ub = upper_bound(all(v), v[i])-v.begin();
 
-    v.clear(), seg.clear();
+        if(ub-lb >= k){ cout << 0 << endl; return; }
+
+        ll q = 0, need = k-(ub-lb);
+        for(int j = 2; pow(2, j-1)*v[i] <= v[n-1]; j *= 2){
+            lb = lower_bound(all(v), j*v[i])-v.begin();
+            ub = upper_bound(all(v), j*v[i]+1)-v.begin();
+
+            if(v[lb] == j*v[i] or v[lb] == j*v[i]+1){
+                ll div = (q-need)/(ub-lb), logg = log2(j);
+                if(div <= logg) q += (ub-lb)*logg;
+                int l = 0;
+                if(l < logg and q+(ub-lb) < need) q += (ub-lb), l++;
+            }
+
+            if(q >= need) break;
+        }
+
+        if(q >= need) ans = min(ans, q);
+    }
 }
 
 int main(){ _
     int t; cin >> t;
-    while(t--){
-        solve();
-    }
+
+    while(t--) solve();
 
     exit(0);
 }
