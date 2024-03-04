@@ -47,59 +47,112 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+const int MAX = 2e5+10, k = 35;
 
 int n, v;
-vi a, b;
-vl sega, segb;
+vi va, vb;
 
-ll builda(int node, int tl, int tr){
-    if(tl == tr) return sega[node] = a[tl];
+struct segt{
+	int pn, sn;
+	ii p[k], s[k];
+	int all, ans, mx;
+ 
+	segt(){
+		pn = sn = 0;
+		all = -1;
+	}
+ 
+	segt(int a, int b){
+		pn = sn = 0, ans = INF, all = b, mx = a;
+		p[pn++] = {b, a}, s[sn++] = {b, a};
+		if(b >= v) ans = min(ans, a);
+	}
+} seg[4*MAX];
 
-    int tm = tl+(tr-tl)/2;
-    return sega[node] = max(builda(node*2, tl, tm), builda(node*2+1, tm+1, tr));
+segt combine(segt a, segt b){
+	if (a.all == -1) return b;
+	if (b.all == -1) return a;
+
+	segt c;
+	c.all = (a.all | b.all);
+	c.ans = min(a.ans, b.ans);
+	c.mx = max(a.mx, b.mx);
+ 
+	rep(i, 0, a.pn){
+		int x = a.p[i].ff, y = a.p[i].ss;
+		if(c.pn > 0 && c.p[c.pn - 1].ff == x) continue;
+		c.p[c.pn++] = {x, y};
+	}
+
+	rep(i, 0, b.pn){
+		int x = (a.all | b.p[i].ff), y = max(a.mx, b.p[i].ss);
+		if(c.pn > 0 && c.p[c.pn - 1].ff == x) continue;
+		c.p[c.pn++] = {x, y};
+	}
+ 
+	rep(i, 0, b.sn){
+		int x = b.s[i].ff, y = b.s[i].ss;
+		if(c.sn > 0 && c.s[c.sn - 1].ff == x) continue;
+		c.s[c.sn++] = {x, y};
+	}
+ 
+	rep(i, 0, a.sn){
+		int x = (b.all | a.s[i].ff), y = max(b.mx, a.s[i].ss);
+		if(c.sn > 0 && c.s[c.sn - 1].ff == x) continue;
+		c.s[c.sn++] = {x, y};
+	}
+ 
+	for(int i = 0, j = b.pn - 1; i < a.sn; i++){
+		while(j >= 0 && (b.p[j].ff | a.s[i].ff) >= v) j--;
+		if (j + 1 < b.pn) c.ans = min(c.ans, max(a.s[i].ss, b.p[j + 1].ss));
+	}
+	return c;
 }
 
-ll buildb(int node, int tl, int tr){
-    if(tl == tr) return segb[node] = b[tl];
+segt build(int node, int tl, int tr){
+    if(tl == tr) return seg[node] = segt(va[tl], vb[tl]);
 
     int tm = tl+(tr-tl)/2;
-    return segb[node] = (buildb(node*2, tl, tm) | buildb(node*2+1, tm+1, tr));
+    return seg[node] = combine(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
 }
 
-ll updateb(int node, int tl, int tr, int idx, int val){
-    if(idx < tl or idx > tr) return segb[node];
-    if(tl == tr) return segb[node] = val;
+void update(int node, int tl, int tr, int idx){
+    if(tl == tr){ seg[node] = segt(va[tl], vb[tl]); return; }
 
     int tm = tl+(tr-tl)/2;
-    return segb[node] = (updateb(node*2, tl, tm, idx, val) | updateb(node*2+1, tm+1, tr, idx, val));
+    if(idx <= tm) update(node*2, tl, tm, idx);
+    else update(node*2+1, tm+1, tr, idx);
+
+    seg[node] = combine(seg[node*2], seg[node*2+1]);
 }
 
-ll query(int node, int tl, int tr, int l, int r){
-    if(l > tr or r < tl or segb[node] < v) return INF;
-    if(segb[node] >= v) return sega[node];
+segt query(int node, int tl, int tr, int l, int r){
+    if (r < tl or l > tr) return segt();
+    if(l <= tl and r >= tr) return seg[node];
 
-    int tm = tl+(tr-tl)/2;
-    return min(query(node*2, tl, tm, l, r), query(node*2+1, tm+1, tr, l, r));
+    int tm = (tl+tr)/2;
+    return combine(query(node*2, tl, tm, l, r), query(node*2+1, tm+1, tr, l, r));
 }
 
 void solve(){
     cin >> n >> v;
-    a = vi(n), b = vi(n), sega = vl(4*n), segb = vl(4*n);
-    forr(x, a) cin >> x; 
-    forr(x, b) cin >> x;
+    va = vi(n), vb = vi(n);
+    forr(x, va) cin >> x; 
+    forr(x, vb) cin >> x;
 
-    builda(1, 0, n-1), buildb(1, 0, n-1);
+    build(1, 0, n-1);
+
     int q; cin >> q;
     rep(i, 0, q){
         int op, op1, op2; cin >> op;
         if(op == 1){
-            cin >> op1 >> op2; op1--;
-            updateb(1, 0, n-1, op1, op2);
+            cin >> op1 >> op2; op1--, vb[op1] = op2;
+            update(1, 0, n-1, op1);
         } else{
             cin >> op1 >> op2; op1--, op2--;
-            ll ans = query(1, 0, n-1, op1, op2);
-            cout << (ans != INF ? ans : -1) << " ";
+
+            auto ans = query(1, 0, n-1, op1, op2);
+            cout << (ans.all >= v ? ans.ans : -1) << " ";
         }
     }
 
