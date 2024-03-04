@@ -1,12 +1,15 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(auto i=x;i<n;i++)
+#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
-#define f first
-#define s second
-#define pb push_back
+#define ff first
+#define ss second
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -16,33 +19,52 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
+void DBG() {
+    cerr << "]" << endl;
+}
+
+void DBGC() {
+    cerr << "]" << endl;
+}
+
+template<class H, class... T> void DBG(H h, T... t) {
+    cerr << to_string(h);
+    if(sizeof...(t)) cerr << ", ";
+    DBG(t...);
+}
+
+template<class H, class... T> void DBGC(H h, T... t) {
+    for(auto& x: h) cerr << x << " ";
+    if(sizeof...(t)) cerr << "], [ ";
+    DBGC(t...);
+}
+
+#ifndef _DEBUG
+#define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
+#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
+#else
+#define dbg(...) 0
+#define dbgc(...) 0
+#endif
+
+const int MAX = 2e5+10;
+
+int sum(string x){
+    int s = 0;
+    forr(y, x) s += y-'0';
+    return s;
+}
+
 void solve(){
-    string x; int k; cin >> x >> k;
-    if(stoi(x) < k) x = to_string(k);
-
-    int sum = 0;
-    for(auto& z: x) sum += z-'0';
-
-    while(sum%k != 0){
-        int j = x.size()-1;
-        if(x[j] < '9') { x[j]++, sum++; continue; }
-
-        while(x[j] == '9') sum -= 9, x[j] = '0', j--;
-        if(x[0] == '0') x[0] = '1', x += "0";
-        else x[j]++;
-
-        sum++;
-    }
-
+    int x, k; cin >> x >> k;
+    while(sum(to_string(x))%k != 0) x++;
     cout << x << endl;
 }
 
 int main(){ _
     int t; cin >> t;
-    while(t--){
-        solve();
-    }
+
+    while(t--) solve();
 
     exit(0);
 }
-

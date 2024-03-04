@@ -44,44 +44,21 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-bool isSubsetSum(vl& set, int n, int sum)
-{
-    // The value of subset[i][j] will be true if
-    // there is a subset of set[0..j-1] with sum
-    // equal to i
-    bool subset[n + 1][sum + 1];
- 
-    // If sum is 0, then answer is true
-    for (int i = 0; i <= n; i++)
-        subset[i][0] = true;
- 
-    // If sum is not 0 and set is empty,
-    // then answer is false
-    for (int i = 1; i <= sum; i++)
-        subset[0][i] = false;
- 
-    // Fill the subset table in bottom up manner
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= sum; j++) {
-            if (j < set[i - 1])
-                subset[i][j] = subset[i - 1][j];
-            if (j >= set[i - 1])
-                subset[i][j]
-                    = subset[i - 1][j]
-                      || subset[i - 1][j - set[i - 1]];
-        }
-    }
- 
-    return subset[n][sum];
-}
-
 void solve(){
     int m; cin >> m;
-    vl set, queries2;
+    map<ll, ll, greater<ll>> mp;
     for(int i = 0; i < m; i++){
         ll a, b; cin >> a >> b;
-        if(a == 1) set.pb(pow(2, b));
-        else cout << (isSubsetSum(set, set.size(), b) ? "YES" : "NO") << endl;
+        if(a == 1) mp[b]++;
+        else{
+            bool ans = false;
+            for(auto& x: mp){
+                ll p = 1<<x.f, d = b/p;
+                b -= min(x.s, d)*p;
+                if(b == 0) ans = true;
+            }
+            cout << (ans or b == 0 ? "YES" : "NO") << endl;
+        }
     }
 }
 
