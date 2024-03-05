@@ -51,27 +51,21 @@ const int MAX = 2e5+10;
 
 void solve(){
     int n, k; cin >> n >> k;
-    vector<vector<char>> v(k, vector<char>(n));
-    rep(i, 0, n) rep(j, 0, k) cin >> v[j][i];
+    vector<string> v(n);
+    rep(i, 0, n) cin >> v[i];
 
-    sort(all(v));
-
+    ll ans = 0; unordered_set<string> str;
     rep(i, 0, n){
         rep(j, i+1, n){
-            rep(l, 0, k){
-                set<char> s; s.insert(v[l][i]); s.insert(v[l][j]);
-                char c;
-                if(s.size() == 1) c = *s.begin();
-                else{
-                    if(!s.count('S')) c = 'S';
-                    else if(!s.count('E')) c = 'E';
-                    else c = 'T';
-                }
-
-
-            }
+            string buffer = "";
+            rep(l, 0, k)
+                buffer += (v[i][l] == v[j][l] ? v[i][l] : 'S' ^ 'E' ^ 'T' ^ v[i][l] ^ v[j][l]);
+            if(str.count(buffer)) ans++;
         }
+        str.insert(v[i]);
     }
+
+    cout << ans << endl;
 }
 
 int main(){ _
