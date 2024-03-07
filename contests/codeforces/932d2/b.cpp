@@ -47,39 +47,40 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+const int MAX = 1e5+10;
 
-int sum(string s, int st, int end, int d){
-    int ss = 0;
-    if(d == 1) rep(i, st, end) ss += s[i]-'0';
-    else repr(i, st, end) ss += s[i]-'0';
-    return ss;
+void wrong(){
+    cout << -1 << endl;
 }
 
 void solve(){
     int n; cin >> n;
-    vector<string> v(n); rep(i, 0, n) cin >> v[i];
+    vi v(n), mp(MAX);
+    rep(i, 0, n){
+        cin >> v[i], mp[v[i]]++;
+    }
 
-    int cnt[6][46]; ll ans = 0;
-    forr(x, v) cnt[x.size()][sum(x, 0, x.size(), 1)]++;
-    forr(x, v)
-        for(int i = x.size()%2; i <= x.size(); i+=2){
-            int sz = x.size()+i;
-            int s1 = sum(x, 0, sz/2, 1), s2 = sum(x, sz/2, x.size(), 1);
-            if(s1-s2 >= 0) ans += cnt[i][s1-s2];
-        }
-    forr(x, v)
-        for(int i = x.size()%2; i <= x.size(); i+=2){
-            int sz = x.size()+i;
-            int s1 = sum(x, x.size()-1, sz/2, -1), s2 = sum(x, sz/2-1, 0, -1);
-            if(s1-s2 >= 0) ans += cnt[i][s1-s2];
-        }
+    int i = 0;
+    while(i < n and mp[i]){
+        if(!mp[i]) break;
+        if(mp[i] == 1){ return wrong(); }
+        i++;
+    }
+    if(i == n) return wrong();
 
-    cout << ans << endl;
+    set<int> s; int j = 0;
+    for(; j < n; j++){
+        if(v[j] < i){
+            if(mp[v[j]] > 1) s.insert(v[j]), mp[v[j]]--;
+            else return wrong();
+        }
+        if(s.size() == i) break;
+    }
+    cout << 2 << endl << 1 << " " << j+1 << endl << j+2 << " " << n << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
 
     while(t--) solve();
 

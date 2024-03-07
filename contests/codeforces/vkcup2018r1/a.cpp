@@ -49,33 +49,14 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-int sum(string s, int st, int end, int d){
-    int ss = 0;
-    if(d == 1) rep(i, st, end) ss += s[i]-'0';
-    else repr(i, st, end) ss += s[i]-'0';
-    return ss;
-}
-
 void solve(){
-    int n; cin >> n;
-    vector<string> v(n); rep(i, 0, n) cin >> v[i];
-
-    int cnt[6][46]; ll ans = 0;
-    forr(x, v) cnt[x.size()][sum(x, 0, x.size(), 1)]++;
-    forr(x, v)
-        for(int i = x.size()%2; i <= x.size(); i+=2){
-            int sz = x.size()+i;
-            int s1 = sum(x, 0, sz/2, 1), s2 = sum(x, sz/2, x.size(), 1);
-            if(s1-s2 >= 0) ans += cnt[i][s1-s2];
+    int l, r; cin >> l >> r;
+    vi num;
+    rep(i, 0, 29){
+        rep(j, 0, 17){
+            
         }
-    forr(x, v)
-        for(int i = x.size()%2; i <= x.size(); i+=2){
-            int sz = x.size()+i;
-            int s1 = sum(x, x.size()-1, sz/2, -1), s2 = sum(x, sz/2-1, 0, -1);
-            if(s1-s2 >= 0) ans += cnt[i][s1-s2];
-        }
-
-    cout << ans << endl;
+    }
 }
 
 int main(){ _

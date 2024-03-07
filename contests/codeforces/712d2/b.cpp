@@ -49,37 +49,25 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-int sum(string s, int st, int end, int d){
-    int ss = 0;
-    if(d == 1) rep(i, st, end) ss += s[i]-'0';
-    else repr(i, st, end) ss += s[i]-'0';
-    return ss;
-}
-
 void solve(){
-    int n; cin >> n;
-    vector<string> v(n); rep(i, 0, n) cin >> v[i];
+    int n; cin >> n; string s, s1; cin >> s >> s1;
 
-    int cnt[6][46]; ll ans = 0;
-    forr(x, v) cnt[x.size()][sum(x, 0, x.size(), 1)]++;
-    forr(x, v)
-        for(int i = x.size()%2; i <= x.size(); i+=2){
-            int sz = x.size()+i;
-            int s1 = sum(x, 0, sz/2, 1), s2 = sum(x, sz/2, x.size(), 1);
-            if(s1-s2 >= 0) ans += cnt[i][s1-s2];
-        }
-    forr(x, v)
-        for(int i = x.size()%2; i <= x.size(); i+=2){
-            int sz = x.size()+i;
-            int s1 = sum(x, x.size()-1, sz/2, -1), s2 = sum(x, sz/2-1, 0, -1);
-            if(s1-s2 >= 0) ans += cnt[i][s1-s2];
-        }
+    vector<ii> v(n+1); v[0].ff = v[0].ss = 0; 
+    rep(i, 1, n+1) v[i].ff = v[i-1].ff+(s1[i-1]=='0'), v[i].ss = v[i-1].ss+(s1[i-1]=='1');
 
-    cout << ans << endl;
+    bool flip = false;
+    repr(i, n-1, 0){
+        if(!flip and s1[i]!=s[i] or flip and s1[i] == s[i]){ 
+            if(v[i+1].ff != v[i+1].ss){ cout << "NO\n"; return; }
+            flip = !flip;
+        }
+    }
+
+    cout << "YES" << endl;
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
 
     while(t--) solve();
 
