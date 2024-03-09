@@ -49,22 +49,33 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-void solve(){
-    ll l, r; cin >> l >> r;
-    vi num;
-    rep(i, 0, 32){
-        rep(j, 0, 20){
-            if(pow(2, i)*pow(3, j) > r) break;
-            num.eb(pow(2, i)*pow(3, j));
-        }
-    }
-    sort(all(num));
+void NO(){
+    cout << "No" << endl;
+}
 
-    cout << upper_bound(all(num), r)-lower_bound(all(num), l) << endl;
+void YES(){
+    cout << "Yes" << endl;
+}
+
+void solve(){
+    int n, k; cin >> n >> k;
+    string a, b; cin >> a >> b;
+
+    unordered_map<char,int> mpa, mpb;
+    rep(i, 0, n) mpa[a[i]]++, mpb[b[i]]++;
+
+    char c = 'a';
+    rep(i, 0, 26){
+        if(mpa[c+i] < mpb[c+i] or (mpa[c+i]-=mpb[c+i])%k) return NO();
+
+        mpa[c+i+1] += mpa[c+i];
+    }
+
+    return YES();
 }
 
 int main(){ _
-    int t = 1;
+    int t; cin >> t;
 
     while(t--) solve();
 
