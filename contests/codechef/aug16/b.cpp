@@ -51,16 +51,52 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 1e6+10;
+
+vector<vi> g, comp;
+vector<bool> vis;
+vi order, c;
+
+void dfs(int v){
+    vis[v] = true;
+    forr(ve, g[v]) if(!vis[ve]) dfs(ve);
+    order.eb(v);
+}
+
+void dfs2(int v){
+    vis[v] = 1, c.eb(v);
+    forr(ve, g[v]){
+        if(ve == v) c.eb(ve);
+        if(!vis[ve]) dfs2(ve);
+    }
+}
 
 void solve(){
+    int n; cin >> n; g = vector<vi>(n), vis = vector<bool>(n);
+    vi v(n); forr(x, v) cin >> x;
+    rep(i, 0, n){
+        g[i].eb((i+v[i]+1)%n);
+    }
+    
+    rep(i, 0, n) if(!vis[i]) dfs(i);
 
+    vis = vector<bool>(n);
+    forr(ve, order){
+        if(vis[ve]) continue;
+        dfs2(ve), comp.eb(c), c.clear();
+    }
+    
+    int ans = 0;
+    forr(x, comp) if(x.size() > 1) ans += (x.size() == 2 and x[0] == x[1] ? 1 : x.size());
+    cout << ans << endl;
+
+    order.clear(), comp.clear();
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t; cin >> t;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

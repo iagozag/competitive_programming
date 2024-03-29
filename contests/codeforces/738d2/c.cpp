@@ -51,10 +51,27 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 1e4+10, MOD = 1e9+7;
+
+vector<vi> g;
+vi vis, order;
+
+void dfs(int v){
+    vis[v] = 1;
+    forr(ve, g[v]) if(!vis[ve]) dfs(ve);
+    order.eb(v);
+}
 
 void solve(){
+    int n; cin >> n; g = vector<vi>(n+1), vis = vi(n+1), order.clear();
+    rep(i, 0, n-1) g[i].eb(i+1);
+    rep(i, 0, n){ int a; cin >> a; if(!a) g[i].eb(n); else g[n].eb(i); }
 
+    rep(i, 0, n+1) if(!vis[i]) dfs(i);
+    reverse(all(order));
+
+    forr(x, order) cout << x+1 << " ";
+    cout << endl;
 }
 
 int main(){ _

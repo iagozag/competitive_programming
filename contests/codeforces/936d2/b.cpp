@@ -54,13 +54,35 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, k; cin >> n >> k;
+    vi v(n); forr(x, v) cin >> x;
 
+    ll ma = 0, sum = 0, start = 0, end = 0, s = 0;
+    rep(i, 0, n){
+        sum += v[i];
+        if(ma < sum){ ma = sum, start = s, end = i; }
+        ma = max(ma, sum);
+        if(sum < 0) sum = 0, s = i+1; 
+    }
+    rep(i, 0, k) ma = (ma*2)%MOD;
+    if(ma == 0){ 
+        rep(i, 0, n){ma = (ma+v[i])%MOD; } 
+        if(ma == 0){ cout << 0 << endl; return; }
+        cout << (MOD+ma) << endl; 
+        return; 
+    }
+
+    rep(i, 0, n){
+        if(i >= start and i <= end) continue;
+        ma = (ma+v[i])%MOD; 
+    }
+    cout << (ma >= 0 ? ma : MOD+ma) << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t; cin >> t;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

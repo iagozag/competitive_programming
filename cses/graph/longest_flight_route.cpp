@@ -48,17 +48,50 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "NO" << endl; }
+void no(){ cout << "IMPOSSIBLE" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 1e5+10, MOD = 1e9+7;
+
+int n, m;
+vector<vi> g, g_t;
+vi dist, vis, order, par;
+
+void dfs1(int v){
+    vis[v] = 1;
+    forr(ve, g[v]) if(!vis[ve]) dfs1(ve);
+    order.eb(v);
+}
 
 void solve(){
+    cin >> n >> m;
+    g = g_t = vector<vi>(n), dist = vi(n, -1), vis = par = vi(n);
+    rep(i, 0, m){
+        int a, b; cin >> a >> b; --a, --b;
+        g[a].eb(b), g_t[b].eb(a);
+    }
 
+    dfs1(0), reverse(all(order));
+    dist[0] = 1;
+    forr(x, order){
+        if(dist[x] == -1) continue;
+        forr(ve, g[x])
+            if(dist[x]+1 > dist[ve]) dist[ve] = dist[x]+1, par[ve] = x;
+    }
+
+    if(dist[n-1] == -1) return no();
+
+    stack<int> ans; int u = n-1;
+    while(par[u] != u) ans.push(u+1), u = par[u];
+    ans.push(1);
+
+    cout << dist[n-1] << endl;
+    while(!ans.empty()) cout << ans.top() << " ", ans.pop();
+    cout << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 

@@ -54,7 +54,22 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    string s; cin >> s;
+    int h, m; string buffer = "";
+    rep(i, 0, 2) buffer += s[i];
+    h = stoi(buffer), buffer = "";
+    rep(i, 3, s.size()) buffer += s[i];
+    m = stoi(buffer);
+    bool am = true;
+    if(h >= 12) am = false;
 
+    if(h == 0 and m == 0){ cout << "12:00 AM" << endl; return; }
+    if(h == 0){ cout << "12:" << (m < 10 ? "0" : "") << m << " AM" << endl; return; }
+    if(h == 12 and m != 0){ cout << "12:" << (m < 10 ? "0" : "") << m << " PM" << endl; return; }
+    if(h == 12 and m == 0){ cout << "12:00 PM" << endl; return; }
+
+    if(am) cout << (h < 10 ? "0" : "") << h << ":" << (m < 10 ? "0" : "") << m << " AM" << endl;
+    else cout << (h != 12 and h-12 < 10 ? "0" : "") << h-12 << ":" << (m < 10 ? "0" : "") << m << " PM" << endl;
 }
 
 int main(){ _

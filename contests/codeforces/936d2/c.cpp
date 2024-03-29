@@ -51,16 +51,49 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 2e5+10;
+
+int n, k, res;
+vector<vi> g;
+
+int dfs(int v, int p, int x){
+    int sz = 1;
+    forr(ve, g[v]){
+        if(ve == p) continue;
+        sz += dfs(ve, v, x);
+    }
+
+    if(sz >= x) res++, sz = 0;
+    return sz;
+}
+
+bool check(int m){
+    res = 0;
+    int t = dfs(0, -1, m);
+    return res > k or (res == k and t >= m);
+}
 
 void solve(){
+    cin >> n >> k; g = vector<vi>(n);
+    rep(i, 0, n-1){
+        int a, b; cin >> a >> b; --a, --b;
+        g[a].eb(b), g[b].eb(a);
+    }
+    
+    int l = 1, r = n/(k+1)+1, ans;
+    while(l <= r){
+        int m = l+(r-l)/2;
+        if(check(m)) ans = m, l = m+1;
+        else r = m-1;
+    }
 
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t; cin >> t;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

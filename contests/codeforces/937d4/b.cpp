@@ -54,7 +54,18 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    int n; cin >> n;
+    string a = "##", b = ".."; bool is_a = true;
+    string need = "", need1 = "";
+    rep(i, 0, n){
+         if(is_a) need += a, need1 += b, is_a = false;
+         else need += b, need1 += a, is_a = true;
+    }
+    bool is_n = true;
+    rep(i, 0, n){
+        if(is_n) cout << need << endl << need << endl, is_n = false;
+        else cout << need1 << endl << need1 << endl, is_n = true;
+    }
 }
 
 int main(){ _

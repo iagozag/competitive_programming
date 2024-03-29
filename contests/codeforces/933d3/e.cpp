@@ -9,7 +9,6 @@ using namespace std;
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
 #define eb emplace_back
 
 typedef long long ll;
@@ -48,19 +47,48 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+const int MAX = 2e5+10;
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+ll n, m, k, d;
+ll grid[101][MAX];
+
+ll dp(int i){
+    vl memo(m); memo[0] = 1;
+    multiset<ll> ms; ms.insert(1LL);
+
+    int j = 0, r = 1;
+    while(r < m and r <= d+1) memo[r] = grid[i][r]+2, ms.insert(memo[r]), r++;
+    while(r < m){
+        ms.erase(ms.find(memo[j])), j++;
+        memo[r] = grid[i][r]+1+*ms.begin();
+        ms.insert(memo[r]), r++;
+    }
+    return memo[m-1];
+}
 
 void solve(){
+    cin >> n >> m >> k >> d;
+    rep(i, 0, n) rep(j, 0, m) cin >> grid[i][j];
 
+    vl dist(n);
+    rep(i, 0, n) dist[i] = dp(i);
+
+    ll sum = 0; int i = 0, j = 0;
+    for(; j < k; j++) sum += dist[j];
+
+    ll ans = sum;
+    while(j < n){
+        sum -= dist[i], sum += dist[j];
+        ans = min(ans, sum), i++, j++;
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t; cin >> t;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

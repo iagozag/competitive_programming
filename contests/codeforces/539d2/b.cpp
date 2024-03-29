@@ -54,11 +54,22 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, sum = 0; cin >> n;
+    vi v(n); forr(x, v) cin >> x, sum += x;
+    sort(all(v));
 
+    int ans = sum;
+    repr(j, n-1, 1){
+        rep(i, 2, sqrt(v[j])+1){
+            if(v[j]%i == 0)
+                ans = min(ans, sum-v[0]-v[j]+v[0]*i+v[j]/i);
+        }
+    }
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 

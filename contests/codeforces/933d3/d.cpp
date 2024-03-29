@@ -9,7 +9,6 @@ using namespace std;
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
 #define eb emplace_back
 
 typedef long long ll;
@@ -48,19 +47,41 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
-
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 2e5+10;
 
 void solve(){
+    int n, m, x; cin >> n >> m >> x;
 
+    set<int> pp; pp.insert(x);
+    rep(i, 0, m){
+        int t; char c; cin >> t >> c;
+
+        set<int> tmp;
+        forr(y, pp){
+            int cw = y+t, ccw = y-t;
+            if(cw > n) cw -= n;
+            if(ccw <= 0) ccw += n;
+
+            if(c == '?'){
+                tmp.insert(cw);
+                tmp.insert(ccw);
+            }
+            else if(c == '0') tmp.insert(cw);
+            else tmp.insert(ccw);
+        }
+
+        pp = tmp;
+    }
+    
+    cout << pp.size() << endl;
+    forr(y, pp) cout << y << " ";
+    cout << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t; cin >> t;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

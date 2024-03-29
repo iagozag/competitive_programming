@@ -48,13 +48,30 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "NO" << endl; }
+void no(){ cout << "-1" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 4e5+10, MOD = 1e9+7;
 
 void solve(){
+    int a, b, c; cin >> a >> b >> c;
 
+    if(c == 0) return no();
+    if(a == 0){
+        if(c > 1) return no();
+        else cout << b << endl;
+        return;
+    }
+
+    int ans = -1, ta = 1;
+    while(a-ta >= 0) ans++, a -= ta, ta *= 2;
+
+    int rest = ta-a;
+    if(rest) b -= rest, ans++;
+    if(b) b -= (ta-rest)*2, b -= rest, ans++;
+    c -= ta*2, ans++;
+    if(c) return no();
+    cout << ans << endl;
 }
 
 int main(){ _

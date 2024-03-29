@@ -48,17 +48,50 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "NO" << endl; }
+void no(){ cout << "Sandro fails." << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 1e4+10, MOD = 1e9+7;
+
+vector<vi> g(MAX);
+vi in(MAX), vis(MAX), color(MAX);
+
+bool cyc(int v){
+    color[v] = 1;
+    forr(ve, g[v]){
+        if(color[ve] == 0 and cyc(ve)) return true;
+        if(color[ve] == 1) return true;
+    }
+    color[v] = 2;
+    return false;
+}
 
 void solve(){
+    int n, m; cin >> n >> m;
+    rep(i, 0, m){
+        int a, b; cin >> a >> b; --a, --b;
+        g[a].eb(b), in[b]++;
+    }
+    rep(i, 0, n) sort(all(g[i]));
 
+    repr(i, n-1, 0) if(color[i] == 0 and cyc(i)) return no();
+
+    vi ans; priority_queue<int> q;
+    rep(i, 0, n) if(in[i] == 0) q.push(-i);
+    while(!q.empty()){
+        int v = q.top(); v -= 2*v; q.pop(), ans.eb(v);
+        forr(ve, g[v]){
+            in[ve]--;
+            if(in[ve] == 0) q.push(-ve);
+        }
+    }
+
+    forr(x, ans) cout << x+1 << " ";
+    cout << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 

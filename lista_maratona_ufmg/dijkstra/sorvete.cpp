@@ -48,19 +48,47 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+const int MAX = 2e5+10;
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+int n, m, x;
+vector<vector<ii>> g(MAX);
+vector<ll> dist;
+
+void dijkstra(int s){
+    dist = vl(n, LINF);
+    priority_queue<ii> pq; pq.push({0, s});
+    while(!pq.empty()){
+        auto [w, v] = pq.top(); w -= 2*w; pq.pop();
+        if(w >= dist[v]) continue;
+        dist[v] = w;
+        forr(ve, g[v]) if(ve.ss+w < dist[ve.ff]) pq.push({-ve.ss-w, ve.ff});
+    }
+}
 
 void solve(){
+    cin >> n >> m >> x;
+    rep(i, 0, m){ 
+        int a, b, w; cin >> a >> b >> w; --a, --b;
+        g[a].eb(b, w), g[b].eb(a, w);
+    }
 
+    dijkstra(0);
+
+    vector<pair<int,ll>> f(x);
+    forr(y, f) cin >> y.ff, --y.ff, y.ss = dist[y.ff];
+
+    dijkstra(n-1);
+
+    ll ans = LINF;
+    forr(y, f){ ans = min(ans, y.ss+dist[y.ff]); }
+
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t = 1;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

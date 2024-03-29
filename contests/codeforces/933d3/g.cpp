@@ -48,19 +48,49 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+const int MAX = 2e5+10;
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+vector<int> dist;
+vector<vi> g;
+
+int bfs(int s, int d){
+    queue<int> q; q.push(s), dist[s] = 0;
+    while(!q.empty()){
+        int v = q.front(); q.pop();
+
+        forr(ve, g[v]) if(dist[ve] == -1){
+            dist[ve] = dist[v]+1, q.push(ve);
+        }
+    }
+
+    return dist[d]/2;
+}
 
 void solve(){
+    int n, m; cin >> n >> m;
+    vector<array<int, 3>> edges(m); set<int> cl;
+    rep(i, 0, m){
+        int a, b, c; cin >> a >> b >> c; a--, b--;
+        edges[i] = {a, b, c}, cl.insert(c); 
+    }
 
+    int so, d; cin >> so >> d; so--, d--;
+
+    vi colors(all(cl));
+    g = vector<vi>(n+colors.size());
+    for(auto& [x, y, z]: edges){
+        int idx = lower_bound(all(colors), z)-colors.begin();
+        g[x].eb(n+idx), g[n+idx].eb(x), g[y].eb(n+idx), g[n+idx].eb(y);
+    }
+
+    dist = vi(n+colors.size(), -1);
+    cout << bfs(so, d) << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t; cin >> t;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

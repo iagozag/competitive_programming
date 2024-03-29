@@ -51,16 +51,32 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 2e5+10;
+
+vector<ii> moves = {{1, 0}, {-1, 0}, {0, 1}};
+
+
 
 void solve(){
+    int n; char grid[2][MAX];
+    cin >> n;
+    rep(i, 0, 2) rep(j, 0, n) cin >> grid[i][j];
 
+    int i = 0, j = 0;
+    while(true){
+        if(i == 1 and j == n-1) break;
+        if(j+2 < n and grid[i][j+1] == '>') j += 2;
+        else if(grid[!i][j] == '>') i = !i, j++;
+        else return no();
+    }
+
+    return yes();
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t; cin >> t;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

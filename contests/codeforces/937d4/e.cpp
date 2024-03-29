@@ -53,8 +53,37 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+bool comp(string s, string r){
+    int cnt = 0, m = r.size();
 
+    string buffer = "";
+    rep(i, 0, s.size()/m) buffer += r;
+    r = buffer;
+
+    rep(i, 0, s.size()){
+        if(s[i] != r[i]) cnt++;
+        if(cnt > 1) return false;
+    }
+    return true;
+}
+
+void solve(){
+    int n; cin >> n; string s; cin >> s;
+    string buffer = ""; int mi = INF;
+    rep(i, 0, s.size()){
+        buffer += s[i]; int m = buffer.size();
+        if(n%m == 0 and comp(s, buffer)){ 
+            mi = min(mi, m); 
+        }
+    }
+    reverse(all(s)); buffer = "";
+    rep(i, 0, s.size()){
+        buffer += s[i]; int m = buffer.size();
+        if(n%m == 0 and comp(s, buffer)){ 
+            mi = min(mi, m);
+        }
+    }
+    cout << mi << endl;
 }
 
 int main(){ _

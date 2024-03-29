@@ -48,17 +48,61 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "NO" << endl; }
+void no(){ cout << "IMPOSSIBLE" << endl; }
 void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+int n, m;
+vector<vi> g, g_t;
+vector<bool> vis;
+vi id, order;
 
+void addedge(int a, int b){
+    g[a^1].eb(b), g[b^1].eb(a);
+    g_t[b].eb(a^1), g_t[a].eb(b^1);
+}
+
+void dfs1(int v){
+    vis[v] = 1;
+    forr(ve, g[v]) if(!vis[ve]) dfs1(ve);
+    order.eb(v);
+}
+
+void dfs2(int v, int p){
+    id[v] = p;
+    forr(ve, g_t[v]) if(id[ve] == -1) dfs2(ve, p);
+}
+
+void solve(){
+    cin >> n >> m; 
+    g = g_t = vector<vi>(2*m); vis = vector<bool>(m*2), id = vi(m*2, -1);
+    rep(i, 0, n){
+        int a, b; char c, d; cin >> c >> a >> d >> b; --a, --b;
+        if(c == '+' and d == '+') addedge(a<<1, b<<1);
+        else if(c == '-' and d == '+') addedge((a<<1)^1, b<<1);
+        else if(c == '+' and d == '-') addedge(a<<1, (b<<1)^1);
+        else addedge((a<<1)^1, (b<<1)^1);
+    }
+
+    rep(i, 0, 2*m) if(!vis[i]) dfs1(i);
+    reverse(all(order));
+    
+    int k = 0;
+    forr(x, order) if(id[x] == -1) dfs2(x, k++);
+    
+    vi values(m);
+    for(int i = 0; i < 2*m; i += 2){
+        if(id[i] == id[i+1]) return no();
+        values[i/2] = id[i] > id[i+1];
+    }
+
+    forr(x, values) cout << (x ? '+' : '-') << " ";
+    cout << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 

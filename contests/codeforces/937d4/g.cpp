@@ -53,8 +53,23 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+int n;
+vector<bool> ok(16);
+int memo[16][2];
 
+int dp(int i){
+     
+}
+
+void solve(){
+    cin >> n;
+    vector<pair<string,string>> v(n);
+    forr(x, v) cin >> x.ff >> x.ss;
+
+    rep(i, 0, n+1){
+        if(v[i].ff == v[i+1].ff or v[i].ff == v[i+1].ss or v[i].ss == v[i+1].ff or v[i].fss == v[i+1].ss)
+            ok[i] = 1;
+    }
 }
 
 int main(){ _
