@@ -9,7 +9,6 @@ using namespace std;
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
 #define eb emplace_back
 
 typedef long long ll;
@@ -48,30 +47,31 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "-1" << endl; }
-void yes(){ cout << "YES" << endl; }
-
-const int MAX = 4e5+10, MOD = 1e9+7;
+const int MAX = 2e5+10;
 
 void solve(){
-    int a, b, c; cin >> a >> b >> c;
-    if(c-1 != a) return no();
+    ll n, m, c, q; cin >> n >> m >> c >> q;
+    unordered_set<ll> row, col;
+    vector<ll[3]> v(q);
+    forr(x, v) cin >> x[0] >> x[1] >> x[2];
 
-    int ans = 0, ta = 1;
-    while(a-ta >= 0) ans++, a -= ta, ta *= 2;
-
-    if(a){
-        if(b >= ta-a) b -= ta-a;
-        else b = 0;
-        ta += a, ans++;
+    vl ans(c+1);
+    repr(i, q-1, 0){
+        auto [x, y, z] = v[i];
+        if(x == 1){
+            if(!row.count(y)) ans[z] += m-col.size(), row.insert(y);
+        } else{
+            if(!col.count(y)) ans[z] += n-row.size(), col.insert(y);
+        }
     }
-    cout << ans+b/ta+(b%ta != 0) << endl;
+
+    rep(i, 1, c+1) cout << ans[i] << " \n"[i == c];
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t = 1;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

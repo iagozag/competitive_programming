@@ -9,7 +9,6 @@ using namespace std;
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
 #define eb emplace_back
 
 typedef long long ll;
@@ -42,36 +41,38 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 #ifndef _DEBUG
 #define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
-#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
+#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__)
 #else
 #define dbg(...) 0
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "-1" << endl; }
-void yes(){ cout << "YES" << endl; }
+const int MAX = 2e5+10;
 
-const int MAX = 4e5+10, MOD = 1e9+7;
+void NO(){
+    cout << -1 << endl;
+}
+
+void YES(){
+    cout << "Yes" << endl;
+}
 
 void solve(){
-    int a, b, c; cin >> a >> b >> c;
-    if(c-1 != a) return no();
+    int n; cin >> n; map<int,int> col;
+    vi a(n), b(n); forr(x, a) cin >> x; forr(x, b) cin >> x;
 
-    int ans = 0, ta = 1;
-    while(a-ta >= 0) ans++, a -= ta, ta *= 2;
-
-    if(a){
-        if(b >= ta-a) b -= ta-a;
-        else b = 0;
-        ta += a, ans++;
+    int q; cin >> q;
+    rep(i, 0, q){
+        int x, y; cin >> x >> y; x--, y--;
+        cout << (a[x]+b[y] > n ? '#' : '.');
     }
-    cout << ans+b/ta+(b%ta != 0) << endl;
+        cout << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t = 1;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }

@@ -51,25 +51,37 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 100, MOD = 1e9+7;
 
-int n;
-vector<bool> ok(16);
-int memo[16][2];
+int n, qnt;
+vector<vi> g;
+vector<bool> vis;
 
-int dp(int i){
-     
+void dfs(int v){
+    vis[v] = 1; if(v < n) qnt++;
+    forr(ve, g[v]){
+        if(!vis[ve]) dfs(ve);
+    }
+}
+
+void addedge(int a, int b){
+    g[a].eb(b), g[b].eb(a);
 }
 
 void solve(){
-    cin >> n;
-    vector<pair<string,string>> v(n);
-    forr(x, v) cin >> x.ff >> x.ss;
-
-    rep(i, 0, n+1){
-        if(v[i].ff == v[i+1].ff or v[i].ff == v[i+1].ss or v[i].ss == v[i+1].ff or v[i].fss == v[i+1].ss)
-            ok[i] = 1;
+    cin >> n; g = vector<vi>(MAX), vis = vector<bool>(MAX);
+    vector<pair<string,string>> v(n); map<string,int> mp; int k = n;
+    rep(i, 0, n){
+        pair<string,string>& x = v[i];
+        cin >> x.ff >> x.ss;
+        if(!mp.count(x.ff)) mp[x.ff] = k++;
+        if(!mp.count(x.ss)) mp[x.ss] = k++;
+        addedge(i, mp[x.ff]*2), addedge(i, mp[x.ss]*2+1); 
     }
+
+    int ma = 0;
+    rep(i, 0, n) if(!vis[i]) qnt = 0, dfs(i), ma = max(ma, qnt);
+    cout << n-ma << endl;
 }
 
 int main(){ _

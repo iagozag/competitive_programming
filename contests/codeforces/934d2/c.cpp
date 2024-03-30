@@ -9,7 +9,6 @@ using namespace std;
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
 #define eb emplace_back
 
 typedef long long ll;
@@ -48,30 +47,25 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-void no(){ cout << "-1" << endl; }
-void yes(){ cout << "YES" << endl; }
-
-const int MAX = 4e5+10, MOD = 1e9+7;
+const int MAX = 2e5+10;
 
 void solve(){
-    int a, b, c; cin >> a >> b >> c;
-    if(c-1 != a) return no();
+    int n; cin >> n; vi v(n); unordered_set<int> s; 
+    rep(i, 0, n){ cin >> v[i], s.insert(v[i]); }
+    sort(all(v));
 
-    int ans = 0, ta = 1;
-    while(a-ta >= 0) ans++, a -= ta, ta *= 2;
+    vi pref(n+1); pref[0] = 0;
+    rep(i, 1, n) pref[i] = pref[i-1]+v[i]==v[i-1];
 
-    if(a){
-        if(b >= ta-a) b -= ta-a;
-        else b = 0;
-        ta += a, ans++;
+    rep(i, 0, n+2){ 
+        if(!s.count(i)){ cout << i << endl; return; }
     }
-    cout << ans+b/ta+(b%ta != 0) << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int t; cin >> t;
 
-    while(ttt--) solve();
+    while(t--) solve();
 
     exit(0);
 }
