@@ -50,72 +50,41 @@ template<class H, class... T> void DBGC(H h, T... t) {
 const int MAX = 2e5+10;
 
 int n, m, a, b;
-vector<vi> g(MAX);
-vector<vi> par(MAX);
-vi dist(MAX, -1);
-unordered_set<int> s;
+vector<vi> dist;
 
-int bfs(int x){
-    dist[x] = 0, par[x].pb(x);
+void bfs(int s, int u, vector<vi>& g){
+	vi&d = dist[u];
+	fill(all(d), INF), d[s] = 0;
 
-    int v;
-    queue<int> q; q.push(x);
-    while(!q.empty()){
-        v = q.front(); q.pop();
-
-        if(v == a or v == b) break;
-
-        for(auto ve: g[v]){
-            if(dist[ve] == -1){
-                dist[ve] = dist[v]+1, par[ve].pb(v);
-                q.push(ve);
-            }
-            else if(dist[v] == dist[par[ve][0]]) par[ve].pb(v);
-        }
-    }
-
-    return dist[v];
-}
-
-int bfs2(int obj){
-    queue<int> q;
-    forr(s) q.push(x), dist[x] = 0;
-
+    queue<int> q; q.push(s);
     while(!q.empty()){
         int v = q.front(); q.pop();
-        if(v == obj) break;
 
-        for(auto ve: g[v])
-            if(dist[ve] == INF) dist[ve] = min(dist[ve], dist[v]+1), q.push(ve);
-    }
-
-    return dist[obj];
-}
-
-void make_path(int source){
-    queue<int> q; q.push(source), s.insert(source);
-    int v = q.front();
-    while(!q.empty()){
-        v = q.front(); q.pop();
-
-        for(auto ve: par[v])
-            if(!s.count(ve)) s.insert(ve), q.push(ve);
+        for(auto ve: g[v]){
+			if(d[v]+1 < d[ve])
+	            d[ve] = d[v]+1, q.push(ve);
+        }
     }
 }
 
 void solve(){
     cin >> n >> m >> a >> b;
+	vector<vi> g(n+1), g_t(n+1); dist = vector<vi>(3, vi(n+1));
     rep(i, 0, m){
         int va, vb; cin >> va >> vb;
-        g[va].pb(vb);
+        g[va].pb(vb), g_t[vb].pb(va);
     }
 
-    int ans = bfs(0); int source = (ans == dist[a] ? a : b);
-    
-    make_path(source);
+	bfs(0, 0, g);
+	bfs(a, 1, g_t);
+	bfs(b, 2, g_t);
 
-    fill(all(dist), INF);
-    cout << ans + bfs2(source == a ? b : a) << endl;
+	int mi = INF;
+	rep(i, 0, n){
+		mi = min(mi, dist[0][i]+dist[1][i]+dist[2][i]);
+	}
+
+	cout << mi << endl;
 }
 
 int main(){ _
