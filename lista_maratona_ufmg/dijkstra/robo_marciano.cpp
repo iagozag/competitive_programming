@@ -56,15 +56,16 @@ int dist_r(int a[4], int b[4]){
     return lxa-rxb;
 }
 
-void dijkstra(int s){
+int dijkstra(int s, int n){
+    dist = vi(n, INF);
+
     priority_queue<ii> pq; pq.push({0, s});
     while(!pq.empty()){
-        auto [w, v] = pq.top(); w -= 2*w; pq.pop();
-        if(w >= dist[v]) continue;
-        dist[v] = w;
+        auto [w, v] = pq.top(); w *= -1; pq.pop();
         if(v == 1) break;
-        for(auto [ve, d]: g[v]) if(w+d < dist[ve]) pq.push({-w-d, ve});
+        for(auto [ve, d]: g[v]) if(w+d < dist[ve]) dist[ve] = w+d, pq.push({-w-d, ve});
     }
+	return dist[1];
 }
 
 void solve(){
@@ -82,9 +83,7 @@ void solve(){
         g[i].eb(j, dd), g[j].eb(i, dd);
     }
 
-    dist = vi(n, INF);
-    dijkstra(0);
-    printf("%d\n", dist[1]);
+    printf("%d\n", dijkstra(0, n));
 }
 
 int main(){ // _
