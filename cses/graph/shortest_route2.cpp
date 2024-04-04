@@ -2,14 +2,15 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
+#define rep(i,x,n) for(auto i=x;i<n;i++)
+#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
 #define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -47,51 +48,33 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+void no(){ cout << "NO" << endl; }
+void yes(){ cout << "YES" << endl; }
 
-int n, m, a, b;
-vector<vi> dist;
-
-void bfs(int s, int u, vector<vi>& g){
-	vi&d = dist[u];
-	fill(all(d), INF), d[s] = 0;
-
-    queue<int> q; q.push(s);
-    while(!q.empty()){
-        int v = q.front(); q.pop();
-
-        for(auto ve: g[v]){
-			if(d[v]+1 < d[ve])
-	            d[ve] = d[v]+1, q.push(ve);
-        }
-    }
-}
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    cin >> n >> m >> a >> b;
-	vector<vi> g(n+1), g_t(n+1); dist = vector<vi>(3, vi(n+1));
+    int n, m, q; cin >> n >> m >> q;
+    vector<vl> memo(n, vl(n, LINF)); 
+    rep(i, 0, n) memo[i][i] = 0;
     rep(i, 0, m){
-        int va, vb; cin >> va >> vb;
-        g[va].pb(vb), g_t[vb].pb(va);
+        ll a, b, w; cin >> a >> b >> w; --a, --b;
+        memo[a][b] = min(memo[a][b], w), memo[b][a] = min(memo[b][a], w);
     }
 
-	bfs(0, 0, g);
-	bfs(a, 1, g_t);
-	bfs(b, 2, g_t);
+    rep(k, 0, n) rep(i, 0, n) rep(j, 0, n) memo[i][j] = min(memo[i][j], memo[i][k]+memo[k][j]);
 
-	int mi = INF;
-	rep(i, 0, n+1){
-		mi = min(mi, dist[0][i]+dist[1][i]+dist[2][i]);
-	}
-
-	cout << mi << endl;
+    rep(i, 0, q){
+        int a, b; cin >> a >> b; --a, --b;
+        cout << (memo[a][b] != LINF ? memo[a][b] : -1) << endl;
+    }
+    
 }
 
 int main(){ _
-    int t = 1;
-    while(t--){
-        solve();
-    }
+    int ttt = 1;
+
+    while(ttt--) solve();
 
     exit(0);
 }
