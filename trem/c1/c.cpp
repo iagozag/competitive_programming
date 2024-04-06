@@ -51,18 +51,33 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10;
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    ll n, m; cin >> n >> m; m--;
-    vl a(n), b(n); forr(x, a) cin >> x; forr(x, b) cin >> x;
+    int n; cin >> n;
+    map<int,int> numbers; rep(i, 0, n){ int a; cin >> a; numbers[a]++; }
 
-    vl pref(n+1);
-    repr(i, m, 0) pref[i] = pref[i+1]+b[i];
-    ll mi = LINF;
-    repr(i, m, 0) mi = min(mi, pref[i+1]+a[i]);
-    rep(i, m+1, n) mi += min(a[i], b[i]);
-    cout << mi << endl;
+    map<int,int> mp;
+    rep(i, 1, 101){
+        int cnt = 0; map<int,int> num = numbers;
+        forr(x, num){
+            if(x.ss <= 0 or x.ff >= i) continue;
+            int need = i-x.ff; if(num[need] == 0) continue;
+
+            if(x.ff == need){
+                cnt += x.ss/2, x.ss = 0;
+                continue;
+            }
+
+            int mi = min(x.ss, num[need]);
+            cnt += mi; x.ss -= mi, num[need] -= mi;
+        }
+        mp[i] = cnt;
+    }
+
+    int ma = 0;
+    forr(x, mp) ma = max(ma, x.ss);
+    cout << ma << endl;
 }
 
 int main(){ _
@@ -72,3 +87,4 @@ int main(){ _
 
     exit(0);
 }
+

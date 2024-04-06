@@ -20,73 +20,63 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+const int MAX = 1e3+5;
 
-const int MAX = 1e3+10, MOD = 1e9+7;
+vector<vector<pair<ll, int>>> g(MAX);
+vl dist(MAX, LINF);
 
-vector<vector<ii>> g;
-vi dist;
-
-bool in(int px, int py, int l, int d, int r, int u){
-    return(px >= l and px <= r and py >= d and py <= u);
-}
-
-int dist_r(int a[4], int b[4]){
-    int lxa = a[0], lya = a[1], rxa = a[2], rya = a[3], 
-        lxb = b[0], lyb = b[1], rxb = b[2], ryb = b[3];
-
-    if(in(lxa, lya, lxb, lyb, rxb, ryb)) return 0;
-    if(in(lxa, rya, lxb, lyb, rxb, ryb)) return 0;
-    if(in(rxa, lya, lxb, lyb, rxb, ryb)) return 0;
-    if(in(rxa, rya, lxb, lyb, rxb, ryb)) return 0;
+ll dist_r(ll lxa, ll lya, ll rxa, ll rya, ll lxb, ll lyb, ll rxb, ll ryb){
+    ll ans = LINF;
 
     if(rya < lyb){
-        if(lxa > rxb) return lxa-rxb+lyb-rya;
-        else if(lxb > rxa) return lxb-rxa+lyb-rya;
-        return lyb-rya;
+        if(lxa > rxb) ans = lxa-rxb+lyb-rya;
+        else if(lxb > rxa) ans = lxb-rxa+lyb-rya;
+        else ans = lyb-rya;
     }
-    if(lya > ryb){
-        if(rxa < lxb) return lxb-rxa+lya-ryb;
-        else if(rxb < lxa) return lxa-rxb+lya-ryb;
-        return lya-ryb;
+    else if(lya > ryb){
+        if(rxa < lxb) ans = lxb-rxa+lya-ryb;
+        else if(rxb < lxa) ans = lxa-rxb+lya-ryb;
+        else ans = lya-ryb;
     }
+    else if(rxa < lxb) ans = lxb-rxa;
+    else ans = lxa-rxb;
 
-    if(rxa < lxb) return lxb-rxa;
-    return lxa-rxb;
+    return max(ans, 0LL);
 }
 
-int dijkstra(int s, int n){
-    dist = vi(n, INF);
-
-    priority_queue<ii> pq; pq.push({0, s});
+void dijkstra(){
+    priority_queue<pair<ll,int>> pq; pq.push({0, 0});
     while(!pq.empty()){
         auto [w, v] = pq.top(); w *= -1; pq.pop();
         if(v == 1) break;
-        for(auto [ve, d]: g[v]) if(w+d < dist[ve]) dist[ve] = w+d, pq.push({-w-d, ve});
+        for(auto [ve, d]: g[v]) if(w+d < dist[ve])
+            dist[ve] = w+d, pq.push({-w-d, ve});
     }
-	return dist[1];
 }
 
 void solve(){
-    int sx, sy, dx, dy, n; scanf("%d%d%d%d%d", &sx, &sy, &dx, &dy, &n); n += 2;
-    vector<int[4]> robots(n); g = vector<vector<ii>>(n);
+    ll sx, sy, dx, dy; int n; cin >> sx >> sy >> dx >> dy >> n; n += 2;
+
+    vector<ll[4]> robots(n);
     robots[0][0] = sx, robots[0][1] = sy, robots[0][2] = sx, robots[0][3] = sy;
     robots[1][0] = dx, robots[1][1] = dy, robots[1][2] = dx, robots[1][3] = dy;
+
     rep(i, 2, n){ 
-        int a, b, c, d; scanf("%d%d%d%d", &a, &b, &c, &d); 
+        ll a, b, c, d; cin >> a >> b >> c >> d; 
         robots[i][0] = a, robots[i][1] = b, robots[i][2] = c, robots[i][3] = d;
     }
 
     rep(i, 0, n) rep(j, i+1, n){
-        int dd = dist_r(robots[i], robots[j]);
+        ll dd = dist_r(robots[i][0], robots[i][1], robots[i][2], robots[i][3], 
+                       robots[j][0], robots[j][1], robots[j][2], robots[j][3]);
         g[i].eb(j, dd), g[j].eb(i, dd);
     }
 
-    printf("%d\n", dijkstra(0, n));
+    dijkstra();
+    cout << dist[1] << endl; 
 }
 
-int main(){ // _
+int main(){ _
     int ttt = 1;
 
     while(ttt--) solve();

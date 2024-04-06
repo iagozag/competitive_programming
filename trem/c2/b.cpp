@@ -51,24 +51,24 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10;
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    ll n, m; cin >> n >> m; m--;
-    vl a(n), b(n); forr(x, a) cin >> x; forr(x, b) cin >> x;
+    int n; cin >> n;
+    string a; cin >> a;
+    vi prefw(n), prefb(n); prefw[0] = a[0] == '#', prefb[n-1] = a[n-1] == '.';
+    rep(i, 1, n) prefw[i] = prefw[i-1]+(a[i] == '#');
+    repr(i, n-2, 0) prefb[i] = prefb[i+1]+(a[i] == '.');
 
-    vl pref(n+1);
-    repr(i, m, 0) pref[i] = pref[i+1]+b[i];
-    ll mi = LINF;
-    repr(i, m, 0) mi = min(mi, pref[i+1]+a[i]);
-    rep(i, m+1, n) mi += min(a[i], b[i]);
-    cout << mi << endl;
+    int ans = min(prefb[0], prefw[n-1]);
+    rep(i, 0, n) ans = min(ans, prefw[i]+(i < n-1 ? prefb[i+1] : 0));
+    cout << ans << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int ttt = 1;
 
-    while(t--) solve();
+    while(ttt--) solve();
 
     exit(0);
 }

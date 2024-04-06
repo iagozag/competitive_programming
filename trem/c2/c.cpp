@@ -49,26 +49,27 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #endif
 
 void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+void yes(int a){ cout << a << endl; }
 
 const int MAX = 2e5+10;
 
 void solve(){
-    ll n, m; cin >> n >> m; m--;
-    vl a(n), b(n); forr(x, a) cin >> x; forr(x, b) cin >> x;
+    int a, b; cin >> a >> b;
+    int ans = 1;
+    rep(i, 2, b/2+1){
+        int mig = i*(a/i), mal =  i*(b/i);
+        if(mig < a) mig += i;
+        if(mal >= a and mig <= b and mal != mig) ans = max(ans, i);
+    }
 
-    vl pref(n+1);
-    repr(i, m, 0) pref[i] = pref[i+1]+b[i];
-    ll mi = LINF;
-    repr(i, m, 0) mi = min(mi, pref[i+1]+a[i]);
-    rep(i, m+1, n) mi += min(a[i], b[i]);
-    cout << mi << endl;
+    cout << ans << endl;
 }
 
 int main(){ _
-    int t; cin >> t;
+    int t = 1;
 
     while(t--) solve();
 
     exit(0);
 }
+

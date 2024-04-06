@@ -51,18 +51,13 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10;
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    ll n, m; cin >> n >> m; m--;
-    vl a(n), b(n); forr(x, a) cin >> x; forr(x, b) cin >> x;
-
-    vl pref(n+1);
-    repr(i, m, 0) pref[i] = pref[i+1]+b[i];
-    ll mi = LINF;
-    repr(i, m, 0) mi = min(mi, pref[i+1]+a[i]);
-    rep(i, m+1, n) mi += min(a[i], b[i]);
-    cout << mi << endl;
+    ll n; cin >> n;
+    vl v(n); forr(x, v) cin >> x;
+    sort(all(v));
+    cout << max(v[0]*v[1], v[n-1]*v[n-2]) << endl;
 }
 
 int main(){ _
@@ -72,3 +67,4 @@ int main(){ _
 
     exit(0);
 }
+
