@@ -53,43 +53,38 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m, q;
-vector<vector<ii>> g;
-vi dist, vis;
-unordered_set<int> hosp;
+vector<vector<pair<int,ii>>> g;
+vl dist;
+vi vis;
 
-void dijkstra(){
-	priority_queue<ii> pq;
-	forr(x, hosp) dist[x] = 0, pq.push({0, x});
-
+void dijkstra(int s, int de){
+	priority_queue<pair<ll, int>> pq; pq.push({0, s});
 	while(!pq.empty()){
 		auto [w, v] = pq.top(); pq.pop(); w *= -1;
 		if(vis[v]) continue;
-		
+		if(v == de) break;
+
 		vis[v] = 1;
-		for(auto [ve, d]: g[v]) if(w+d < dist[ve]) dist[ve] = w+d, pq.push({-w-d, ve});
+		for(auto x: g[v]){
+			int ve = x.ff; auto [d, k] = x.ss;
+			if(w+d+(k-(k%w)) < dist[ve]) dist[ve] = w+d+(k-(k%w)), pq.push({-dist[ve], ve});
+		}	
 	}
 }
 
 void solve(){
-    g = vector<vector<ii>>(n), dist = vi(n, INF), vis = vi(n), hosp.clear();
+	int n, m, x, y; cin >> n >> m >> x >> y; --x, --y;
+	g = vector<vector<pair<int,ii>>>(n), dist = vl(n, LINF), vis = vi(n); 
+	rep(i, 0, m){
+		int a, b, w, k; cin >> a >> b >> w >> k; --a, --b;
+		g[a].pb({b, {w, k}}), g[b].pb({a, {w, k}});
+	}
 
-    rep(i, 0, m){
-        int a, b, w; cin >> a >> b >> w; --a, --b;
-        g[a].eb(b, w), g[b].eb(a, w);
-    }
-
-    rep(i, 0, q) { int a; cin >> a; --a; hosp.insert(a); }
-
-    dijkstra();
-
-	int ma = 0;
-	rep(i, 0, n) ma = max(ma, dist[i]);
-	cout << ma << endl;
+	dijkstra(x, y);
+	cout << (dist[y] == INF ? -1 : dist[y]) << endl;
 }
 
 int main(){ _ 
-    while(cin >> n >> m >> q) solve();
-
+	solve();
     exit(0);
 }
