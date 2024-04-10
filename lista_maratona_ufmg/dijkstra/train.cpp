@@ -54,11 +54,10 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 vector<vector<pair<int,ii>>> g;
-vl dist;
-vi vis;
+vl dist; vi vis;
 
 void dijkstra(int s, int de){
-	priority_queue<pair<ll, int>> pq; pq.push({0, s});
+	priority_queue<pair<ll, int>> pq; pq.push({0, s}), dist[s] = 0;
 	while(!pq.empty()){
 		auto [w, v] = pq.top(); pq.pop(); w *= -1;
 		if(vis[v]) continue;
@@ -67,7 +66,9 @@ void dijkstra(int s, int de){
 		vis[v] = 1;
 		for(auto x: g[v]){
 			int ve = x.ff; auto [d, k] = x.ss;
-			if(w+d+(k-(k%w)) < dist[ve]) dist[ve] = w+d+(k-(k%w)), pq.push({-dist[ve], ve});
+			if(w == 0 and d < dist[ve]) dist[ve] = d, pq.push({-dist[ve], ve});
+			else if(w%k == 0 and w+d < dist[ve]) dist[ve] = w+d, pq.push({-w-d, ve});
+			else if(w+d+(k-(w%k)) < dist[ve]) dist[ve] = w+d+(k-(w%k)), pq.push({-dist[ve], ve});
 		}	
 	}
 }
@@ -81,7 +82,7 @@ void solve(){
 	}
 
 	dijkstra(x, y);
-	cout << (dist[y] == INF ? -1 : dist[y]) << endl;
+	cout << (dist[y] == LINF ? -1 : dist[y]) << endl;
 }
 
 int main(){ _ 
