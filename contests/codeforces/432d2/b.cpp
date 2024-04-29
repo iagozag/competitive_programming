@@ -2,14 +2,15 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
+#define rep(i,x,n) for(auto i=x;i<n;i++)
+#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define endl '\n'
 #define ff first
 #define ss second
 #define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -47,30 +48,26 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-const int MAX = 2e5+10;
+void no(){ cout << "No" << endl; }
+void yes(){ cout << "Yes" << endl; }
 
-ll dist(int a, int b, int c, int d){
-    return ((a-c)*(a-c)+(b-d)*(b-d));
-}
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    int n; cin >> n;
-    vector<ii> a(n); rep(i, 0, n) cin >> a[i].ff >> a[i].ss;
-    sort(all(a));
+    long double ax, ay, bx, by, cx, cy; cin >> ax >> ay >> bx >> by >> cx >> cy;
+    long double d1 = sqrt(pow(ax-bx, 2)+pow(ay-by, 2)), d2 = sqrt(pow(bx-cx, 2)+pow(by-cy, 2));
 
-    ll sum = 0;
-    rep(i, 1, n){
-        sum += dist(a[i].ff, a[i].ss, a[i-1].ff, a[i-1].ss);
-    }
+    if(d1 != d2) return no();
+    if((by-ay)/(bx-ax) == (cy-by)/(cx-bx) and (cy-by)/(cx-bx) == (cy-ay)/(cx-ax)) return no();
 
-    cout << sum*2 << endl;
+    return yes();
+    
 }
 
 int main(){ _
-    int t = 1;
-    while(t--){
-        solve();
-    }
+    int ttt = 1;
+
+    while(ttt--) solve();
 
     exit(0);
 }

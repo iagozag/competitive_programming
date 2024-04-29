@@ -6,6 +6,7 @@ using namespace std;
 #define repr(i,n,x) for(auto i=n;i>=x;i--)
 #define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
+#define sz(a) (int)(a.size())
 #define endl '\n'
 #define ff first
 #define ss second
@@ -40,13 +41,8 @@ template<class H, class... T> void DBGC(H h, T... t) {
     DBGC(t...);
 }
 
-#ifndef _DEBUG
 #define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
 #define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
-#else
-#define dbg(...) 0
-#define dbgc(...) 0
-#endif
 
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }

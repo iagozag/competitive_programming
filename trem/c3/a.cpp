@@ -51,34 +51,38 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
-
-int n;
-vi v;
-
-pair<vi, ll> get_ans(int mid){
-    vi pos(n); pos[mid] = v[mid]; ll sum = v[mid];
-    int l = mid-1, r = mid+1;
-    while(l >= 0 or r < n){
-        if(l >= 0) pos[l] = min(v[l], pos[l+1]), sum += pos[l], l--;
-        if(r < n) pos[r] = min(v[r], pos[r-1]), sum += pos[r], r++;
-    }
-
-    return {pos, sum};
-}
+const int MAX = 5010;
 
 void solve(){
-    cin >> n;
-    v = vi(n); forr(x, v) cin >> x;
+    ll n, q; cin >> n >> q; string s; cin >> s; s = ' '+s;
+    vl l(q), r(q);
+    cin >> l[0] >> r[0];
+    ll x, y; cin >> x >> y;
 
-    vi ans; ll sum = 0;
-    rep(i, 0, n){
-        pair<vi, ll> pos = get_ans(i);
-        if(pos.ss > sum) sum = pos.ss, ans = pos.ff;
+    const int mod = n;
+    rep(i, 1, q){
+        l[i] = (l[i-1]*y + (r[i-1]*x)/n + 999999999)%mod+1;
+        r[i] = max(l[i], (r[i-1]*x + y + 999999999)%mod+1);
     }
 
-    forr(x, ans) cout << x << " ";
-    cout << endl;
+    vector<vi> prec(n+2, vi(n+2, INF));
+    rep(i, 1, n+1){
+        int le = i, rr = i; int k = 0;
+        while(le > 0 and rr < n+1){
+            k += s[le] != s[rr], prec[le][rr] = k;
+            le--, rr++; 
+        }
+
+        le = i, rr = i+1; k = 0;
+        while(le > 0 and rr < n+1){
+            k += s[le] != s[rr], prec[le][rr] = k;
+            le--, rr++; 
+        }
+    } 
+
+    ll ans = 0;
+    rep(i, 0, q) ans += prec[l[i]][r[i]];
+    cout << ans << endl;
 }
 
 int main(){ _
