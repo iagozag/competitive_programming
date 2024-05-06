@@ -10,7 +10,6 @@ using namespace std;
 #define endl '\n'
 #define ff first
 #define ss second
-#define pb push_back
 #define eb emplace_back
 
 typedef long long ll;
@@ -50,20 +49,25 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    int n, k, pb, ps; cin >> n >> k >> pb >> ps; --pb, --ps;
+    ll n, k, pb, ps; cin >> n >> k >> pb >> ps; --pb, --ps;
     vi p(n), v(n); forr(x, p) cin >> x, --x; forr(x, v) cin >> x;
-    int b = 0, s = 0;
 
-    rep(i, 0, min(k, MAX)){
-        b += v[pb], s += v[ps];
-        pb = p[pb], ps = p[ps];
-        dbg(b, s);
-    }
+    set<int> st; vl bo, sa; int l = 0;
+    while(!st.count(pb) and l < k) bo.eb(v[pb]), st.insert(pb), pb = p[pb], l++;
 
-    if(b > s) cout << "Bodya";
-    else if(b < s) cout << "Sasha";
-    else cout << "Draw";
-    cout << endl;
+    st.clear(); l = 0;
+    while(!st.count(ps) and l < k) sa.eb(v[ps]), st.insert(ps), ps = p[ps], l++;
+
+    int szb = sz(bo), szs = sz(sa);
+    vl prefb(szb), prefs(szs);
+    rep(i, 1, szb) prefb[i] = prefb[i-1]+bo[i-1];
+    rep(i, 1, szs) prefs[i] = prefs[i-1]+sa[i-1];
+
+    ll mab = 0, mas = 0;
+    rep(i, 0, szb) mab = max(mab, prefb[i]+(k-i)*bo[i]);
+    rep(i, 0, szs) mas = max(mas, prefs[i]+(k-i)*sa[i]);
+
+    cout << (mab > mas ? "Bodya" : mas > mab ? "Sasha" : "Draw") << endl; 
 }
 
 int main(){ _

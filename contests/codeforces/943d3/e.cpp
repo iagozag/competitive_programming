@@ -27,7 +27,22 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n;
+    if(n == 2){ cout << 1 << " " << 1 << endl << 1 << " " << 2 << endl; return; }
+    if(n == 3){ cout << "1 1\n1 2\n3 3\n"; return; }
+    
+    int d = 0;
+    rep(i, 1, n-1) cout << 1 << " " << i << endl, d++;
 
+    bool u = false; int x = n, y = n;
+    while(d--){
+        if(!u) x--;
+        else y--;
+        u = !u;
+    }
+
+    cout << y << " " << x << endl;
+    cout << n << " " << n << endl;
 }
 
 int main(){ _

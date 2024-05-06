@@ -21,13 +21,18 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+void no(){ cout << "Bob" << endl; }
+void yes(){ cout << "Alice" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n; string s; cin >> s;
 
+    if(s[0] == 'L' or s[n-1] == 'R') return yes();
+
+    rep(i, 0, sz(s)-1) if(s[i] == 'R' and s[i+1] == 'L') s.erase(i, 2), i -= 2;
+    return sz(s) > 0 ? yes() : no();
 }
 
 int main(){ _
@@ -37,3 +42,4 @@ int main(){ _
 
     exit(0);
 }
+
