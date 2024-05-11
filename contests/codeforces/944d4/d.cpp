@@ -27,7 +27,24 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    string s; cin >> s; int n = sz(s);
+    int ans = 0, i = 0;
+    if(s[0] == '1'){
+        while(i < n and s[i] == '1') i++;
+        ans++;
+    }
+    
+    bool entrou = (i < n and s[i] == '0');
+    while(i < n and s[i] == '0') i++;
+    while(i < n and s[i] == '1') i++;
+    if(entrou) ans++;
 
+    while(i < n){
+        while(s[i] == s[i+1]) i++;
+        ans++, i++;
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _

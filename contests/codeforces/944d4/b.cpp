@@ -27,7 +27,15 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    string s; cin >> s;
+    bool ok = false;
 
+    rep(i, 0, sz(s)-1) if(s[i] != s[i+1]){ ok = true; swap(s[i], s[i+1]); break; }
+
+    if(!ok) return no();
+    
+    cout << "YES" << endl;
+    cout << s << endl;
 }
 
 int main(){ _

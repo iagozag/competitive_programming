@@ -27,7 +27,13 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    int a, b, c, d; cin >> a >> b >> c >> d;
+    if(a > b) swap(a, b);
+    if(c > d) swap(c, d);
+    if(a == c or a == d or b == c or b == d) return yes();
+    if(a > c and a < d and b > c and b > d) return yes();
+    if(c > a and c < b and d > a and d > b) return yes();
+    return no();
 }
 
 int main(){ _

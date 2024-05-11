@@ -27,7 +27,17 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    ll n, k, q; cin >> n >> k >> q;
+    vl a(k+1), b(k+1); rep(i, 1, k+1) cin >> a[i]; rep(i, 1, k+1) cin >> b[i];
 
+    rep(i, 0, q){
+        int d; cin >> d; 
+        if(d == n){ cout << b[k] << " "; continue; }
+
+        int ub = upper_bound(all(a), d)-a.begin(); ub--;
+        cout << b[ub]+(d-a[ub])*(b[ub+1]-b[ub])/(a[ub+1]-a[ub]) << " ";
+    }
+    cout << endl;
 }
 
 int main(){ _

@@ -24,10 +24,31 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 1e5+1, MOD = 1e9+7;
 
 void solve(){
+    ll ra; cin >> ra;
 
+    ll ans = 0;
+    for(ll x = 0; x <= ra; x++){
+        ll l = 0, r = ra, y_min;
+        while(l <= r){
+            ll m = l+(r-l)/2;
+            if(x*x+m*m >= ra*ra) y_min = m, r = m-1;
+            else l = m+1;
+        }
+        l = 0, r = ra+1; ll y_max;
+        while(l <= r){
+            ll m = l+(r-l)/2;
+            if(x*x+m*m >= (ra+1)*(ra+1)) y_max = m, r = m-1;
+            else l = m+1;
+        }
+
+        if(y_min == 0) y_min++;
+        ans += 4*(y_max-y_min);
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
