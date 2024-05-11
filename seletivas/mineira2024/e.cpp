@@ -14,7 +14,7 @@ using namespace std;
 #define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> ii;
+typedef pair<long double, long double> ii;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
@@ -49,12 +49,31 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+double dist(long double x1, long double y1, long double x2, long double y2){
+    return sqrt(pow(x1-x2, 2)+pow(y1-y2, 2));
+}
 
+bool check(ii p1, ii p2, ii p3){
+    long double a = dist(p1.ff, p1.ss, p2.ff, p2.ss), b = dist(p2.ff, p2.ss, p3.ff, p3.ss), c = dist(p1.ff, p1.ss, p3.ff, p3.ss);
+    if(a+b <= c or a+c <= b or b+c <= a) return false;
+    return true;
+}
+
+void solve(){
+    ll n; cin >> n;
+    vector<pair<ii, ll>> v(n); rep(i, 0, n) cin >> v[i].ff.ff >> v[i].ff.ss, v[i].ss = i+1;
+    sort(all(v));
+    
+    vl ans = { v[0].ss, v[1].ss };
+    rep(i, 2, n){
+        if(check(v[0].ff, v[1].ff, v[i].ff)){ ans.eb(v[i].ss); break; }
+    }
+
+    rep(i, 0, ans.size()) cout << ans[i] << " \n"[i == 2]; 
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 
