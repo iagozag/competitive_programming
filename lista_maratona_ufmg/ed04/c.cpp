@@ -27,35 +27,36 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
+ll xx, yy, x2, y2, n;
+string s;
 
-bool good(vi v, int x){
-    if(v[0]+x >= m) v[0] = 0;
-    rep(i, 1, n){
-        if(v[i-1] < v[i] and m-v[i]+v[i-1] <= x) v[i] = v[i-1];
-        else if(v[i-1] > v[i] and v[i-1]-v[i] <= x) v[i] = v[i-1];
-
-        if(v[i-1] > v[i]) return false;
+bool good(ll m){
+    ll div = m/n, mod = m%n, x = xx, y = yy;
+    rep(i, 0, n){
+        if(s[i] == 'L') x -= div+(mod > i);
+        else if(s[i] == 'R') x += div+(mod > i);
+        else if(s[i] == 'U') y += div+(mod > i);
+        else if(s[i] == 'D') y -= div+(mod > i);
     }
-    return true;
+    return abs(x-x2)+abs(y-y2) <= m;
 }
 
 void solve(){
-    cin >> n >> m;
-    vi v(n); forr(x, v) cin >> x;
+    cin >> xx >> yy >> x2 >> y2 >> n >> s;
 
-    int l = 0, r = m+1, ans = 0;
+    ll l = 0, r = 1e15, ans = -1;
     while(l <= r){
-        int mid = l+(r-l)/2;
-        if(good(v, mid)) ans = mid, r = mid-1;
-        else l = mid+1;
+        ll m = l+(r-l)/2;
+        if(good(m)) ans = m, r = m-1;
+        else l = m+1;
     }
+
     cout << ans << endl;
 }
 
 int main(){ _
     int ttt = 1; // cin >> ttt;
-
+    
     while(ttt--) solve();
 
     exit(0);

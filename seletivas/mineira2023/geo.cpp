@@ -49,21 +49,18 @@ template<class H, class... T> void DBGC(H h, T... t) {
 
 const int MAX = 2e5+10;
 
-ll dist(int a, int b, int c, int d){
-    return ((a-c)*(a-c)+(b-d)*(b-d));
-}
-
 void solve(){
     int n; cin >> n;
-    vector<ii> a(n); rep(i, 0, n) cin >> a[i].ff >> a[i].ss;
-    sort(all(a));
+    vector<pair<ll, ll>> a(n); rep(i, 0, n) cin >> a[i].ff >> a[i].ss;
 
-    ll sum = 0;
-    rep(i, 1, n){
-        sum += dist(a[i].ff, a[i].ss, a[i-1].ff, a[i-1].ss);
+    ll sum = 0, sub = 0, curx = 0, cury = 0;
+    rep(i, 0, n){
+        auto [x, y] = a[i];
+        sum += x*x*(n-1) + y*y*(n-1);
+        sub += x*curx+y*cury, curx += x, cury += y;
     }
 
-    cout << sum*2 << endl;
+    cout << sum-2*sub << endl;
 }
 
 int main(){ _

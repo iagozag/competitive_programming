@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <linux/limits.h>
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
@@ -14,8 +15,7 @@ using namespace std;
 #define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
+typedef pair<int,int> ii;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
@@ -27,34 +27,22 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
-
-bool good(vi v, int x){
-    if(v[0]+x >= m) v[0] = 0;
-    rep(i, 1, n){
-        if(v[i-1] < v[i] and m-v[i]+v[i-1] <= x) v[i] = v[i-1];
-        else if(v[i-1] > v[i] and v[i-1]-v[i] <= x) v[i] = v[i-1];
-
-        if(v[i-1] > v[i]) return false;
-    }
-    return true;
-}
-
 void solve(){
-    cin >> n >> m;
+    int n, k; cin >> n >> k;
     vi v(n); forr(x, v) cin >> x;
+    int ans = 0, tmp = k;
 
-    int l = 0, r = m+1, ans = 0;
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(good(v, mid)) ans = mid, r = mid-1;
-        else l = mid+1;
+    rep(i, 0, n+1){
+        if(i == n){ ans++; break; }
+        if(tmp < v[i]) ans++, tmp = k, i--;
+        else tmp -= v[i];
     }
+
     cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 

@@ -2,14 +2,16 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(int i=x;i<n;i++)
-#define repr(i,n,x) for(int i=n;i>=x;i--)
-#define forr(v) for(auto& x: v)
+#define rep(i,x,n) for(auto i=x;i<n;i++)
+#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
+#define sz(a) (int)(a.size())
 #define endl '\n'
 #define ff first
 #define ss second
 #define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
 typedef pair<int,int> ii;
@@ -19,60 +21,44 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void DBG() {
-    cerr << "]" << endl;
-}
+void no(){ cout << "NO" << endl; }
+void yes(){ cout << "YES" << endl; }
 
-void DBGC() {
-    cerr << "]" << endl;
-}
-
-template<class H, class... T> void DBG(H h, T... t) {
-    cerr << to_string(h);
-    if(sizeof...(t)) cerr << ", ";
-    DBG(t...);
-}
-
-template<class H, class... T> void DBGC(H h, T... t) {
-    for(auto& x: h) cerr << x << " ";
-    if(sizeof...(t)) cerr << "], [ ";
-    DBGC(t...);
-}
-
-#ifndef _DEBUG
-#define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
-#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
-#else
-#define dbg(...) 0
-#define dbgc(...) 0
-#endif
-
-const int MAX = 2e5+10;
+const ll MAX = pow(2, 20)+10;
 
 void solve(){
-    int n, m; cin >> n >> m;
-    char mtx[n][m];
+    int n, m; cin >> n >> m; int MAXL = pow(2, m);
+    vector<vi> g(MAXL); vi dist(MAXL, INF);
 
-    rep(i, 0, n) rep(j, 0, m) cin >> mtx[i][j];
+    string mtx[n]; rep(i, 0, n) cin >> mtx[i];
 
-    rep(i, 0, m){
-        int c0 = 0, c1 = 0;
-        rep(j, 0, n){
-            if(mtx[j][i] == '0') c0++;
-            else c1++;
+    rep(i, 0, MAXL){
+        string a = bitset<20>(i).to_string();
+        repr(j, 19, 20-m){
+            string tmp = a; tmp[j] = (tmp[j] == '1' ? '0' : '1');
+            int b = bitset<20>(tmp).to_ulong(); 
+            g[i].eb(b);
         }
-        
-        cout << (c0 > c1 ? 1 : 0);
     }
 
-    cout << endl;
+    queue<int> q;
+    rep(i, 0, n){ int x = bitset<20>(mtx[i]).to_ulong(); dist[x] = 0, q.push(x); }
+
+    while(!q.empty()){
+        int v = q.front(); q.pop();
+        forr(ve, g[v]) if(dist[v]+1 < dist[ve]) dist[ve] = dist[v]+1, q.push(ve);
+    }  
+
+    int ma = 0;
+    rep(i, 1, MAXL) if(dist[i] > dist[ma]) ma = i;
+
+    cout << bitset<20>(ma).to_string().substr(20-m) << endl; 
 }
 
 int main(){ _
-    int t = 1;
-    while(t--){
-        solve();
-    }
+    int ttt = 1;
+
+    while(ttt--) solve();
 
     exit(0);
 }

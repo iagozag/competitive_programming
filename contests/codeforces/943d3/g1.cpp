@@ -14,8 +14,7 @@ using namespace std;
 #define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
+typedef pair<int,int> ii;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
@@ -27,34 +26,44 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
+int nn, k;
+string ss;
+vi zz;
 
-bool good(vi v, int x){
-    if(v[0]+x >= m) v[0] = 0;
-    rep(i, 1, n){
-        if(v[i-1] < v[i] and m-v[i]+v[i-1] <= x) v[i] = v[i-1];
-        else if(v[i-1] > v[i] and v[i-1]-v[i] <= x) v[i] = v[i-1];
+bool check(int x){
+    int cnt = 1;
+    rep(i, x, nn) if(zz[i] >= x) cnt++, i += x-1;
+    return cnt >= k;
+}
 
-        if(v[i-1] > v[i]) return false;
+vector<int> z_function(string s) {
+    int n = s.size();
+    vector<int> z(n);
+    int l = 0, r = 0;
+    for(int i = 1; i < n; i++) {
+        if(i < r) z[i] = min(r - i, z[i - l]);
+        while(i + z[i] < n && s[z[i]] == s[i + z[i]]) z[i]++;
+        if(i + z[i] > r) l = i, r = i + z[i];
     }
-    return true;
+    return z;
 }
 
 void solve(){
-    cin >> n >> m;
-    vi v(n); forr(x, v) cin >> x;
+    cin >> nn >> k >> k >> ss; 
+    zz = z_function(ss);
 
-    int l = 0, r = m+1, ans = 0;
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(good(v, mid)) ans = mid, r = mid-1;
-        else l = mid+1;
+    int le = 1, rr = nn, ans = 0;
+    while(le <= rr){
+        int m = le+(rr-le)/2;
+        if(check(m)) ans = m, le = m+1;
+        else rr = m-1;
     }
+
     cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt; cin >> ttt;
 
     while(ttt--) solve();
 

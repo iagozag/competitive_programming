@@ -14,7 +14,8 @@ using namespace std;
 #define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> ii;
+typedef pair<int,int> pii;
+typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
@@ -31,7 +32,7 @@ void solve(){
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int ttt = 1; // cin >> ttt;
 
     while(ttt--) solve();
 

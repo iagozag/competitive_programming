@@ -27,29 +27,16 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
-
-bool good(vi v, int x){
-    if(v[0]+x >= m) v[0] = 0;
-    rep(i, 1, n){
-        if(v[i-1] < v[i] and m-v[i]+v[i-1] <= x) v[i] = v[i-1];
-        else if(v[i-1] > v[i] and v[i-1]-v[i] <= x) v[i] = v[i-1];
-
-        if(v[i-1] > v[i]) return false;
-    }
-    return true;
-}
-
 void solve(){
-    cin >> n >> m;
+    int n, k; cin >> n >> k;
     vi v(n); forr(x, v) cin >> x;
 
-    int l = 0, r = m+1, ans = 0;
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(good(v, mid)) ans = mid, r = mid-1;
-        else l = mid+1;
+    unordered_map<int,int> mp; ll ans = 0;
+    for(int l = 0, r = 0; r < n; r++){
+        mp[v[r]]++;
+        while(mp[v[r]] == k) ans += n-r, mp[v[l]]--, l++;
     }
+
     cout << ans << endl;
 }
 

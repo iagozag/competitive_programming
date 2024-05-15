@@ -14,8 +14,7 @@ using namespace std;
 #define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
+typedef pair<int,int> ii;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
@@ -27,34 +26,28 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
+int n, m, t;
+vector<string> v;
 
-bool good(vi v, int x){
-    if(v[0]+x >= m) v[0] = 0;
-    rep(i, 1, n){
-        if(v[i-1] < v[i] and m-v[i]+v[i-1] <= x) v[i] = v[i-1];
-        else if(v[i-1] > v[i] and v[i-1]-v[i] <= x) v[i] = v[i-1];
+int query(int i, int j, ll p){
 
-        if(v[i-1] > v[i]) return false;
-    }
-    return true;
+    return 0;
 }
 
 void solve(){
-    cin >> n >> m;
-    vi v(n); forr(x, v) cin >> x;
+    cin >> n >> m >> t;
+    v = vector<string>(n); forr(x, v) cin >> x;
+    
+    // code
 
-    int l = 0, r = m+1, ans = 0;
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(good(v, mid)) ans = mid, r = mid-1;
-        else l = mid+1;
+    rep(k, 0, t){
+        int i, j; ll p; cin >> i >> j >> p; --i, --j;
+        cout << query(i, j, p) << endl;
     }
-    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 

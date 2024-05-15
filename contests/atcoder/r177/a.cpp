@@ -22,39 +22,29 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+void no(){ cout << "No" << endl; }
+void yes(){ cout << "Yes" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
-
-bool good(vi v, int x){
-    if(v[0]+x >= m) v[0] = 0;
-    rep(i, 1, n){
-        if(v[i-1] < v[i] and m-v[i]+v[i-1] <= x) v[i] = v[i-1];
-        else if(v[i-1] > v[i] and v[i-1]-v[i] <= x) v[i] = v[i-1];
-
-        if(v[i-1] > v[i]) return false;
-    }
-    return true;
-}
-
 void solve(){
-    cin >> n >> m;
+    map<int, int, greater<int>> coins; cin >> coins[1] >> coins[5] >> coins[10] >> coins[50] >> coins[100] >> coins[500];
+    int n; cin >> n;
     vi v(n); forr(x, v) cin >> x;
-
-    int l = 0, r = m+1, ans = 0;
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(good(v, mid)) ans = mid, r = mid-1;
-        else l = mid+1;
+    rep(i, 0, n){
+        forr(x, coins){
+            if(v[i] < x.ff) continue;
+            int mi = min(v[i]/x.ff, x.ss);
+            x.ss -= mi, v[i] -= mi*x.ff;
+        }
+        if(v[i] != 0) return no();
     }
-    cout << ans << endl;
+
+    return yes();
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 

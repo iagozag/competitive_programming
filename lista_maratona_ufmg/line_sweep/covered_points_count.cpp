@@ -14,8 +14,7 @@ using namespace std;
 #define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
+typedef pair<int,int> ii;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
@@ -27,34 +26,32 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
-
-bool good(vi v, int x){
-    if(v[0]+x >= m) v[0] = 0;
-    rep(i, 1, n){
-        if(v[i-1] < v[i] and m-v[i]+v[i-1] <= x) v[i] = v[i-1];
-        else if(v[i-1] > v[i] and v[i-1]-v[i] <= x) v[i] = v[i-1];
-
-        if(v[i-1] > v[i]) return false;
-    }
-    return true;
-}
-
 void solve(){
-    cin >> n >> m;
-    vi v(n); forr(x, v) cin >> x;
+    int n; cin >> n;
+    vector<pair<ll, bool>> v;
+    rep(i, 0, n){ ll a, b; cin >> a >> b; v.eb(a, 0), v.eb(b, 1); }
+    sort(all(v));
 
-    int l = 0, r = m+1, ans = 0;
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(good(v, mid)) ans = mid, r = mid-1;
-        else l = mid+1;
+    ll prev = 0, cnt = 0; vl ans(n+1); n = sz(v);
+    rep(i, 0, n){
+        auto [val, type] = v[i];
+
+        if(type == 0){
+            ans[cnt] += max(val-prev-1, 0LL), prev = val;
+            cnt++;
+            while(v[i+1].ff == val and v[i+1].ss == 0) i++, cnt++;
+            ans[cnt]++;
+        } else{
+            ans[cnt] += max(val-prev, 0LL), prev = val; 
+            cnt--;
+        }
     }
-    cout << ans << endl;
+
+    rep(i, 1, sz(ans)) cout << ans[i] << " \n"[i == sz(ans)-1]; 
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 

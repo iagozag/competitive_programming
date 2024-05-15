@@ -14,47 +14,56 @@ using namespace std;
 #define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
+typedef pair<int,int> ii;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
+void no(){ cout << "Just a legend" << endl; }
 void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
+vi z;
+string s;
+int n;
 
-bool good(vi v, int x){
-    if(v[0]+x >= m) v[0] = 0;
+void z_function(){
+    z = vi(n);
+
+    int l = 0, r = 0;
     rep(i, 1, n){
-        if(v[i-1] < v[i] and m-v[i]+v[i-1] <= x) v[i] = v[i-1];
-        else if(v[i-1] > v[i] and v[i-1]-v[i] <= x) v[i] = v[i-1];
-
-        if(v[i-1] > v[i]) return false;
+        if(i < r) z[i] = min(z[i-l], r-i);
+        while(i + z[i] < n and s[z[i]] == s[i+z[i]]) z[i]++;
+        if(i+z[i] > r) l = i, r = i+z[i];
     }
-    return true;
 }
 
 void solve(){
-    cin >> n >> m;
-    vi v(n); forr(x, v) cin >> x;
+    cin >> s; n = sz(s);
+    if(n <= 2) return no();
 
-    int l = 0, r = m+1, ans = 0;
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(good(v, mid)) ans = mid, r = mid-1;
-        else l = mid+1;
-    }
+    z_function();
+
+    vi pref(n+1);
+    rep(i, 1, n+1) pref[i] = max(pref[i-1], z[i-1]);
+
+    int ma = -1;
+    repr(i, n-1, 1) if(i+z[i] == n and pref[i] >= z[i])
+        ma = max(ma, z[i]);
+
+    if(ma == -1) return no();
+
+    string ans = "";
+    rep(i, 0, ma) ans += s[i];
+
     cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 

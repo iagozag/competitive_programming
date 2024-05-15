@@ -14,8 +14,7 @@ using namespace std;
 #define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
+typedef pair<int,int> ii;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
@@ -27,34 +26,34 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
-
-bool good(vi v, int x){
-    if(v[0]+x >= m) v[0] = 0;
-    rep(i, 1, n){
-        if(v[i-1] < v[i] and m-v[i]+v[i-1] <= x) v[i] = v[i-1];
-        else if(v[i-1] > v[i] and v[i-1]-v[i] <= x) v[i] = v[i-1];
-
-        if(v[i-1] > v[i]) return false;
-    }
-    return true;
-}
-
 void solve(){
-    cin >> n >> m;
-    vi v(n); forr(x, v) cin >> x;
+    string s; cin >> s; int n = sz(s);
+    vi z(n);
 
-    int l = 0, r = m+1, ans = 0;
-    while(l <= r){
-        int mid = l+(r-l)/2;
-        if(good(v, mid)) ans = mid, r = mid-1;
-        else l = mid+1;
+    int l = 0, r = 0;
+    rep(i, 1, n){
+        if(i < r) z[i] = min(r-i, z[i-l]);
+        while(i+z[i] < n and s[z[i]] == s[i+z[i]]) z[i]++;
+        if(i+z[i] > r) l = i, r = i+z[i];
     }
-    cout << ans << endl;
+
+    map<int, int> mp; mp[n] = 1;
+    rep(i, 0, n) mp[z[i]]++;
+
+    auto it = mp.end(); it--, it--; int prev = 1;
+    for(; it != mp.begin(); it--){
+        it->ss += prev, prev = it->ss; 
+    }
+
+    set<ii> ans; ans.insert({n, 1});
+    repr(i, n-1, 0) if(i+z[i] == n) ans.insert({z[i], mp[z[i]]});
+
+    cout << sz(ans) << endl;
+    forr(x, ans) cout << x.ff << " " << x.ss << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1;
 
     while(ttt--) solve();
 
