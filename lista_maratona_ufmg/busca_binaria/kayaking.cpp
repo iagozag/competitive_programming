@@ -27,30 +27,31 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-ll n, k;
-vector<pll> v;
+int b, n, e, sb, sn, se;
+vi c, part;
 
-ll good(ll m){
-    ll ans = 0;
-    rep(i, 0, n){
-        auto [l, r] = v[i];
-        if(m > r) ans += r-l+1;
-        else if(m >= l and m <= r) ans += m-l;
-    }
-    return ans;
+bool good(int m){
+    int mi = INF;
+
+
+    return mi >= m;
 }
 
 void solve(){
-    cin >> n >> k;
-    v = vector<pll>(n); forr(x, v) cin >> x.ff >> x.ss;
+    cin >> b >> n >> e; int sum = b+n+e; sum >>= 1;
+    cin >> sb >> sn >> se;
+    rep(i, 0, sum) cin >> c[i];
 
-    ll l = -2e9, r = 2e9, ans;
+    rep(i, 0, b) part.eb(sb);
+    rep(i, 0, n) part.eb(sn);
+    rep(i, 0, e) part.eb(se);
+
+    int l = 0, r = 1e9, ans;
     while(l <= r){
-        ll m = l+(r-l)/2;
-        if(good(m) <= k) ans = m, l = m+1;
+        int m = l+(r-l)/2;
+        if(good(m)) ans = m, l = m+1;
         else r = m-1;
     }
-
     cout << ans << endl;
 }
 
