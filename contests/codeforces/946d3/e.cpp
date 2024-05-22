@@ -25,28 +25,23 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 60, MOD = 1e9+7;
-
-int n, x;
-vl c, h;
-
-vl memo;
-
-ll dp(ll cash, int i){
-    if(i == n) return 0;
-
-    if(memo[i] != -1) return memo[i];
-
-    return memo[i] = max({ cash >= c[i] ? dp(cash-c[i]+x, i+1)+h[i] : -1, dp(cash+x, i+1) });
-}
+const int MAX = 1e5+10, MOD = 1e9+7;
 
 void solve(){
-    cin >> n >> x;
-    c = h = vl(n); rep(i, 0, n) cin >> c[i] >> h[i];
+    int n, x, sum = 0; cin >> n >> x;
+    vl c(n), h(n); rep(i, 0, n) cin >> c[i] >> h[i], sum += h[i];
+    sum++;
 
-    memo = vl(n, -1);
-    dp(0, 0); 
-    cout << memo[0] << endl;
+    vector<vector<ll>> memo(n+1, vl(sum, -1)); memo[0][0] = 0;
+    rep(i, 0, n) rep(j, 0, sum){
+        if(memo[i][j] == -1) continue;
+        if(memo[i][j] >= c[i]) memo[i+1][j+h[i]] = max(memo[i+1][j+h[i]], memo[i][j]+x-c[i]);
+        memo[i+1][j] = max(memo[i+1][j], memo[i][j]+x); 
+    } 
+
+    repr(i, sum-1, 0) if(memo[n][i] != -1){ 
+        cout << i << endl; return; 
+    }
 }
 
 int main(){ _

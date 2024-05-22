@@ -27,15 +27,15 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n, m;
+ll n, m;
 
 vector<vl> mult(vector<vl> a, vector<vl> b){
     vector<vl> ans(n, vl(n));
-    rep(i, 0, n) rep(j, 0, n) rep(k, 0, n) ans[i][j] += (a[i][k]%MOD)*(b[k][j]%MOD), ans[i][j] %= MOD;
+    rep(i, 0, n) rep(j, 0, n) rep(k, 0, n) ans[i][j] += ((a[i][k]%MOD)*(b[k][j]%MOD))%MOD, ans[i][j] %= MOD;
     return ans;
 }
 
-vector<vl> fexp(vector<vl> mat, int k){
+vector<vl> fexp(vector<vl> mat, ll k){
     vector<vl> ans(n, vl(n)); rep(i, 0, n) ans[i][i] = 1;
     while(k){
         if(k&1) ans = mult(ans, mat);
@@ -45,7 +45,7 @@ vector<vl> fexp(vector<vl> mat, int k){
 }
 
 void solve(){
-    int k; cin >> n >> m >> k;
+    ll k; cin >> n >> m >> k;
     vector<vl> mat(n, vl(n));
     rep(i, 0, m){
         int a, b; cin >> a >> b; --a, --b;
