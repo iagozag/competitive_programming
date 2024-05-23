@@ -27,33 +27,22 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-bool good(ll m, ll b, ll n, ll e, ll sb, ll sn, ll se, ll sum, vl& c){
-    rep(i, 0, sum){
-        ll need = (m+c[i]-1)/c[i];
-        if(b >= 2 and sb*2 >= need) b -= 2;
-        else if(b and n and sb+sn >= need) b--, n--;
-        else if(b and e and sb+se >= need) b--, e--;
-        else if(n >= 2 and sn*2 >= need) n -= 2;
-        else if(n and e and sn+se >= need) n--, e--;
-        else if(e >= 2 and se*2 >= need) e -= 2;
-        else return false;
-    }
+ll n, k;
 
-    return true;
+bool good(ll m){
+    
 }
 
 void solve(){
-    ll b, n, e; cin >> b >> n >> e; ll sum = b+n+e; sum >>= 1;
-    ll sb, sn, se; cin >> sb >> sn >> se;
-    vl c(sum); rep(i, 0, sum) cin >> c[i];
-    sort(all(c));
+    cin >> n >> k;
 
-    ll l = 0, r = 1e18, ans = 0;
+    ll l = 1, r = n, ans = 1;
     while(l <= r){
         ll m = l+(r-l)/2;
-        if(good(m, b, n, e, sb, sn, se, sum, c)) ans = m, l = m+1;
+        if(good(m)) ans = m, l = m+1;
         else r = m-1;
     }
+
     cout << ans << endl;
 }
 
