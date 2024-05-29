@@ -27,34 +27,22 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-ll gcd(ll a, ll b){
-    if(b == 0) return a;
-    return gcd(b, a%b);
-}
-
-ll lcm(ll a, ll b){
-    return (a/gcd(a, b))*b;  
-}
-
 void solve(){
-    int n; cin >> n; map<ll, vi> mp;
-    vl v(n); rep(i, 0, n) cin >> v[i], mp[v[i]].eb(i);
+    ll e, v; cin >> e >> v;
+    ll h = 19, m = 0;
+    h += e/v, h %= 24;
 
-    int ans = n; vector<bool> can(n, 1);
-    while(ans > 0){
-        ll cur = 1, ma = 0;
-        rep(i, 0, n) if(can[i]) cur = lcm(cur, v[i]), ma = max(ma, v[i]);
-        if(!mp.count(cur)) break;
-        ans--;
-        if(can[mp[cur][0]]) forr(x, mp[cur]) can[x] = 0;
-        else forr(x, mp[ma]) can[x] = 0;
-    }
+    e %= v;
+    e *= 60; m += e/v;
 
-    cout << ans << endl;
+    if(h < 10) cout << 0;
+    cout << h << ":";
+    if(m < 10) cout << 0;
+    cout << m << endl;
 }
 
 int main(){ _
-    int ttt = 1; cin >> ttt;
+    int ttt = 1; // cin >> ttt;
 
     while(ttt--) solve();
 

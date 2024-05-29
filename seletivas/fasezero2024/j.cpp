@@ -27,34 +27,38 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-ll gcd(ll a, ll b){
-    if(b == 0) return a;
-    return gcd(b, a%b);
-}
 
-ll lcm(ll a, ll b){
-    return (a/gcd(a, b))*b;  
-}
 
 void solve(){
-    int n; cin >> n; map<ll, vi> mp;
-    vl v(n); rep(i, 0, n) cin >> v[i], mp[v[i]].eb(i);
+    int n, m; cin >> n >> m;
+    int k, l; cin >> k >> l; --k, --l;
+    vector<pii> moves = {{k, l}, {-k, l}, {-k, -l}, {k, -l}, {-l, -k}, {-l, k}, {l, -k}, {l, k}};
 
-    int ans = n; vector<bool> can(n, 1);
-    while(ans > 0){
-        ll cur = 1, ma = 0;
-        rep(i, 0, n) if(can[i]) cur = lcm(cur, v[i]), ma = max(ma, v[i]);
-        if(!mp.count(cur)) break;
-        ans--;
-        if(can[mp[cur][0]]) forr(x, mp[cur]) can[x] = 0;
-        else forr(x, mp[ma]) can[x] = 0;
+    vector<string> v(n+1); v[0] = string(m, '0');
+    rep(i, 1, n+1){
+        string s; cin >> s;
+        v[i] = '0', v[i] += s;
     }
 
-    cout << ans << endl;
+    int ma = -1, ai = 1, aj = 1;
+    rep(i, 1, n+1) rep(j, 1, m+1){
+        if(v[i][j] == '*') continue;
+
+        int sum = 0;
+        for(auto [a, b]: moves){
+            a += i, b += j;
+            if(a < 1 or a > n or b < 1 or b > m) continue;
+            if(v[a][b] == '*') sum++;
+        }
+
+        if(ma < sum) ma = sum, ai = i, aj = j;
+    }
+
+    cout << ai << " " << aj << endl;
 }
 
 int main(){ _
-    int ttt = 1; cin >> ttt;
+    int ttt = 1; // cin >> ttt;
 
     while(ttt--) solve();
 

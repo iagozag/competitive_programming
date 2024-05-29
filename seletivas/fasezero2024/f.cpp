@@ -25,36 +25,33 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
-
-ll gcd(ll a, ll b){
-    if(b == 0) return a;
-    return gcd(b, a%b);
-}
-
-ll lcm(ll a, ll b){
-    return (a/gcd(a, b))*b;  
-}
+const int MAX = 2e5+10, MOD = 998244353;
 
 void solve(){
-    int n; cin >> n; map<ll, vi> mp;
-    vl v(n); rep(i, 0, n) cin >> v[i], mp[v[i]].eb(i);
+    int n; cin >> n;
+    string s; cin >> s;
+    int m = sz(s), sum = 0;
 
-    int ans = n; vector<bool> can(n, 1);
-    while(ans > 0){
-        ll cur = 1, ma = 0;
-        rep(i, 0, n) if(can[i]) cur = lcm(cur, v[i]), ma = max(ma, v[i]);
-        if(!mp.count(cur)) break;
-        ans--;
-        if(can[mp[cur][0]]) forr(x, mp[cur]) can[x] = 0;
-        else forr(x, mp[ma]) can[x] = 0;
-    }
+    vector<vl> pre(n+1, vl(n+1)), suf(n+1, vl(n+1));
+    pre[1][0] = 0, pre[1][1] = 1;
+    rep(i, 1, n) rep(j, 0, n) pre[i][j] += pre[i-1][j-1], pre[i][j] %= MOD;
+    rep(i, 1, n) rep(j, 0, n) pre[i][j] += pre[i-1][j+1], pre[i][j] %= MOD;
+
+    suf[1][1] = 1;
+    rep(i, 1, n) rep(j, 0, n) suf[i][j] += suf[i-1][j-1], suf[i][j] %= MOD;
+    rep(i, 1, n) rep(j, 0, n) suf[i][j] += suf[i-1][j+1], suf[i][j] %= MOD;
+
+    rep(i, 0, m) sum += s[i] == '(' ? 1 : -1;
+
+    ll ans = 0;
+    rep(i, 0, n-m) rep()
+        ans += (pre[i][s]%MOD)*(suf[n-m-s][-s+sum]%MOD), ans %= MOD;
 
     cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; cin >> ttt;
+    int ttt = 1; // cin >> ttt;
 
     while(ttt--) solve();
 
