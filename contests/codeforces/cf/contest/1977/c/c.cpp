@@ -23,31 +23,33 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+void yes(int n){ cout << n << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-ll gcd(ll a, ll b){
-    if(b == 0) return a;
-    return gcd(b, a%b);
-}
-
-ll lcm(ll a, ll b){
-    return (a/gcd(a, b))*b;  
-}
-
 void solve(){
-    int n; cin >> n; map<ll, vi> mp;
-    vl v(n); rep(i, 0, n) cin >> v[i], mp[v[i]].eb(i);
+    ll n, l = 1, ma = 0; cin >> n;
+    vl v(n); map<ll, ll> mp; rep(i, 0, n) cin >> v[i], ma = max(ma, v[i]), mp[v[i]]++;
+    rep(i, 0, n){
+        l = lcm(l, v[i]);
+        if(l > ma) return yes(n);
+    }
 
-    int ans = n; vector<bool> can(n, 1);
-    while(ans > 0){
-        ll cur = 1, ma = 0;
-        rep(i, 0, n) if(can[i]) cur = lcm(cur, v[i]), ma = max(ma, v[i]);
-        if(!mp.count(cur)) break;
-        ans--;
-        if(can[mp[cur][0]]) forr(x, mp[cur]) can[x] = 0;
-        else forr(x, mp[ma]) can[x] = 0;
+    set<ll> div;
+    rep(i, 1, sqrt(ma)+1) if(ma%i == 0) div.insert(i), div.insert(ma/i);
+
+    ll ans = 0;
+    forr(x, div){
+        if(mp.count(x)) continue;
+        ll cur = 0, cnt = 0;
+        forr(y, mp){
+            if(x%y.ff == 0){
+                if(cur == 0) cur = y.ff;
+                else cur = lcm(cur, y.ff);
+                cnt += y.ss;
+            }
+        }
+        if(cur == x) ans = max(ans, cnt);
     }
 
     cout << ans << endl;
