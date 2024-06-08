@@ -22,37 +22,34 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
+void no(){ cout << "-1" << endl; }
 void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    int n, m, k; cin >> n >> m >> k;
-    vector<pii> v(k); map<pii, int> mp;
-    rep(i, 0, k) cin >> v[i].ff >> v[i].ss, mp[v[i]] = i;
-    sort(all(v), [](const pii& a, const pii& b){
-        if(a.ss != b.ss) return a.ss < b.ss;
-        return a.ff < b.ff;
-    });
+    ll n; cin >> n;
+    vector<pll> v(n); rep(i, 0, n){ ll a; cin >> a; v[i] = {a, i}; }
+    sort(all(v), greater<pll>());
 
-    int prev = v[0].ff; vi fount(k);
-    fount[mp[v[0]]] = 1;
-    rep(i, 1, k){
-        if(v[i].ff <= prev) continue;
-        if(v[i].ss == v[i-1].ss) fount[mp[v[i-1]]] = 0;
-        fount[mp[v[i]]] = 1, prev = v[i].ff;
+    vl ans(n, 1e9); ll coins = n*1e9;
+    ll mi = v[n-1].ff*1e9;
+
+    rep(i, 0, n-1){
+        ans[i] = (mi+v[i].ff-1)/v[i].ff;
+        coins -= (1e9-ans[i]);
     }
 
-    ll ans = 0, l = n, c = 1;
-    rep(i, 0, k){
-        if(!fount[mp[v[i]]]) continue;
-        ans += l*(v[i].ss-c), l = n-v[i].ff, c = v[i].ss;
+    rep(i, 0, n){
+        if(v[i].ff*ans[i] <= coins) return no();
     }
-    ans += l*(m-c+1);
 
-    cout << ans << endl;
-    forr(x, fount) cout << x << " ";
+    vl anss(n);
+    rep(i, 0, n){
+        anss[v[i].ss] = ans[i];
+    }
+
+    forr(x, anss) cout << x << ' ';
     cout << endl;
 }
 

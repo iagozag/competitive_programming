@@ -28,32 +28,14 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    int n, m, k; cin >> n >> m >> k;
-    vector<pii> v(k); map<pii, int> mp;
-    rep(i, 0, k) cin >> v[i].ff >> v[i].ss, mp[v[i]] = i;
-    sort(all(v), [](const pii& a, const pii& b){
-        if(a.ss != b.ss) return a.ss < b.ss;
-        return a.ff < b.ff;
-    });
+    int a, b; cin >> a >> b;
+    if(a < b) swap(a, b);
 
-    int prev = v[0].ff; vi fount(k);
-    fount[mp[v[0]]] = 1;
-    rep(i, 1, k){
-        if(v[i].ff <= prev) continue;
-        if(v[i].ss == v[i-1].ss) fount[mp[v[i-1]]] = 0;
-        fount[mp[v[i]]] = 1, prev = v[i].ff;
-    }
+    int x = a^b;
+    int i = x+1, j = 1, sum = 1;
+    while((a^i) == (j^b)) i += sum, j += sum, sum *= 2;
 
-    ll ans = 0, l = n, c = 1;
-    rep(i, 0, k){
-        if(!fount[mp[v[i]]]) continue;
-        ans += l*(v[i].ss-c), l = n-v[i].ff, c = v[i].ss;
-    }
-    ans += l*(m-c+1);
-
-    cout << ans << endl;
-    forr(x, fount) cout << x << " ";
-    cout << endl;
+    cout << sum << endl;
 }
 
 int main(){ _
