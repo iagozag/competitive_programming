@@ -6,6 +6,7 @@ using namespace std;
 #define repr(i,n,x) for(auto i=n;i>=x;i--)
 #define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
+#define sz(a) (int)(a.size())
 #define endl '\n'
 #define ff first
 #define ss second
@@ -13,79 +14,44 @@ using namespace std;
 #define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> ii;
+typedef pair<int,int> pii;
+typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void DBG() {
-    cerr << "]" << endl;
-}
-
-void DBGC() {
-    cerr << "]" << endl;
-}
-
-template<class H, class... T> void DBG(H h, T... t) {
-    cerr << to_string(h);
-    if(sizeof...(t)) cerr << ", ";
-    DBG(t...);
-}
-
-template<class H, class... T> void DBGC(H h, T... t) {
-    for(auto& x: h) cerr << x << " ";
-    if(sizeof...(t)) cerr << "], [ ";
-    DBGC(t...);
-}
-
-#ifndef _DEBUG
-#define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
-#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
-#else
-#define dbg(...) 0
-#define dbgc(...) 0
-#endif
-
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 100, MOD = 1e9+7;
-
-int n, qnt;
-vector<vi> g;
-vector<bool> vis;
-
-void dfs(int v){
-    vis[v] = 1; if(v < n) qnt++;
-    forr(ve, g[v]){
-        if(!vis[ve]) dfs(ve);
-    }
-}
-
-void addedge(int a, int b){
-    g[a].eb(b), g[b].eb(a);
-}
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    cin >> n; g = vector<vi>(MAX), vis = vector<bool>(MAX);
-    vector<pair<string,string>> v(n); map<string,int> mp; int k = n;
-    rep(i, 0, n){
-        pair<string,string>& x = v[i];
-        cin >> x.ff >> x.ss;
-        if(!mp.count(x.ff)) mp[x.ff] = k++;
-        if(!mp.count(x.ss)) mp[x.ss] = k++;
-        addedge(i, mp[x.ff]*2), addedge(i, mp[x.ss]*2+1); 
+    int n; cin >> n;
+    vector<pair<string, string>> v(n); forr(x, v) cin >> x.ff >> x.ss;
+
+    auto cmp = [&](int a, int b) -> int{
+        if(a == 0) return 0;
+        pair<string, string> pss = v[b];
+        rep(i, 0, n) if(a&(1<<i) and (v[b].ff == v[i].ff or v[b].ss == v[i].ss)) return 0;
+        return 1;
+    };
+
+    int dp[1<<n]; memset(dp, INF, sizeof dp); dp[0] = 0;
+    rep(i, 1, 1<<n){
+        rep(j, 0, n) if(i&(1<<j)){
+            dp[i] = min(dp[i], dp[i^(1<<j)]+cmp(i^(1<<j), j));
+        } 
     }
 
-    int ma = 0;
-    rep(i, 0, n) if(!vis[i]) qnt = 0, dfs(i), ma = max(ma, qnt);
-    cout << n-ma << endl;
+    rep(i, 0, 1<<n) cout << bitset<16>(i).to_string() << ": " << dp[i] << endl;
+
+    cout << dp[(1<<n)-1] << endl;
 }
 
 int main(){ _
-    int ttt; cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

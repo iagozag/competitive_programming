@@ -34,8 +34,9 @@ bool good(ll m){
     ll sum = 0;
     rep(i, 0, n){
         sum += a[i]*((m-1)/c[i]+1);
+        if(sum >= h) return true;
     }
-    return sum >= h;
+    return false;
 }
 
 void solve(){
@@ -44,7 +45,9 @@ void solve(){
     forr(x, a) cin >> x;
     forr(x, c) cin >> x;
 
-    ll l = 1, r = 1e11, ans = r;
+    ll l = 1, r = 2, ans = 0;
+    while(!good(r)) l = r, r <<= 1;
+
     while(l <= r){
         ll m = l+(r-l)/2;
         if(good(m)) ans = m, r = m-1;

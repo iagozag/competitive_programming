@@ -32,37 +32,7 @@ void solve(){
     vector<vl> v(2, vl(n));
     rep(i, 0, 2) rep(j, 0, n) cin >> v[i][j];
 
-    vector<vl> prefl, prefr, preflt, prefrt; prefl = prefr = preflt = prefrt = vector<vl>(2, vl(n));
-    prefl[0][0] = v[0][0], prefl[1][0] = v[1][0];
-    preflt[0][0] = 0, preflt[1][0] = v[1][0];
-    prefr[0][n-1] = v[0][n-1], prefr[1][n-1] = v[1][n-1];
-    prefrt[0][n-1] = v[0][n-1]*(n-1), prefrt[1][n-1] = v[1][n-1]*n;
-
-    rep(i, 1, n){
-        prefl[0][i] = prefr[0][i-1]+v[0][i];
-        prefl[1][i] = prefl[1][i-1]+v[1][i];
-        preflt[0][i] = preflt[0][i-1]+v[0][i]*i;
-        preflt[1][i] = preflt[1][i-1]+v[1][i]*(i+1);
-    }
-
-    repr(i, n-2, 0){
-        prefr[0][i] = prefr[0][i+1]+v[0][i];
-        prefr[1][i] = prefr[1][i+1]+v[1][i];
-        prefrt[0][i] = prefrt[0][i+1]+v[0][i]*i;
-        prefrt[1][i] = prefrt[1][i+1]+v[1][i]*(i+1);
-    }
-
-    ll ans = 0, t = 0, sum = 0;
-    rep(i, 0, n) ans += t*v[0][i], t++;
-    repr(i, n-1, 0) ans += t*v[1][i], t++;
-
-    t = 0, sum = 0; int pos = 0;
-    rep(i, 0, n){
-
-    }
-
-
-    cout << max(ans, sum) << endl;
+    int dp[n][2][2*n][3]; memset()
 }
 
 int main(){ _
