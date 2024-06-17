@@ -27,12 +27,29 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+// dp[i][j] = min sum that i can do with the first i elements and done j operations;
 
+void solve(){
+    ll n, k; cin >> n >> k;
+    vl v(n); forr(x, v) cin >> x;
+
+    vector<vector<ll>> dp(n+1, vl(k+1, LINF)); 
+    dp[0][0] = 0; 
+    rep(i, 0, n) rep(j, 0, k+1){
+        ll mi = INF;
+        for(int d = 0; i+d < n and j+d <= k; d++){
+            mi = min(mi, v[i+d]);
+            dp[i+d+1][j+d] = min(dp[i+d+1][j+d], dp[i][j]+mi*(d+1));
+        }
+    }
+
+    ll ans = LINF;
+    rep(i, 0, k+1) ans = min(ans, dp[n][i]);
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

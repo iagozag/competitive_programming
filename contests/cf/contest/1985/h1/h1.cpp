@@ -47,7 +47,7 @@ void solve(){
         string s; cin >> s;
         rep(j, 0, m) if(s[j] == '#') v[i][j] = k++;
     }
-    id = vi(k+1), iota(all(id), 0), sz = vi(k+1, 1); sz(k) = 0;
+    id = vi(k), iota(all(id), 0), sz = vi(k, 1);
 
     rep(i, 0, n) rep(j, 0, m){
         if(v[i][j] > 0){
@@ -56,21 +56,36 @@ void solve(){
         }
     }
 
-    ll ans = 0;
-    rep(i, 0, n) ans = max(ans, 1LL*sz[i]);
+    vi prefr(n), prefc(m);
+    rep(i, 0, n) rep(j, 0, m) if(v[i][j]) prefr[i]++, prefc[j]++;
 
+    auto add = [&](int i, int j, set<int>& st) ->int{
+        if(i < 0 or i >= n or j < 0 or j >= m or !v[i][j] or st.count(find(v[i][j]))) return 0;
+        st.insert(id[v[i][j]]);
+        return sz[id[v[i][j]]];
+    };
+
+    ll ans = 0;
     rep(i, 0, n){
-        ll sum = 0; 
-        set<int> st; vi id2 = id, sz2 = sz;
+        ll sum = m-prefr[i];
+        set<int> st;
         rep(j, 0, m){
-            if(i >= 1 and !st.count(find(v[i-1][j]))) 
-                st.insert(id[v[i-1][j]]), sum += sz[id[v[i-1][j]]], unio(v[i][j], v[i-1][j]);
-            if(!st.count(find(v[i][j]))) 
-                st.insert(id[v[i][j]]), sum += sz[id[v[i][j]]];
-            if(i+1 < n and !st.count(find(v[i+1][j]))) 
-                st.insert(id[v[i+1][j]]), sum += sz[id[v[i+1][j]]], unio(v[i+1][j], v[i+1][j]);
+            sum += add(i-1, j, st); 
+            sum += add(i, j, st); 
+            sum += add(i+1, j, st); 
         }
-        ans = max(ans, sum) id = id2, sz = sz2;
+        ans = max(ans, sum);
+    }
+
+    rep(j, 0, m){
+        ll sum = n-prefc[j];
+        set<int> st;
+        rep(i, 0, n){
+            sum += add(i, j-1, st); 
+            sum += add(i, j, st); 
+            sum += add(i, j+1, st); 
+        }
+        ans = max(ans, sum);
     }
 
     cout << ans << endl;

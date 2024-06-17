@@ -23,31 +23,37 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+void yes(int ans){ cout << ans << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
     int n; cin >> n;
-    vector<pair<string, string>> v(n); forr(x, v) cin >> x.ff >> x.ss;
-
-    auto cmp = [&](int a, int b) -> int{
-        if(a == 0) return 0;
-        pair<string, string> pss = v[b];
-        rep(i, 0, n) if(a&(1<<i) and (v[b].ff == v[i].ff or v[b].ss == v[i].ss)) return 0;
-        return 1;
-    };
-
-    int dp[1<<n]; memset(dp, INF, sizeof dp); dp[0] = 0;
-    rep(i, 1, 1<<n){
-        rep(j, 0, n) if(i&(1<<j)){
-            dp[i] = min(dp[i], dp[i^(1<<j)]+cmp(i^(1<<j), j));
-        } 
+    vector<pii> v(n); map<string, int> mp; int c = 0;
+    rep(i, 0, n){
+        string s1, s2 ; cin >> s1 >> s2;
+        if(mp.count(s1)) v[i].ff = mp[s1];
+        else mp[s1] = c, v[i].ff = c++;
+        if(mp.count(s2)) v[i].ss = mp[s2];
+        else mp[s2] = c, v[i].ss = c++;
     }
 
-    rep(i, 0, 1<<n) cout << bitset<16>(i).to_string() << ": " << dp[i] << endl;
+    bool dp[1<<n][n]; memset(dp, 0, sizeof dp);
+    rep(i, 0, n) dp[0][i] = 1;
+    rep(i, 0, 1<<n){
+        rep(j, 0, n) if(dp[i][j]){
+            rep(k, 0, n) if(!(i&(1<<k))){
+                if(i == 0 or v[j].ff == v[k].ff or v[j].ss == v[k].ss) 
+                    dp[i|(1<<k)][k] = 1;
+            }
+        }
+    }
 
-    cout << dp[(1<<n)-1] << endl;
+    int mi = INF;
+    rep(i, 0, 1<<n) rep(j, 0, n) if(dp[i][j]){
+        mi = min(mi, (int)(n-bitset<16>(i).count()));
+    }
+    cout << mi << endl;
 }
 
 int main(){ _
