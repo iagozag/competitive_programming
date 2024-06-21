@@ -37,10 +37,18 @@ void solve(){
     if((k&1) or k > ma) return no();
     cout << "YES" << endl;
 
-    vi ans(n+1); vector<bool> vis(n+1); iota(all(ans), 0);
+    vi ans(n+1); iota(all(ans), 0);
+    int i = 1, j = n;
+    while(i < j){
+        if(k >= (j-i)*2) k -= 2*(j-i), swap(ans[i], ans[j]);
+        else{
+            swap(ans[i], ans[i+k/2]);
+            break;
+        }
+        i++, j--;
+    }
 
-
-    rep(i, 1, n+1) cout << ans[i] << " \n"[i==n];
+    rep(ii, 1, n+1) cout << ans[ii] << " \n"[ii==n];
 }
 
 int main(){ _

@@ -25,44 +25,35 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 1001, MOD = 998244353;
-
-ll k;
-vl fact(MAX), inv(MAX), ifact(MAX);
-
-void factorial(){
-    inv[1] = 1;
-    rep(i, 2, MAX)  inv[i] = MOD - (MOD/i) * inv[MOD%i] % MOD;
-
-    fact[0] = 1, ifact[0] = 1;
-    rep(i, 1, MAX) fact[i] = fact[i-1]*i%MOD, ifact[i] = ifact[i-1]*inv[i]%MOD;
-}
-
-ll calc(int a, int b){
-    return fact[a]*ifact[b]%MOD*ifact[a-b]%MOD;
-}
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    vl v(26); rep(i, 0, 26) cin >> v[i];
+    ll h, w, k; cin >> h >> w >> k;
+    ll si, sj; cin >> si >> sj; --si, --sj;
+    ll mat[h][w]; rep(i, 0, h) rep(j, 0, w) cin >> mat[i][j];
 
-    vector<vl> dp(27, vl(k+1));
-    dp[0][0] = 1; 
-    rep(i, 0, 26) rep(j, 0, k+1){
-        for(ll l = 0; l <= v[i] and j+l <= k; l++)
-            dp[i+1][j+l] += dp[i][j]*(calc(j+l, l)),
-            dp[i+1][j+l] %= MOD;
-    }
+    vector<vector<vl>> dp(min(k, h*w)+1, vector<vl>(h, vl(w, -LINF)));
+    vector<pii> moves = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+
+    auto val = [&](int a, int b) -> bool{
+        return a >= 0 and a < h and b >= 0 and b < w;
+    };
+
+    dp[0][si][sj] = 0;
+    rep(t, 0, min(k, h*w)) rep(i, 0, h) rep(j, 0, w)
+        for(auto [x, y]: moves){
+            x += i, y += j;
+            if(!val(x, y)) continue;
+            dp[t+1][x][y] = max(dp[t+1][x][y], dp[t][i][j]+mat[x][y]);
+        }
 
     ll ans = 0;
-    rep(i, 1, k+1) ans += dp[26][i], ans %= MOD;
+    rep(t, 0, min(k, h*w)+1) rep(i, 0, h) rep(j, 0, w) ans = max(ans, dp[t][i][j]+(k-t)*mat[i][j]);
     cout << ans << endl;
 }
 
 int main(){ _
     int ttt = 1; // cin >> ttt;
-
-    cin >> k;
-    factorial();
 
     while(ttt--) solve();
 

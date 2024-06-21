@@ -27,21 +27,16 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
+unsigned int x, y;
+
 void solve(){
-    cin >> n >> c;
-    vl v(n); forr(x, v) cin >> x;
-
-    rep(i, 0, n){
-        
-
-        cout << ans << " \n"[i==n-1]; 
-    }
+    unsigned int ans = 0;
+    rep(i, 0, 32) if((x&(1<<i)) xor (y&(1<<i))) ans += (1<<i);
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; cin >> ttt;
-
-    while(ttt--) solve();
+    while(cin >> x >> y) solve();
 
     exit(0);
 }
