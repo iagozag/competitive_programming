@@ -22,20 +22,26 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "0" << endl; }
+void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 998244353;
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
     ll n, k; cin >> n >> k;
-    string s; cin >> s;
 
+    ll num = 1;
+    while(k > 1){
+        n -= num, num += 2, --k;
+        if(n <= 0) return no();
+    }
 
+    if(k == 1 and (n&1 and n >= num)) return yes();
+    return no();
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

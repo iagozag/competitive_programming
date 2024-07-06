@@ -22,15 +22,38 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "0" << endl; }
+void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 998244353;
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    ll n, k; cin >> n >> k;
-    string s; cin >> s;
 
+    int n, m; cin >> n >> m;
+
+    bool even = n % 2 == 0;
+
+    vector<int> pos(n, -1);
+
+    for (int i= 0; i < n; i++) {
+        int x; cin >> x;
+        x--;
+        pos[x] = i;
+    }
+
+    ll ans = 0;
+    for (int i = 0; i < m; i++) {
+        int a, b; cin >> a >> b;
+        a--, b--;
+        int pa = pos [a];
+        int pb = pos[b];
+        if (pa < pb) swap(pa, pb);
+        if (even) {
+            if ((pos[a] - pos[b]) % 2 == 1) ans++;
+        } else ans++;
+    }
+
+    cout << ans << endl;
 
 }
 

@@ -22,20 +22,25 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "0" << endl; }
+void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 998244353;
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    ll n, k; cin >> n >> k;
-    string s; cin >> s;
-
-
+    ll x, y, k; cin >> x >> y >> k;
+    while(k and k >= ((x+y)/y)*y-x){
+        k -= ((x+y)/y)*y-x, x = ((x+y)/y)*y;
+        while(x%y == 0) x /= y;
+        if(x == 1) break;
+    }
+    if(x == 1) x += k%(y-1); 
+    else x += k;
+    cout << x << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

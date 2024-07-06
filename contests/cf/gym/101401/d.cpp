@@ -22,22 +22,18 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "0" << endl; }
+void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 998244353;
-
-void solve(){
-    ll n, k; cin >> n >> k;
-    string s; cin >> s;
-
-
-}
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
-
-    while(ttt--) solve();
+    int n;
+    cin >> n;
+    vector<int> costs(n);
+    for(int i = 0; i < n; i += 1) cin >> costs[i];
+    for(int i = 1; i < n; i += 1) costs[i] += costs[i-1];
+    for(int i = 1; i < n; i += 1) costs[i] += costs[i-1];
 
     exit(0);
 }

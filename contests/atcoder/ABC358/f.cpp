@@ -29,8 +29,8 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
     int n, m, k; cin >> n >> m >> k;
-    int ma = (n&1 ? n*m-(m-1) : n*m);
-    if(((k&1) xor (ma&1)) or k < n or k > ma) return no();
+    int ma = n*m;
+    if(((k&1) xor (n&1)) or k < n or k > ma) return no();
     cout << "Yes\n";
 
     vector<string> ans(2*n+1, string(2*m+1, '+'));
@@ -55,10 +55,20 @@ void solve(){
         curx++, matx += 2, dist += 2;
     }
 
+    int have = n*m-(m-1);
+    if(n&1 and k > have){
+        int i = 2*n-2, j = 1;
+        while(k > have){
+            have += 2;
+            ans[i][j] = '.', ans[i-1][j+1] = '|', ans[i][j+2] = '.', ans[i+1][j+3] = '|';
+            j += 4;
+        }
+    }
+
+    if(n&1) ans[2*n-1][2*m-2] = '|';
     rep(i, 0, 2*n+1) ans[i][0] = '+';
     rep(i, 0, 2*m+1) ans[2*n][i] = '+';
     ans[2*n][2*m-1] = 'G';
-    if(n&1) ans[2*n-1][2*m-2] = '|';
 
     forr(x, ans) cout << x << endl;
 }

@@ -22,16 +22,29 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "0" << endl; }
+void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 998244353;
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    ll n, k; cin >> n >> k;
     string s; cin >> s;
+    ll ans = 0;
+    vi v; forr(x, s) v.eb((x-'0')%3);
+    int n = v.size();
+    rep(i, 0, n){
+        if(!v[i]){ ans++; continue; }
+        if(v[i] == 1){
+            if(i < n-1 and v[i+1] == 2) ans++, i++;
+            else if(i < n-2 and v[i+1] == 1 and v[i+2] == 1) ans++, i += 2;
+        }
+        else{
+            if(i < n-1 and v[i+1] == 1) ans++, i++;
+            else if(i < n-2 and v[i+1] == 2 and v[i+2] == 2) ans++, i += 2;
+        }
+    }
 
-
+    cout << ans << endl;
 }
 
 int main(){ _

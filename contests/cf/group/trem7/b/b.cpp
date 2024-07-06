@@ -22,20 +22,24 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "0" << endl; }
+void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 998244353;
+const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    ll n, k; cin >> n >> k;
-    string s; cin >> s;
-
-
+    int n; cin >> n;
+    vi v(n); forr(x, v) cin >> x, x = log2(x);
+    
+    map<int, int> mp;
+    forr(x, v) mp[x]++;
+    int ma = 0;
+    forr(x, mp) ma = max(ma, x.ss);
+    cout << ma << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 
