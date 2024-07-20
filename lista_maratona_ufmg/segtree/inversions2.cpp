@@ -27,45 +27,50 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-vi v; vi seg;
+int n;
+vi v, seg;
+
+int build(int node, int l, int r){
+    if(l == r) return seg[node] = 1;
+    int m = (l+r)/2;
+    return seg[node] = build(node*2, l, m)+build(node*2+1, m+1, r);
+}
 
 int update(int node, int l, int r, int idx){
     if(idx < l or idx > r) return seg[node];
-    if(l == r) return seg[node] = 1;
-    int m = (l+r)>>1;
+    if(l == r) return seg[node] = 0;
+    int m = (l+r)/2;
     return seg[node] = update(node*2, l, m, idx)+update(node*2+1, m+1, r, idx);
 }
 
-int query(int node, int l, int r, int ql, int qr){
-    if(ql > r or qr < l) return 0;
-    if(ql <= l and r <= qr) return seg[node];
+int query(int node, int l, int r, int val){
+    if(l == r) return l; 
     int m = (l+r)>>1;
-    return query(node*2, l, m, ql, qr)+query(node*2+1, m+1, r, ql, qr);
+    if(seg[node*2] >= val) return query(node*2, l, m, val);
+    else return query(node*2+1, m+1, r, val-seg[node*2]);
 }
 
 void solve(){
-    int n; cin >> n;
-    v = vi(2*n), seg = vi(8*n);
-    for(int i = 0; i < 2*n; i++) cin >> v[i];
+    cin >> n; v = vi(n), seg = vi(4*MAX);
+    forr(x, v) cin >> x;
 
-    vi ans(n+1); vi vis(n+1, -1);
-    rep(i, 0, 2*n){
-        if(vis[v[i]] != -1){
-            ans[v[i]] = query(1, 0, 2*n-1, vis[v[i]]+1, i-1);
-            update(1, 0, 2*n-1, vis[v[i]]);
-        }
-        vis[v[i]] = i;
+    build(1, 0, n-1);
+
+    reverse(all(v));
+    vi ans(n);
+    rep(i, 0, n){
+        ans[i] = query(1, 0, n-1, n-v[i]-i)+1;
+        update(1, 0, n-1, ans[i]-1);
     }
-
-    rep(i, 1, n+1) cout << ans[i] << " ";
+    reverse(all(ans));
+    forr(x, ans) cout << x << " ";
     cout << endl;
 }
 
 int main(){ _
-    int t = 1;
-    while(t--){
-        solve();
-    }
+    int ttt = 1; // cin >> ttt;
+
+    while(ttt--) solve();
 
     exit(0);
 }

@@ -31,7 +31,7 @@ vi v; vi seg;
 
 int update(int node, int l, int r, int idx){
     if(idx < l or idx > r) return seg[node];
-    if(l == r) return seg[node] = 1;
+    if(l == r) return seg[node] = -2;
     int m = (l+r)>>1;
     return seg[node] = update(node*2, l, m, idx)+update(node*2+1, m+1, r, idx);
 }
@@ -51,7 +51,8 @@ void solve(){
     vi ans(n+1); vi vis(n+1, -1);
     rep(i, 0, 2*n){
         if(vis[v[i]] != -1){
-            ans[v[i]] = query(1, 0, 2*n-1, vis[v[i]]+1, i-1);
+            ans[v[i]] = i-vis[v[i]]-1;
+            ans[v[i]] += query(1, 0, 2*n-1, vis[v[i]]+1, i-1);
             update(1, 0, 2*n-1, vis[v[i]]);
         }
         vis[v[i]] = i;
@@ -69,3 +70,4 @@ int main(){ _
 
     exit(0);
 }
+
