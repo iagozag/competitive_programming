@@ -19,9 +19,6 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
-template<typename X, typename Y> bool ckmin(X& x, const Y& y) { return (y < x) ? (x=y,1):0; }
-template<typename X, typename Y> bool ckmax(X& x, const Y& y) { return (x < y) ? (x=y,1):0; }
-
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
@@ -31,11 +28,30 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; ll sum = 0; cin >> n;
+    vl v(n); forr(x, v) cin >> x, sum += x;
+    vi vis(n+1);
+    vl pref(n); pref[0] = 0, vis[v[0]] = 1;
+    rep(i, 1, n){
+        vis[v[i]]++;
+        if(vis[v[i]] > 1 and v[i] > pref[i-1]) pref[i] = v[i];
+        else pref[i] = pref[i-1];
+    }
 
+    ll prev = 0;
+    rep(i, 0, n) prev += pref[i];
+    sum += prev;
+
+    rep(i, 1, n-1) if(pref[i] != pref[i-1] and pref[i] != pref[i+1]) 
+        prev -= (pref[i]-pref[i-1]), pref[i] = pref[i-1];
+
+    repr(i, n-1, 0) prev -= pref[i], sum += prev;
+
+    cout << sum << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

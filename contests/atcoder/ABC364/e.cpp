@@ -31,7 +31,20 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, x, y; cin >> n >> x >> y;
+    vi a(n), b(n);
+    rep(i, 0, n) cin >> a[i] >> b[i];
 
+    vector<vi> dp(n+1, vi(x+1, INF)); dp[0][0] = 0;
+    rep(i, 0, n){
+        repr(j, i, 0) repr(k, x-a[i], 0){
+            ckmin(dp[j+1][k+a[i]], dp[j][k]+b[i]);
+        }
+    }
+
+    int ma = 0;
+    rep(i, 0, n) rep(j, 0, x+1) if(dp[i][j] <= y) ckmax(ma, i+1);
+    cout << ma << endl;
 }
 
 int main(){ _

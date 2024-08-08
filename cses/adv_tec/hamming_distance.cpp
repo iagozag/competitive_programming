@@ -30,8 +30,28 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+int btoi(string s){
+    int ans = 0, now = 1;
+    repr(i, sz(s)-1, 0){
+        if(s[i] == '1') ans += now;
+        now <<= 1;
+    }
+    return ans;
+}
 
+void solve(){
+    int n, m; cin >> n >> m;
+    int v[n];
+    rep(i, 0, n){
+        string s; cin >> s;
+        v[i] = stoi(s, nullptr, 2); 
+    }
+
+    int ans = 30;
+    rep(i, 0, n) rep(j, i+1, n){
+        ckmin(ans, __builtin_popcount(v[i]^v[j]));
+    }
+    cout << ans << endl;
 }
 
 int main(){ _

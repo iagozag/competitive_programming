@@ -25,13 +25,48 @@ template<typename X, typename Y> bool ckmax(X& x, const Y& y) { return (x < y) ?
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
+void no(){ cout << "IMPOSSIBLE" << endl; }
 void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    ll n, m, s, d; cin >> n >> m >> s >> d;
+    vl v(n); forr(x, v) cin >> x;
+    sort(all(v));
+    if(v[0]-1 < s) return no();
 
+    vector<string> ans;
+    ll k = 0, i = 0;
+    while(true){
+        if(i == n){
+            string a = "RUN "; a += to_string(m-k);
+            if(m != k) ans.eb(a);
+            break;
+        }
+
+        string a = "RUN "; a += to_string(v[i]-1-k);
+        ans.eb(a);
+        k = v[i]-1;
+
+        ll j = i;
+        bool can = false; 
+        while(j < n and v[j]+1-k <= d){
+            if(j == n-1 or v[j+1]-v[j]-2 >= s){
+                can = true, i = j+1;
+                break;
+            }
+            j++;
+        }
+
+        if(can){
+            a = "JUMP "; a += to_string(v[j]+1-k);
+            ans.eb(a);
+            k = v[j]+1;
+        } else return no();
+    }
+
+    forr(x, ans) cout << x << endl;
 }
 
 int main(){ _

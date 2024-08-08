@@ -31,11 +31,15 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    int n, k1, k2; cin >> n >> k1 >> k2;
+    int p, b; cin >> p >>  b;
+    int can1 = (k1+k2)/2, can2 = (n*2-k1-k2)/2;
+    if(p > can1 or b > can2) return no();
+    return yes();
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

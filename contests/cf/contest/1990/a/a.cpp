@@ -31,11 +31,16 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n;
+    map<int, int> mp;
+    rep(i, 0, n){ int a; cin >> a; mp[a]++; }
 
+    forr(x, mp) if(x.ss%2) return yes();
+    return no();
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

@@ -28,10 +28,11 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 300, MOD = 1e9+7;
 
 void solve(){
-
+    int x1, y1, x2, y2; cin >> x1 >> y1 >> x2 >> y2;
+    cout << 2*(abs(x1-x2)+abs(y1-y2)+2+(x1 == x2 or y1 == y2 ? 1 : 0)) << endl;
 }
 
 int main(){ _

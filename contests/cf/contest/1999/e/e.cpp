@@ -30,12 +30,29 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+vl v(MAX, INF);
 
+void solve(){
+    int l, r, tmp; cin >> l >> r;
+    ll ans = 0; tmp = l;
+    while(tmp) ans += 2, tmp /= 3;
+
+    l++;
+    int idxl = lower_bound(all(v), l)-v.begin();
+    if(v[idxl] != l) idxl--;
+    int idxr = lower_bound(all(v), r)-v.begin();
+    if(v[idxr] != r) idxr--;
+
+    while(idxl < idxr) ans += (v[idxl+1]-l)*idxl, l = v[++idxl]; 
+    if(idxl == idxr) ans += (r-l+1)*idxl;
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
+
+    v[0] = 0, v[1] = 1;
+    for(int i = 2; i <= 15; i++) v[i] = v[i-1]*3;
 
     while(ttt--) solve();
 

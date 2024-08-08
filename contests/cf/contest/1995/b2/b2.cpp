@@ -30,12 +30,38 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+ll comb(ll a, ll ca, ll b, ll cb, ll m){
+    ll ma = min(m-(m%a), a*ca), useda = ma/a; ca -= useda;
+    ll rest = (m-ma)/b;
+    ma += b*(min(rest, cb)), cb -= min(rest, cb);
 
+    ll diff = m-ma;
+    ma += min({diff, cb, useda});
+
+    return ma;
+}
+
+void solve(){
+    ll n, m; cin >> n >> m;
+    vl a(n), c(n);
+    forr(x, a) cin >> x;
+    forr(x, c) cin >> x;
+    vector<pll> v(n);
+    rep(i, 0, n) v[i] = {a[i], c[i]};
+    sort(all(v));
+
+    ll ma = 0;
+    rep(i, 0, n){
+        if(v[i].ff > m) break;
+        ckmax(ma, min(m-(m%v[i].ff), v[i].ff*v[i].ss));
+        if(i > 0 and v[i].ff-v[i-1].ff == 1) ckmax(ma, comb(v[i-1].ff, v[i-1].ss, v[i].ff, v[i].ss, m));
+    }
+
+    cout << ma << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

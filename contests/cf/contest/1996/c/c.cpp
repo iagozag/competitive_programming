@@ -31,11 +31,25 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, m; cin >> n >> m;
+    string a, b; cin >> a >> b;
+    vector<vi> la(n+1, vi(26)), lb(n+1, vi(26));
+    rep(i, 1, n+1){ la[i] = la[i-1]; la[i][a[i-1]-'a']++; }
+    rep(i, 1, n+1){ lb[i] = lb[i-1]; lb[i][b[i-1]-'a']++; }
 
+    rep(j, 0, m){
+        int c, d; cin >> c >> d;
+        --c;
+        vi va = la[d], vb = lb[d]; 
+        rep(i, 0, 26) va[i] -= la[c][i], vb[i] -= lb[c][i];
+        int ans = 0;
+        rep(i, 0, 26) ans += abs(va[i]-vb[i]);
+        cout << ans/2 << endl;
+    }
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

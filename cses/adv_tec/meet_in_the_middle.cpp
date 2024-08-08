@@ -31,7 +31,29 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    ll n, x; cin >> n >> x;
+    vl v1, v2;
+    rep(i, 0, n){
+        ll a; cin >> a;
+        if(i&1) v1.eb(a);
+        else v2.eb(a);
+    }
 
+    int n1 = sz(v1), n2 = sz(v2);
+    vl dp1(1<<n1), dp2(1<<n2);
+    rep(i, 0, 1<<n1) rep(j, 0, n1) if((1<<j)&i) dp1[i] = dp1[i^(1<<j)]+v1[j];
+    rep(i, 0, 1<<n2) rep(j, 0, n2) if((1<<j)&i) dp2[i] = dp2[i^(1<<j)]+v2[j];
+
+    ll ans = 0; 
+    sort(all(dp2));
+    rep(i, 0, 1<<n1){
+        ll need = x-dp1[i];
+        int idx = lower_bound(all(dp2), need)-dp2.begin();
+        int idxu = upper_bound(all(dp2), need)-dp2.begin();
+        if(idx < (1<<n2) and dp2[idx] == need) ans += idxu-idx;
+    }
+    
+    cout << ans << endl;
 }
 
 int main(){ _

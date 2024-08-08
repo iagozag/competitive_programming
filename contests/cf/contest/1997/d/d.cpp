@@ -30,12 +30,40 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+vl a;
+vector<vi> g;
 
+bool dfs(int v, ll w){
+    ll now = a[v]-w;
+    if(!sz(g[v])) return now >= 0LL;
+
+    if(now < -1e9) return false;
+
+    bool can = true;
+    forr(ve, g[v]) can &= dfs(ve, w-min(now, 0LL));
+    return can;
+}
+
+void solve(){
+    int n; cin >> n;
+    a = vl(n); forr(x, a) cin >> x;
+    g = vector<vi>(n);
+    rep(i, 1, n){ int v; cin >> v; --v; g[v].eb(i); }
+
+    ll l = a[0]+1, r = 2e9, ans = a[0];
+    while(l <= r){
+        ll m = l+(r-l)/2;
+        bool can = true;
+        forr(ve, g[0]) can &= dfs(ve, m-a[0]);
+        if(can) ans = m, l = m+1;
+        else r = m-1;
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

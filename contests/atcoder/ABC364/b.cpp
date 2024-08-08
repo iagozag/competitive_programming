@@ -31,7 +31,21 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, m, sx, sy; cin >> n >> m >> sx >> sy; --sx, --sy;
+    vector<string> v(n); forr(x, v) cin >> x;
+    string s; cin >> s;
 
+    rep(i, 0, sz(s)){
+        int nx, ny;
+        if(s[i] == 'L') nx = sx, ny = sy-1;
+        else if(s[i] == 'R') nx = sx, ny = sy+1;
+        else if(s[i] == 'D') nx = sx+1, ny = sy;
+        else if(s[i] == 'U') nx = sx-1, ny = sy;
+        if(nx < 0 or nx >= n or ny < 0 or ny >= m or v[nx][ny] == '#') continue;
+        else sx = nx, sy = ny;
+    }
+
+    cout << sx+1 << " " << sy+1 << endl;
 }
 
 int main(){ _

@@ -26,16 +26,55 @@ const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+void yes(){ cout << "1" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 1e5+10, MOD = 1e9+7;
+
+vi fact(MAX);
+vi mult(MAX, 1);
+
+void sieve(){
+    iota(all(fact), 0);
+    fact[0] = fact[1] = -1;
+    rep(i, 2, sqrt(MAX)+1) if(fact[i] == i)
+        for(int j = i; j < MAX; j += i){ 
+            fact[j] = i, mult[j] = 1;
+            if((j/i)%i == 0) mult[j] = mult[j/i]+1;
+        }
+}
+
+int fexp(int a, int b){
+    int ans = 1;
+    while(b){
+        if(b&1) ans *= a;
+        a *= a, b >>= 1;
+    }
+    return ans;
+}
 
 void solve(){
+    int n; cin >> n;
+    vi v(n); forr(x, v) cin >> x;
 
+    if(n == 1 and v[0] == 1) return yes();
+
+    vi lastp(1e5+1, -1);
+    vi dp(n);
+    rep(i, 0, n){
+        int t = v[i];
+        while(t != 1){
+            ckmax(dp[i], (lastp[fact[t]] == -1 ? 1 : dp[lastp[fact[t]]]+1));
+            lastp[fact[t]] = i, t /= fexp(fact[t], mult[t]);
+        }
+    }
+
+    cout << *max_element(all(dp)) << endl;
 }
 
 int main(){ _
     int ttt = 1; // cin >> ttt;
+
+    sieve();
 
     while(ttt--) solve();
 

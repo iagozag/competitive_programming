@@ -31,11 +31,37 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int a, b; cin >> n;
+    
+    vector<ii> ans(5);
+    int cnt = 0;
+    while(a >= 25 and cnt < 3){
+        ans[cnt].ff = 25, ans[cnt++].ss = min(23, b), a -= 25, b -= (min(b, 23));
+    }
+    if(cnt == 3){
+        if(a or b){
+            if(abs(a-b) == 2) ans[0].ff += a, ans[0].ss += b;
+        }
+    }
 
+
+
+
+    int qa = 0, qb = 0;
+    forr(x, ans){
+        if(x.ff == 25 or x.ff == 15 or x.ss == 25 or x.ss == 15){
+            if(x.ff > x.ss) qa++;
+            else qb++;
+        }
+    }
+
+    cout << qa << ":" << qb << endl;
+    forr(x, ans) cout << x.ff << ":" << x.ss << " ";
+    cout << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

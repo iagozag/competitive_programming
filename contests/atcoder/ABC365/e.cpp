@@ -31,7 +31,17 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n;
+    vl v(n); forr(x, v) cin >> x;
+    vl pref(n); pref[0] = v[0];
+    rep(i, 1, n) pref[i] = pref[i-1] xor v[i];
 
+    ll ans = 0;
+    rep(i, 0, n){
+        ans += (pref[i]*(i+1));
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _

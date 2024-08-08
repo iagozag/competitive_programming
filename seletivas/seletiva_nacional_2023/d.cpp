@@ -31,11 +31,23 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, k; cin >> n >> k;
+    vi v(n*k); forr(x, v) cin >> x;
+    ll sum = 0;
+    if(n == 2){
+        for(int i = 0; i < n*k; i += 2) sum += v[i]; 
+    } else{
+        int cnt = 0;
+        for(int i = n*k-n/2-1; cnt < k; i -= (n/2+1), cnt++){
+            sum += v[i];
+        }
+    }
 
+    cout << sum << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

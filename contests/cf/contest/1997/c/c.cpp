@@ -31,11 +31,22 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n;
+    string s; cin >> s;
+    int ans = 0;
+    queue<int> q;
+    rep(i, 0, n){
+        if(q.empty()){ q.push(i); continue; }
+        int d = q.front();
+        if(s[i] == '_' or s[i] == ')') ans += i-d, q.pop();
+        else q.push(i);
+    }
 
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

@@ -31,7 +31,29 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, q; cin >> n >> q;
+    vl a(n);
+    forr(x, a) cin >> x;
+    sort(all(a));
 
+    rep(i, 0, q){
+        ll b; int k; cin >> b >> k;
+        int idx = lower_bound(all(a), b)-a.begin();
+
+        ll l = 0, r = 2e8, ans = 0;
+        while(l <= r){
+            ll m = l+(r-l)/2, qnt = 0, needl = b-m, needr = b+m;
+
+            int idxl = lower_bound(all(a), needl)-a.begin();
+            int idxr = upper_bound(all(a), needr)-a.begin();
+
+            qnt += idxr-idxl;
+
+            if(qnt >= k) ans = m, r = m-1;
+            else l = m+1;
+        }
+        cout << ans << endl;
+    }
 }
 
 int main(){ _

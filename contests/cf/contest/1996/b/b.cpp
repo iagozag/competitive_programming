@@ -31,11 +31,20 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, k; cin >> n >> k;
+    vector<string> v(n);
+    rep(i, 0, n) cin >> v[i];
 
+    int i = 0, j = 0;
+    while(i < n){
+        while(j < n) cout << v[i][j], j += k;
+        cout << endl;
+        j = 0, i += k;
+    }
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

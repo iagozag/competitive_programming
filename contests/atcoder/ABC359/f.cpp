@@ -31,6 +31,8 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    ll n, sum = 0; cin >> n;
+    vl v(n); forr(x, v) cin >> x, sum += x, pq.push({x, x});
 
 }
 

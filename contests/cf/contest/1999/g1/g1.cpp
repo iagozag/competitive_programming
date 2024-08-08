@@ -30,12 +30,26 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
-
+int query(int q1, int q2){
+    cout << "? " << q1 << " " << q2 << endl;
+    int a; cin >> a;
+    return a;
 }
 
-int main(){ _
-    int ttt = 1; // cin >> ttt;
+void solve(){
+    int l = 1, r = 998, ans;
+    while(l <= r){
+        int m = l+(r-l)/2;
+        int res = query(m, 1);
+        if(res == m) ans = m, l = m+1;
+        else r = m-1;
+    }
+
+    cout << "! " << ans+1 << endl;
+}
+
+int main(){
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

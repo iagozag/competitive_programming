@@ -31,11 +31,34 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n;
+    vi v(n+4); rep(i, 0, n) cin >> v[i]; 
 
+    vi dp(n+4, INF);
+    dp[0] = 0;
+
+    rep(i, 0, n){
+        if(v[i] == 0) ckmin(dp[i+1], dp[i]);
+
+        ckmin(dp[i+1], dp[i]+1);
+
+        if(v[i] <= 2 and v[i+1] <= 2) ckmin(dp[i+2], dp[i]+1);
+
+        if(v[i] <= 2){
+            int j = 1, k = i+1;
+            while(k < n and v[k] > 2 and v[k] <= 4) j++, k++;
+            if(k < n and v[k] <= 2 and j%2) ckmin(dp[k+1], dp[i]+j);
+            else ckmin(dp[k+1], dp[i]+j+1);
+        }
+    }
+
+    int mi = INF;
+    rep(i, n, n+4) ckmin(mi, dp[i]); 
+    cout << mi << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

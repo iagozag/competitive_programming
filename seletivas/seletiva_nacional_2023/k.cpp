@@ -25,13 +25,43 @@ template<typename X, typename Y> bool ckmax(X& x, const Y& y) { return (x < y) ?
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
+void no(){ cout << "IMPOSSIBLE" << endl; }
 void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int k; cin >> k;
+    string s; cin >> s;
+    int n = sz(s);
+    int qnt = 0; 
+    set<char> st;
+    rep(i, 0, k) st.insert('a'+i);
+    int i = 0, j = n-1;
+    while(i <= j){
+        if(st.count(s[i])) st.erase(s[i]);
+        if(st.count(s[j])) st.erase(s[j]);
+        if(s[i] != '?' and s[j] != '?'){ if(s[i] != s[j]) return no(); }
+        else if(s[i] == '?' and s[j] != '?') s[i] = s[j];
+        else if(s[j] == '?' and s[i] != '?') s[j] = s[i];
+        else qnt++;
+        i++, j--;
+    }
 
+    if(st.size() > qnt) return no();
+
+    int need = st.size();
+    i = 0, j = n-1;
+    while(i <= j){
+        if(s[i] == '?'){
+            if(need < qnt) s[i] = s[j] = 'a';
+            else s[i] = s[j] = *st.begin(), st.erase(*st.begin());
+            qnt--;
+        }
+        i++, j--;
+    }
+    
+    cout << s << endl;
 }
 
 int main(){ _

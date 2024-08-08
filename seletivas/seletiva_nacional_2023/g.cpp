@@ -30,8 +30,34 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+vector<vi> g;
+vi vis;
 
+void dfs(int v){
+    vis[v] = 1;
+    forr(ve, g[v]) if(!vis[ve]) dfs(ve);
+}
+
+void solve(){
+    int n, m; cin >> n >> m;
+    g = vector<vi>(n+m), vis = vi(n+m);
+    int qnt = 0;
+    rep(i, 0, n){
+        int a; cin >> a; if(!a) qnt++;
+        rep(j, 0, a){ int b; cin >> b; --b; g[i].eb(n+b), g[n+b].eb(i); }
+    }
+
+    if(qnt == n){
+        cout << n << endl; return;
+    }
+    
+    int cnt = 0;
+    rep(i, 0, n){
+        if(!vis[i]) cnt++, dfs(i);
+        rep(j, n, n+m) vis[j] = 0;
+    }
+
+    cout << cnt-1 << endl;
 }
 
 int main(){ _

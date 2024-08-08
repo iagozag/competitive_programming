@@ -31,11 +31,33 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n;
+    vector<pii> v(n);
+    rep(i, 0, n){
+        int a, b; cin >> a >> b;
+        v[i] = {a, b};
+    }
 
+    vi vis(n); vi ans(n);
+    rep(t, 1, 5001){
+        bool get = false;
+        rep(i, 0, n){
+            if(vis[i] == 1 or vis[i] == -1 or t < v[i].ff) continue;
+            if(t >= v[i].ff and !get){
+                get = 1;
+                ans[i] = t;
+                vis[i] = 1;
+            } else if(t >= v[i].ss){
+                vis[i] = -1;
+            }
+        }
+    }
+
+    rep(i, 0, n) cout << ans[i] << " \n"[i==n-1];
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

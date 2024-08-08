@@ -30,8 +30,15 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+#define PI 3.1415926535897932
+#define EPS 1e-8
 
+void solve(){
+    int n, R, r; cin >> n >> R >> r;
+    long double ratio = R-r;
+    long double side = 2.0*ratio*sin((long double)PI/(long double)n);
+    if(side+EPS > 2.0*r or (n == 1 and R >= r)) return yes();
+    return no();
 }
 
 int main(){ _

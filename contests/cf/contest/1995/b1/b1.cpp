@@ -31,11 +31,22 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    ll n, m; cin >> n >> m;
+    vl v(n); forr(x, v) cin >> x;
+    sort(all(v));
 
+    ll l = 0, r = 0; ll ma = 0, sum = 0;
+    while(r < n){
+        if(v[r] > m) break;
+        while(r < n and v[r]-v[l] <= 1 and sum+v[r] <= m) sum += v[r++], ckmax(ma, sum);
+        sum -= v[l], l++;
+    }
+
+    cout << ma << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

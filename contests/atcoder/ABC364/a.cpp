@@ -25,13 +25,24 @@ template<typename X, typename Y> bool ckmax(X& x, const Y& y) { return (x < y) ?
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+void no(){ cout << "No" << endl; }
+void yes(){ cout << "Yes" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    int n; cin >> n;
+    string s; bool sw = false;
+    bool can = true;
+    rep(i, 0, n){
+        cin >> s;
+        if(s == "sweet"){
+            if(sw and i != n-1) can = 0;
+            sw = true;
+        } else sw = false;
+    }
+    if(can) return yes();
+    else return no();
 }
 
 int main(){ _

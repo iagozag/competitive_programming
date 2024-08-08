@@ -19,9 +19,6 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 
-template<typename X, typename Y> bool ckmin(X& x, const Y& y) { return (y < x) ? (x=y,1):0; }
-template<typename X, typename Y> bool ckmax(X& x, const Y& y) { return (x < y) ? (x=y,1):0; }
-
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
@@ -31,11 +28,18 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, x, y; cin >> n >> x >> y; --x, --y;
+    vi ans(n, -1);
+    rep(i, y, x+1) ans[i] = 1; 
+    for(int i = y; i >= 0; i -= 2) ans[i] = 1;
+    for(int i = x; i < n; i += 2) ans[i] = 1;
 
+    forr(xx, ans) cout << xx << " ";
+    cout << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

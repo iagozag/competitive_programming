@@ -30,8 +30,41 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+vl dpv(vl v, int m){
+    int n = sz(v);
+    vl dp(1<<n);
+    rep(i, 0, 1<<n){
+        rep(j, 0, n) if((1<<j)&i){
+            ckmax(dp[i], (dp[i^(1<<j)]+v[j])%m);
+        }
+    }
 
+    return dp;
+}
+
+void solve(){
+    ll n, m; cin >> n >> m;
+    vl v1, v2;
+    rep(i, 0, n){
+        int a; cin >> a; a %= m;
+        if(i < n/2) v1.eb(a);
+        else v2.eb(a);
+    }
+
+    int ma = 0;
+    vl dp1 = dpv(v1, m), dp2 = dpv(v2, m);
+    set<int> s1(all(dp1)), s2(all(dp2));
+    sort(all(dp2));
+    forr(x, dp1){
+        int need = m-1-x;
+        int idx = lower_bound(all(dp2), need)-dp2.begin();
+        if(idx < 0 or idx > sz(dp2)) continue;
+
+        if(idx < sz(dp2) and dp2[idx] == need) ckmax(ma, (x+dp2[idx])%m);
+        else if(idx > 0) ckmax(ma, (x+dp2[idx-1])%m);
+    }
+
+    cout << ma << endl;
 }
 
 int main(){ _

@@ -31,7 +31,11 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    int n; cin >> n;
+    string s; cin >> s;
+    int cntL = 0, cntR = 0;
+    forr(x, s) cntL += x == 'L', cntR += x == 'R';
+    cout << cntL+cntR+1 << endl;
 }
 
 int main(){ _

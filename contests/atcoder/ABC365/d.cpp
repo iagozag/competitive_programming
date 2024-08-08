@@ -30,8 +30,44 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+// 0 - paper
+// 1 - rock
+// 2 - scissors
 
+void solve(){
+    int n; cin >> n;
+    vi v(n);
+    rep(i, 0, n){
+        char c; cin >> c;
+        if(c == 'P') v[i] = 0;
+        else if(c == 'R') v[i] = 1;
+        else v[i] = 2;
+    }
+
+    vector<vi> dp(n, vi(3, -INF));
+    if(v[0] == 0) dp[0][0] = 0, dp[0][2] = 1;
+    else if(v[0] == 1) dp[0][1] = 0, dp[0][0] = 1;
+    else dp[0][2] = 0, dp[0][1] = 1;
+
+    rep(i, 1, n){
+        rep(j, 0, 3){
+            if(j == v[i]) continue;
+            ckmax(dp[i][v[i]], dp[i-1][j]);
+        }
+        int inv;
+        if(v[i] == 0) inv = 2;
+        else if(v[i] == 1) inv = 0;
+        else inv = 1;
+
+        rep(j, 0, 3){
+            if(j == inv) continue;
+            ckmax(dp[i][inv], dp[i-1][j]+1);
+        }
+    }
+
+    int ma = -1;
+    rep(i, 0, 3) ckmax(ma, dp[n-1][i]);
+    cout << ma << endl;
 }
 
 int main(){ _

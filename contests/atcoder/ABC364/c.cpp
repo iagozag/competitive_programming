@@ -31,7 +31,37 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    ll n, x, y; cin >> n >> x >> y;
+    vl a(n), b(n); forr(z, a) cin >> z; forr(z, b) cin >> z;
 
+    vector<pll> v(n); rep(i, 0, n) v[i] = {a[i], b[i]}; 
+    sort(all(v), [&](const pll aa, const pll bb){
+        if(aa.ff != bb.ff) return aa.ff > bb.ff;
+        else return aa.ss > bb.ss;
+    });
+
+    ll tx = 0, ty = 0, cnt = 0;
+    rep(i, 0, n){
+        cnt++, tx += v[i].ff, ty += v[i].ss;
+        if(tx > x) break;
+        if(ty > y) break;
+    }
+
+    ll mi = cnt;
+    sort(all(v), [&](const pll aa, const pll bb){
+        if(aa.ss != bb.ss) return aa.ss > bb.ss;
+        else return aa.ff < bb.ff;
+    });
+
+    tx = 0, ty = 0, cnt = 0;
+    rep(i, 0, n){
+        cnt++, tx += v[i].ff, ty += v[i].ss;
+        if(tx > x) break;
+        if(ty > y) break;
+    }
+
+    ckmin(mi, cnt);
+    cout << mi << endl;
 }
 
 int main(){ _

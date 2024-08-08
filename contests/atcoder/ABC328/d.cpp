@@ -31,7 +31,24 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    string s; cin >> s;
+    stack<char> st;
+    rep(i, 0, sz(s)){
+        bool can = false;
+        if(s[i] == 'C' and sz(st) >= 2){
+            if(st.top() == 'B'){
+                st.pop();
+                if(st.top() == 'A') can = 1, st.pop();
+                else st.push('B');
+            }
+        }
+        if(!can) st.push(s[i]);
+        
+    }
+    string ans = "";
+    while(sz(st)) ans += st.top(), st.pop();
+    reverse(all(ans));
+    cout << ans << endl;
 }
 
 int main(){ _

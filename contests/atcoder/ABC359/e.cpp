@@ -30,17 +30,26 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
     int n; cin >> n;
-    vl v(n); forr(x, v) cin >> x;
-    vl ans(n); ans[0] = v[0]+1;
+    vl v(n); vector<pair<ll, int>> pref(n, {-1, -1});
+    rep(i, 0, n) cin >> v[i];
 
-    rep(i, 1, n){
-        if(v[i] <= v[i-1]) ans[i] = ans[i-1]+v[i];
-        else{
-
+    stack<pair<ll, int>> st;
+    repr(i, n-1, 0){
+        while(sz(st) and v[i] >= st.top().ff){
+            pref[st.top().ss] = {v[i], i};
+            st.pop();
         }
+        st.push({v[i], i});
     }
 
-    rep(i, 0, n) cout << ans[i] << " \n"[i==n-1];
+    vl ans(n);
+    rep(i, 0, n){
+        if(pref[i].ff != -1) ans[i] = ans[pref[i].ss]+(i-pref[i].ss)*v[i];
+        else ans[i] = (i+1)*v[i]+1;
+    }
+
+    forr(x, ans) cout << x << " ";
+    cout << endl; 
 }
 
 int main(){ _

@@ -31,7 +31,13 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n, m;
+    rep(i, 0, 5) rep(j, 0, 5){
+        int a; cin >> a;
+        if(a) n = i, m = j;
+    }
 
+    cout << abs(n-2)+abs(m-2) << endl;
 }
 
 int main(){ _

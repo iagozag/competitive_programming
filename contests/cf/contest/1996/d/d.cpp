@@ -30,12 +30,36 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+bool eq(ll a, ll b, ll c, ll n){
+    return a*b + a*c + b*c <= n;
+}
 
+bool eq2(ll a, ll b, ll c, ll x){
+    return a+b+c <= x;
+}
+
+void solve(){
+    ll n, x; cin >> n >> x;
+    ll ans = 0;
+    for(ll a = 1; a <= n-2; a++){
+        for(ll b = 1; b <= n-2; b++){
+            if(!eq(a, b, 1, n) or !eq2(a, b, 1, x)) break;
+
+            ll l = 1, r = n-2, ma = 0;
+            while(l <= r){
+                ll c = l+(r-l)/2;
+                if(eq(a, b, c, n) and eq2(a, b, c, x)) ma = c, l = c+1;
+                else r = c-1;
+            }
+            ans += ma;
+        }
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

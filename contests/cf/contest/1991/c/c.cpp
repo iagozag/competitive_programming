@@ -25,17 +25,29 @@ template<typename X, typename Y> bool ckmax(X& x, const Y& y) { return (x < y) ?
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
+void no(){ cout << "-1" << endl; }
 void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n;
+    vl v(n); forr(x, v) cin >> x;
+    vl ans(40);
+    rep(i, 0, 40){
+        sort(all(v));
+        ans[i] = v[0]+v[n-1], ans[i] /= 2;
+        rep(j, 0, n) v[j] = abs(v[j]-ans[i]);
+    }
+    rep(i, 0, n) if(v[i]) return no();
 
+    cout << 40 << endl;
+    forr(x, ans) cout << x << " ";
+    cout << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

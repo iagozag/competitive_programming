@@ -31,11 +31,25 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    string s; cin >> s; int n = sz(s);
+    vl pos(2*n+1);
+    vl pref(n+1);
 
+    rep(i, 1, n+1){
+        pref[i] = pref[i-1]+(s[i-1] == '1' ? 1 : -1);
+    }
+
+    ll ans = 0;
+    rep(i, 0, n+1){
+        ans += pos[pref[i]+n]*(n-i+1), ans %= MOD;
+        pos[pref[i]+n] += i+1, pos[pref[i]+n] %= MOD;
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

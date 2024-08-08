@@ -31,11 +31,24 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    string a, b; cin >> a >> b;
+    int j = 0;
+    rep(i, 0, sz(a)){
+        if(a[i] == b[j]) j++;
+        else if(a[i] == '?'){
+            if(j < sz(b)) a[i] = b[j++];
+            else a[i] = 'a';
+        }
+    }
 
+    if(j != sz(b)) return no();
+
+    cout << "yes" << endl;
+    cout << a << endl;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

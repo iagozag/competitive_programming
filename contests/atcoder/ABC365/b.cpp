@@ -31,7 +31,10 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    int n; cin >> n;
+    vector<pii> v(n); rep(i, 0, n) cin >> v[i].ff, v[i].ss = i; 
+    sort(all(v));
+    cout << v[sz(v)-2].ss+1 << endl;
 }
 
 int main(){ _

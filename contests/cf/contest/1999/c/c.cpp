@@ -31,11 +31,20 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    int n, m, r; cin >> n >> m >> r;
+    vector<pii> v(n); forr(x, v) cin >> x.ff >> x.ss;
+    if(v[0].ff >= m) return yes();
+    int l = v[0].ss;
+    rep(i, 1, n){
+        if(v[i].ff-l >= m) return yes(); 
+        l = v[i].ss;
+    }
+    if(r-l >= m) return yes();
+    return no();
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 
