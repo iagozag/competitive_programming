@@ -29,10 +29,24 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 void solve(){
     int n; cin >> n;
     vector<string> v(n); forr(x, v) cin >> x;
-    sort(all(v), greater<string>());
+    sort(all(v));
 
-    forr(x, v) cout << x << " ";
-    cout << endl;
+    ll ans = 0;
+    map<string, ll> mp;
+    rep(i, 0, n){
+        string s = "";
+        rep(j, 0, sz(v[i])){
+            s += v[i][j];
+            if(mp[s] == 1 and sz(s) == 1) ans += 2;
+            else if(mp[s] > 1) ans++;
+            mp[s]++;
+        }
+    }
+
+    cout << mp.size() << endl;
+    forr(x, mp) cout << x.ff << " " << x.ss << endl;
+    
+    cout << ans << endl;
 }
 
 int main(){ _

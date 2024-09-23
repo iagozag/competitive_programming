@@ -27,7 +27,23 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n;
+    vi v(n); forr(x, v) cin >> x;
+    vi pos(n);
 
+    map<int, multiset<int>> mp;
+    rep(i, 0, n){
+        int x = v[i];
+        if(x&1) x--;
+        if(x&2) x -= 2;
+        pos[i] = x;
+        mp[x].insert(v[i]);
+    }
+
+    rep(i, 0, n){
+        cout << *mp[pos[i]].begin() << " \n"[i==n-1];
+        mp[pos[i]].erase(mp[pos[i]].find(*mp[pos[i]].begin()));
+    }
 }
 
 int main(){ _

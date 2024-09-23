@@ -2,139 +2,126 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define rep(i,x,n) for(auto i=x;i<n;i++)
+#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
+#define sz(a) (int)(a.size())
 #define endl '\n'
-#define f first
-#define s second
+#define ff first
+#define ss second
 #define pb push_back
+#define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> ii;
+typedef pair<int,int> pii;
+typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vl;
+typedef bitset<50> bs;
+
+template<typename X, typename Y> bool ckmin(X& x, const Y& y) { return (y < x) ? (x=y,1):0; }
+template<typename X, typename Y> bool ckmax(X& x, const Y& y) { return (x < y) ? (x=y,1):0; }
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void DBG() {
-    cerr << "]" << endl;
+void no(){ cout << "NO" << endl; }
+void yes(){ cout << "YES" << endl; }
+
+const int MAX = 4e5+10, MOD = 9;
+
+int lazy[MAX];
+int seg[MAX][MOD];
+
+void push(int node, int l, int r){
+    rotate(seg[node<<1], seg[node<<1]+MOD-lazy[node], seg[node<<1]+MOD);
+    rotate(seg[(node<<1)+1], seg[(node<<1)+1]+MOD-lazy[node], seg[(node<<1)+1]+MOD);
+    if(l != r) lazy[node<<1] = (lazy[node<<1]+lazy[node])%MOD,
+               lazy[(node<<1)+1] = (lazy[(node<<1)+1]+lazy[node])%MOD;
+    lazy[node] = 0;
 }
 
-void DBGC() {
-    cerr << "]" << endl;
-}
-
-template<class H, class... T> void DBG(H h, T... t) {
-    cerr << to_string(h);
-    if(sizeof...(t)) cerr << ", ";
-    DBG(t...);
-}
-
-template<class H, class... T> void DBGC(H h, T... t) {
-    for(auto& x: h) cerr << x << " ";
-    if(sizeof...(t)) cerr << "], [ ";
-    DBGC(t...);
-}
-
-#ifndef _DEBUG
-#define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
-#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
-#else
-#define dbg(...) 0
-#define dbgc(...) 0
-#endif
-
-vi v, lz;
-vector<vi> seg;
-
-vi combine(vi a, vi b){
-    vi tmp(9);
-    for(int i = 0; i < 9; i++)
-        tmp[i] = a[i] + b[i];
-
-    return tmp;
-}
-
-vi build(int node, int tl, int tr){
-    if(tl == tr){
-        vi tmp(9); tmp[1]++;;
-        return seg[node] = tmp;
+int* build(int node, int l, int r){
+    if(l == r){
+        seg[node][1] = 1;
+        return seg[node];
     }
-
-    int tm = (tl+tr)>>1;
-    return seg[node] = combine(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
+    int m = (l+r)>>1;
+    build(node<<1, l, m), build((node<<1)+1, m+1, r);
+    rep(i, 0, 9) seg[node][i] = seg[node<<1][i]+seg[(node<<1)+1][i];
+    return seg[node];
 }
 
-void unlazy(int node, int tl, int tr){
-    if(lz[node]){
-        rotate(seg[node].begin(), seg[node].begin()+seg[node].size()-lz[node], seg[node].end()); 
-        if(tl != tr){
-            lz[node*2] += lz[node];
-            lz[node*2+1] += lz[node];
-        }
-        lz[node] = 0;
+int* update(int node, int l, int r, int ul, int ur, int val){
+    if(ul > r or ur < l) return seg[node];
+    if(ul <= l and r <= ur){
+        rotate(seg[node], seg[node]+MOD-val, seg[node]+MOD);
+        if(l != r) lazy[node] += val, lazy[node] %= MOD;
+        return seg[node];
     }
+    if(lazy[node]) push(node, l, r);
+
+    int m = (l+r)>>1;
+    update(node<<1, l, m, ul, ur, val),
+    update((node<<1)+1, m+1, r, ul, ur, val);
+
+    rep(i, 0, 9) seg[node][i] = seg[node<<1][i]+seg[(node<<1)+1][i];
+    return seg[node];
 }
 
-void update(int node, int tl, int tr, int a, int b, int val){
-    unlazy(node, tl, tr);
+int cnt[MOD];
 
-    if(tl > b || tr < a) return;
-    if(a <= tl && b >= tr){
-        lz[node] += val;
-        unlazy(node, tl, tr);
-    } else{
-        int tm = (tl+tr)>>1;
-        update(node*2, tl, tm, a, b, val);
-        update(node*2+1, tm+1, tr, a, b, val);
-
-        seg[node] = combine(seg[node*2], seg[node*2+1]);
+void query(int node, int l, int r, int ql, int qr){
+    if(ql > r or qr < l) return;
+    if(ql <= l and r <= qr){
+        rep(i, 0, 9) cnt[i] += seg[node][i];
+        return;
     }
+    if(lazy[node]) push(node, l, r);
+
+    int m = (l+r)>>1;
+    query(node<<1, l, m, ql, qr),
+    query((node<<1)+1, m+1, r, ql, qr);
 }
 
-vi query(int node, int tl, int tr, int a, int b){
-    unlazy(node, tl, tr);
+int ans[MAX];
 
-    if(b < tl || a > tr) return vi(9);
-    if(a <= tl && tr <= b) return seg[node];
-
-    int tm = (tl+tr)>>1;
-    return combine(query(node*2, tl, tm, a, b), query(node*2+1, tm+1, tr, a, b));
-}
-
-int max(vi& tmp){
-    int max = tmp[0], idx = 0;
-    for(int i = 1; i < 9; i++)
-        if(max < tmp[i]) max = tmp[i], idx = i;
-
-    return idx;
+void querym(int node, int l, int r){
+    if(l == r){
+        int idx = 0;
+        rep(i, 1, 9) if(seg[node][i] >= seg[node][idx]) idx = i;
+        ans[l] = idx;
+        return;
+    }
+    if(lazy[node]) push(node, l, r);
+    int m = (l+r)>>1;
+    querym(node<<1, l, m), querym((node<<1)+1, m+1, r);
 }
 
 void solve(){
-    int n, m; cin >> n >> m;
-    v = vi(n, 1), lz = vi(4*n), seg = vector<vi>(4*n);
-    vi q = build(1, 0, n-1);
+    int n, q; cin >> n >> q;
+    fill(&seg[0][0], &seg[0][0] + MAX * MOD, 0), fill(lazy, lazy+MAX, 0);
 
-    for(int i = 0; i < m; i++){
+    build(1, 0, n-1);
+
+    rep(qq, 0, q){
         int a, b; cin >> a >> b;
-
-        cout << "input: " << a << " " << b << endl;
-        vi q = query(1, 0, n-1, a, b); 
-        dbgc(q); int maxi = max(q);
-        cout << "max rp: " << maxi << endl;
-        update(1, 0, n-1, a, b, maxi);
+        fill(cnt, cnt+MOD, 0);
+        query(1, 0, n-1, a, b);
+        int idx = 0;
+        rep(i, 1, 9) if(cnt[i] >= cnt[idx]) idx = i;
+        update(1, 0, n-1, a, b, idx);
     }
 
-    dbgc(lz); 
-    for(int i = 0; i < n; i++) cout << max(seg[i]) << endl;
+    querym(1, 0, n-1);
+    rep(i, 0, n) cout << ans[i] << endl;
 }
 
-int main(){ // _
-    int t = 1;
-    while(t--){
-        solve();
-    }
+int main(){ _
+    int ttt = 1; // cin >> ttt;
+
+    while(ttt--) solve();
 
     exit(0);
 }
-

@@ -3,7 +3,7 @@ using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define rep(i,x,n) for(auto i=x;i<n;i++)
-#define repr(i,n,x) for(auto i=n;i>=x;i--)
+#define per(i,n,x) for(auto i=n;i>=x;i--)
 #define forr(x, v) for(auto& x: v)
 #define all(a) (a).begin(), (a).end()
 #define sz(a) (int)(a.size())
@@ -25,8 +25,8 @@ template<typename X, typename Y> bool ckmax(X& x, const Y& y) { return (x < y) ?
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+void no(){ cout << "No" << endl; }
+void yes(){ cout << "Yes" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
