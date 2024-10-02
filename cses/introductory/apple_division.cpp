@@ -12,7 +12,16 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    int n; cin >> n;
+    vector<ll> v(n); for(auto& x: v) cin >> x;
+    vector<ll> sums(1<<n);
+    for(int i = 0; i < (1<<n); i++) for(int j = 0; j < n; j++) if(i&(1<<j)) sums[i] = sums[i-(1<<j)]+v[j];
 
+    ll mi = LINF;
+    for(int i = 0; i < (1<<n); i++){
+        mi = min(mi, abs(sums[i]-sums[(1<<n)-1-i]));
+    }
+    cout << mi << endl;
 }
 
 int main(){ _

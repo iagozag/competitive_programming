@@ -12,7 +12,9 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    int n; cin >> n;
+    vector<int> a(n), b(n); for(auto& x: a) cin >> x; for(auto& x: b) cin >> x;
+    cout << 1LL*(*max_element(a.begin(), a.end()))+1LL*(*max_element(b.begin(), b.end())) << endl;
 }
 
 int main(){ _

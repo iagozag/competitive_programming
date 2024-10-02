@@ -30,28 +30,16 @@ void yes(){ cout << "Yes" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-vector<pii> moves = {{-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}};
-
-int val(int x, int y, int m){
-    return x > 0 and x <= m and y > 0 and y <= m;
-}
-
 void solve(){
     int n; cin >> n;
 
-    set<set<pii>> st; ll ans = 0;
-    rep(k, 1, n+1){
-        ans += k*k*(k*k-1)/2;
+    ll cnt = 0, sum = 0;
+    for(ll k = 1; k <= n; k++){
+        ll tot = k*k*(k*k-1)/2;
 
-        rep(i, 1, k+1) for(auto [x, y]: moves)
-            if(!st.count(set<pii>({{i, k}, {i+x, k+y}})))
-                ans -= val(i+x, k+y, k), st.insert(set<pii>({{i, k}, {i+x, k+y}}));
+        if(k > 2) cnt += sum+8, sum += 8;
 
-        rep(j, 1, k+1) for(auto [x, y]: moves)
-            if(!st.count(set<pii>({{k, j}, {k+x, j+y}})))
-                ans -= val(k+x, j+y, k), st.insert(set<pii>({{k, j}, {k+x, j+y}}));
-
-        cout << ans << endl;
+        cout << tot-cnt << endl;
     }
 }
 

@@ -12,7 +12,16 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+    string s; cin >> s;
+    string in = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    map<char, int> mp;
+    for(int i = 0; i < s.size(); i++) mp[s[i]] = i;
+    int ans = 0, beg = mp['A'];
+    for(int i = 0; i < in.size(); i++){
+        ans += abs(beg-mp[in[i]]), beg = mp[in[i]]; 
+    }
 
+    cout << ans << endl;
 }
 
 int main(){ _

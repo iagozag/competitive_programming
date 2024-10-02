@@ -11,12 +11,18 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+int n; ll k;
+vector<ll> v;
 
+void solve(){
+    cin >> n >> k;
+    v = vector<ll>(n); for(auto& x: v) cin >> x;
+
+    ll l = 1, r = 1e18+10, ans = 1;
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

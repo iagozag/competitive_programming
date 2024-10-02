@@ -43,12 +43,7 @@ void solve(){
 
     vl dp(1<<n);
     rep(i, 0, 1<<n){
-        vl pos; pos.eb(0);
-        rep(j, 0, n) if(i&(1<<j)){
-            int s = sz(pos);
-            rep(k, 0, s) pos.eb(pos[k]+(1<<j));
-        }
-        forr(x, pos) ckmax(dp[i], sums[x]+dp[i-x]);
+        rep(j, 0, i+1) if((i&j) == j) ckmax(dp[i], sums[j]+dp[i-j]);
     }
 
     cout << dp[(1<<n)-1] << endl;

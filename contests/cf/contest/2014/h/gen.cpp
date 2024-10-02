@@ -28,41 +28,28 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 void no(){ cout << "No" << endl; }
 void yes(){ cout << "Yes" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+int maxn = 2e5, maxq = 2e5;
 
-int n; ll cost;
-vector<vi> g;
-vl a; vector<vl> memo;
+mt19937 rng((int) chrono::steady_clock::now().time_since_epoch().count());
 
-ll dp(int v, int c, int p, int u){
-    if(memo[v][c] != -LINF) return memo[v][c];
-    memo[v][c] = 0;
-
-    if(!c){
-        memo[v][c] = 0;
-        forr(ve, g[v]) if(ve != p)
-            memo[v][c] += max(dp(ve, 0, v, c), dp(ve, 1, v, c));
-    } else{
-        memo[v][c] = a[v];
-        forr(ve, g[v]) if(ve != p)
-            memo[v][c] += max(dp(ve, 0, v, c), dp(ve, 1, v, c)-2*cost);
-    }
-
-    return memo[v][c];
+int uniform(int l, int r){
+	uniform_int_distribution<int> uid(l, r);
+	return uid(rng);
 }
 
 void solve(){
-    cin >> n >> cost;
-    g = vector<vi>(n), a = vl(n);
-    forr(x, a) cin >> x;
-    rep(i, 0, n-1){ int v1, v2; cin >> v1 >> v2; --v1, --v2; g[v1].eb(v2), g[v2].eb(v1); }
-
-    memo = vector<vl>(n, vl(2, -LINF));
-    cout << max(dp(0, 0, -1, 0), dp(0, 1, -1, 0)) << endl;
+    if(maxn == 0 or maxq == 0){ cout << "0 0" << endl; return; }
+    int n = uniform(1, maxn), q = uniform(1, maxq);
+    maxn -= n, maxq -= q;
+    cout << n << " " << q << endl;
+    rep(i, 0, n) cout << uniform(1, 1e6) << " \n"[i==n-1];
+    rep(i, 0, q){ int a = uniform(1, n), b = uniform(1, n); cout << min(a, b) << " " << max(a, b) << endl; }
 }
 
 int main(){ _
-    int ttt = 1; cin >> ttt;
+    int ttt = uniform(1, 1e4); 
+
+    cout << ttt << endl;
 
     while(ttt--) solve();
 

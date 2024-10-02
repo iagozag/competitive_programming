@@ -12,7 +12,9 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-
+    set<int> s;
+    int n; cin >> n; for(int i = 0; i < n; i++){ int a; cin >> a; s.insert(a); }
+    cout << s.size() << endl;
 }
 
 int main(){ _

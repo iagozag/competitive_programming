@@ -30,30 +30,31 @@ void yes(){ cout << "Yes" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
-    int n; cin >> n;
+int n;
+vector<vi> mat;
+vector<vl> memo;
 
-    vector<vi> mat(n, vi(n));
+void sum(ll& a, ll b){
+    a += b, a %= MOD;
+}
+
+ll dp(int i, int mask){
+    if(i < 0) return 1;
+    if(memo[i][mask] != -1) return memo[i][mask];
+
+    memo[i][mask] = 0;
+    rep(j, 0, n) if(mat[i][j] and mask&(1<<j)) sum(memo[i][mask], dp(i-1, mask-(1<<j)));
+    return memo[i][mask];
+}
+
+void solve(){
+    cin >> n;
+
+    mat = vector<vi>(n, vi(n));
     forr(x, mat) forr(y, x) cin >> y;
 
-    vector<vi> dp(n, vi(1<<n));
-    dp[0][(1<<n)-1] = 1; 
-
-    queue<int> q; q.push((1<<n)-1);
-    rep(i, 0, n-1){
-        int m = sz(q);
-        rep(j, 0, m){
-            int v = q.front(); q.pop(); unordered_set<int> cnt; 
-            rep(k, 0, n) if((1<<k)&v and mat[i][k]){
-                dp[i+1][v-(1<<k)] += dp[i][v], dp[i+1][v-(1<<k)] %= MOD;
-                if(!cnt.count(v-(1<<k))) q.push(v-(1<<k)), cnt.insert(v-(1<<k));
-            }
-        }
-    }
-
-    int ans = 0;
-    rep(i, 0, 1<<n) ans += dp[n-1][i], ans %= MOD;
-    cout << ans << endl;
+    memo = vector<vl>(n, vl(1<<n, -1));
+    cout << dp(n-1, (1<<n)-1) << endl;
 }
 
 int main(){ _
