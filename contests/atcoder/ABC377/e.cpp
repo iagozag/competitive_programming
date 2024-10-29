@@ -27,28 +27,37 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
-    int n; cin >> n;
-    vl v(n); forr(x, v) cin >> x;
+vi mult(vi a, vi b, int n){
+    vi ans(n);
+    rep(i, 0, n) ans[i] = a[b[i]]; 
+    return ans;
+}
 
-    vi exp(n);
-    rep(i, 1, n){
-        if(v[i] >= v[i-1]) continue;
-        
-        ll l = v[i], cnt = 0;
-        while(v[i] < v[i-1]) l <<= 1, cnt++;
-        exp[i] += cnt+exp[i-1]; 
+vi fexp(vi a, ll b, int n){
+    vi ans(n); rep(i, 0, n) ans[i] = a[i];
+    while(b){
+        if(b&(1LL)) ans = mult(ans, a, n);
+        a = mult(a, a, n), b >>= (1LL);
     }
+    return ans;
+}
 
-    ll ans = 0;
-    forr(x, exp) cout << x << " ", ans += x;
-    cout << ans << endl;
+void solve(){
+    int n; ll k; cin >> n >> k;
+    vi v(n); forr(x, v) cin >> x, --x;
+    vi p(n); 
+	for(int i = 0; i < n; i++){
+		p[p[i]] = i;
+	}
+
+    p = fexp(p, k, n);
+    rep(i, 0, n) cout << v[p[i]] << " \n"[i==n-1];
 }
 
 int main(){ _
-    int ttt = 1; cin >> ttt;
-
+    int ttt = 1; // cin >> ttt;
     while(ttt--) solve();
 
     exit(0);
 }
+

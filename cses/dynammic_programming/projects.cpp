@@ -13,17 +13,22 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
     int n; cin >> n;
-    vector<vector<int>> v(n, vector<int>[3]); unordered_set<int> s;
+    vector<vector<ll>> v(n, vector<ll>(3)); set<ll> s;
     for(int i = 0; i < n; i++) cin >> v[i][0] >> v[i][1] >> v[i][2], s.insert(v[i][0]), s.insert(v[i][1]);
-    sort(v.begin(), v.end());
-    vector<ll> hash(2*n+2); int k = 1;
-    for(auto x: s) hash[k] = x;
+    map<ll, ll> mp; ll k = 1;
+    for(auto x: s) mp[x] = k++;
 
-    vector<ll> dp(2*n+2);
+    vector<vector<pair<ll, ll>>> ends(k);
     for(int i = 0; i < n; i++){
-        auto [a, b, p] = v[i];
-
+        ends[mp[v[i][1]]].emplace_back(mp[v[i][0]], v[i][2]);
     }
+
+    vector<ll> dp(k+1);
+    for(int i = 1; i < k; i++){
+        dp[i+1] = dp[i];
+        for(auto [x, p]: ends[i]) dp[i+1] = max(dp[i+1], dp[x]+p); 
+    }
+    cout << dp[k] << endl;
 }
 
 int main(){ _
