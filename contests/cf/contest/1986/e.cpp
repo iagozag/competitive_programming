@@ -1,71 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#define int long long
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(auto i=x;i<n;i++)
-#define repr(i,n,x) for(auto i=n;i>=x;i--)
-#define forr(x, v) for(auto& x: v)
-#define all(a) (a).begin(), (a).end()
-#define sz(a) (int)(a.size())
 #define endl '\n'
-#define ff first
-#define ss second
-#define pb push_back
-#define eb emplace_back
 
 typedef long long ll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vl;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "-1" << endl; }
-void yes(){ cout << "YES" << endl; }
-
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-    ll n, k; cin >> n >> k;
-    vl v(n); forr(x, v) cin >> x;
-    sort(all(v));
-    map<ll, vl> mods;
-    rep(i, 0, n){
-        mods[v[i]%k].eb(v[i]);
-    }
+	int n, k; cin >> n >> k;
+	map<int, vector<int>> mp; for(int i = 0; i < n; i++){ int a; cin >> a; mp[a%k].emplace_back(a); }
 
-    ll ans = 0;
-    if(!(n&1)){
-        forr(x, mods){
-            if(x.ss.size()&1) return no();
-            for(int i = 1; i < x.ss.size(); i += 2) ans += (x.ss[i]-x.ss[i-1])/k;
-        }
-    } else{
-        int cnt = 0;
-        forr(x, mods){
-            if(x.ss.size()&1){
-                cnt++;
-                if(cnt > 1) return no();
+	int cnt = 0, ans = 0;
+	for(auto& [a, v]: mp){
+		sort(v.begin(), v.end());
+		if(v.size()&1){
+			cnt++;
+			if(cnt > 1){ cout << "-1" << endl; return; }
 
-                ll ma = 0, idx = 0;
-                for(int i = 1; i < x.ss.size(); i += 2) if(ma < (x.ss[i]-x.ss[i-1])/k) 
-                    ma = (x.ss[i]-x.ss[i-1])/k, idx = i-1;
+			vector<vector<int>> dp(v.size(), vector<int>(3, LINF)); 
+			dp[0][0] = LINF, dp[0][1] = 0; dp[0][2] = LINF;
+			if(v.size() > 1) dp[1][0] = v[1]-v[0], dp[1][1] = LINF, dp[1][2] = LINF;
+			for(int i = 2; i < v.size(); i++){
+				dp[i][0] = dp[i-2][0]+v[i]-v[i-1];
+				dp[i][1] = dp[i-1][0];
+				dp[i][2] = min(dp[i-2][1], dp[i-2][2])+v[i]-v[i-1];
+			}
 
-                for(int i = 0; i < x.ss.size(); i += 2){
-                    if(i == idx) continue;
-                    ans += (x.ss[i+1]-x.ss[i])/k;
-                }
-            }
-            else for(int i = 1; i < x.ss.size(); i += 2) ans += (x.ss[i]-x.ss[i-1])/k;
-        }
-    }
+			ans += min(dp.back()[1], dp.back()[2])/k;
+		}
+	}
 
-    cout << ans << endl;
+	for(auto [a, b]: mp) if(!(b.size()&1)){
+		for(int j = 1; j < b.size(); j += 2) ans += (b[j]-b[j-1])/k;
+	}
+
+	cout << ans << endl;
 }
 
-int main(){ _
+int32_t main(){ _
     int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();

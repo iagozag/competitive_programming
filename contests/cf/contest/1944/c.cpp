@@ -13,11 +13,23 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+	int n; cin >> n;
+	map<int, int> mp; for(int i = 0; i < n; i++){ int a; cin >> a; mp[a]++; }
 
+	int ans = n, sec = false;
+	for(int i = 0; i < n; i++){
+		if(mp[i] == 0) ans = min(ans, i);
+		else if(mp[i] == 1){
+			if(!sec) sec = 1;
+			else ans = min(ans, i);
+		}
+	}
+
+	cout << ans << endl;
 }
 
 int32_t main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

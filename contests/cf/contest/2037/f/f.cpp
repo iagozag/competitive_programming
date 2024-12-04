@@ -3,7 +3,6 @@ using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define endl '\n'
-#define int ll
 
 typedef long long ll;
 
@@ -16,7 +15,7 @@ void solve(){
 
 }
 
-int32_t main(){ _
+int main(){ _
     int ttt = 1; // cin >> ttt;
 
     while(ttt--) solve();

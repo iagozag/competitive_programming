@@ -13,11 +13,20 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
+	int n, k; cin >> n >> k;
+	vector<int> v(n); for(auto& x: v) cin >> x;
+	sort(v.begin(), v.end(), greater<int>());
 
-}
+	int sum = 0;
+	for(int i = 0; i < n; i++){
+		if(sum+v[i] > k) break;
+		sum += v[i];
+	}
+	cout << k-sum << endl;
+}	
 
 int32_t main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 
