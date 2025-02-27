@@ -13,17 +13,13 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n, m, k; cin >> n >> m >> k;
-	vector<int> a(n), b(m);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-	sort(a.begin(), a.end()), sort(b.begin(), b.end());
+	int n; cin >> n;
 
-	int i = 0, j = 0, ans = 0;
-	while(i < n and j < m){
-		if(abs(b[j]-a[i]) <= k) ans++, i++, j++;
-		else if(b[j] < a[i]) j++;
-		else i++;
+	int ans = INF;
+
+	for(int i = 1, j = 1; i <= n; i += (j += 2)){
+		for(int k = 1; i*k <= n; k <<= 1)
+			ans = min(ans, (int)__builtin_popcount(n^(k*i)));
 	}
 	cout << ans << endl;
 }

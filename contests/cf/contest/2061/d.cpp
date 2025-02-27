@@ -12,25 +12,33 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
+void no(){
+	cout << "No" << endl;
+}
+
+multiset<int> a;
+vector<int> b;
+
+bool f(int n){
+	if(a.count(n)){
+		a.erase(a.find(n));
+		return true;
+	}
+	if(n <= *a.begin()) return false;
+	return f(n/2) and f(n/2+(n%2));
+}
+
 void solve(){
 	int n, m; cin >> n >> m;
-	vector<int> a(n), b(m);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-	sort(a.begin(), a.end());
-	sort(b.begin(), b.end());
+	a.clear(); b = vector<int>(m);
+	for(int i = 0; i < n; i++){ int x; cin >> x; a.insert(x); }
+	for(int i = 0; i < m; i++){ int x; cin >> x; b[i] = x; }
 	
-	int i = 0, j = 0;
-	while(i < n and j < m){
-		if(a[i] == b[j]) i++, j++;
-		else{
-			if(i < n-1 and abs(a[i]-a[i+1]) <= 1 and a[i]+a[i+1] == b[j]) i += 2, j++;
-			else{ cout << "No" << endl; return; }
-		}
+	for(int i = 0; i < m; i++){
+		if(!f(b[i])) return no();
 	}
 
-	if(i == n and j == m) cout << "Yes" << endl;
-	else cout << "No" << endl;
+	cout << (a.empty() ? "Yes" : "No") << endl;
 }
 
 int32_t main(){ _

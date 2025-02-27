@@ -13,23 +13,24 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n, m, k; cin >> n >> m >> k;
-	vector<int> a(n), b(m);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-	sort(a.begin(), a.end()), sort(b.begin(), b.end());
+	int n, m; cin >> n >> m;
+	int x, y; cin >> x >> y;
 
-	int i = 0, j = 0, ans = 0;
-	while(i < n and j < m){
-		if(abs(b[j]-a[i]) <= k) ans++, i++, j++;
-		else if(b[j] < a[i]) j++;
-		else i++;
-	}
+	int ans = 0;
+	auto dfs = [&](auto&& self, int a, int b) -> void{
+		if(a == x and b == y) return;
+		if(a == n and b == m) ans++;
+
+		if(a+1 <= n) self(self, a+1, b);
+		if(b+1 <= m) self(self, a, b+1);
+	};
+
+	dfs(dfs, 1, 1);
 	cout << ans << endl;
 }
 
 int32_t main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

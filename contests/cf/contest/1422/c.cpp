@@ -13,18 +13,13 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n, m, k; cin >> n >> m >> k;
-	vector<int> a(n), b(m);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-	sort(a.begin(), a.end()), sort(b.begin(), b.end());
-
-	int i = 0, j = 0, ans = 0;
-	while(i < n and j < m){
-		if(abs(b[j]-a[i]) <= k) ans++, i++, j++;
-		else if(b[j] < a[i]) j++;
-		else i++;
+	string s; cin >> s; int n = s.size();
+	int ans = 0;
+	for(int i = n-1, p = 1, j = 0; i >= 0; i--, p = p*10%MOD){
+		ans += ((((i*(i+1)/2)%MOD*p%MOD) + j)%MOD)*(s[i]-'0')%MOD, ans %= MOD;
+		j = (j+((n-i)*p%MOD))%MOD;
 	}
+
 	cout << ans << endl;
 }
 

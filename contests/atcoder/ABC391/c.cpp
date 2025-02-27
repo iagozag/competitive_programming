@@ -13,19 +13,20 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n, m, k; cin >> n >> m >> k;
-	vector<int> a(n), b(m);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-	sort(a.begin(), a.end()), sort(b.begin(), b.end());
+	int n, q; cin >> n >> q;
+	vector<int> idx(n), nest(n, 1);
+	iota(idx.begin(), idx.end(), 0);
 
-	int i = 0, j = 0, ans = 0;
-	while(i < n and j < m){
-		if(abs(b[j]-a[i]) <= k) ans++, i++, j++;
-		else if(b[j] < a[i]) j++;
-		else i++;
+	int ans = 0;
+	for(int i = 0; i < q; i++){
+		int op; cin >> op;
+		if(op == 1){
+			int p, h; cin >> p >> h; --p, --h;
+			if(nest[idx[p]] == 2) ans--;
+			if(nest[h] == 1) ans++;
+			nest[idx[p]]--, nest[h]++, idx[p] = h;
+		} else cout << ans << endl;
 	}
-	cout << ans << endl;
 }
 
 int32_t main(){ _

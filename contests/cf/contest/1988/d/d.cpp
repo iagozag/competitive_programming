@@ -2,37 +2,50 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
-#define rep(i,x,n) for(auto i=x;i<n;i++)
-#define repr(i,n,x) for(auto i=n;i>=x;i--)
-#define forr(x, v) for(auto& x: v)
-#define all(a) (a).begin(), (a).end()
-#define sz(a) (int)(a.size())
 #define endl '\n'
-#define ff first
-#define ss second
-#define pb push_back
-#define eb emplace_back
+#define int ll
 
 typedef long long ll;
-typedef pair<int,int> pii;
-typedef pair<ll,ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vl;
 
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
-
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+int n;
+vector<int> a;
+vector<vector<int>> g;
+vector<vector<int>> dp(n, vector<int>(20));
 
+void dfs(int u, int p){
+	for(int i = 1; i < 20; i++) dp[u][i] = a[u]*i;
+
+	for(auto v: g[u]) if(v != p){
+		dfs(v, u);
+
+		for(int i = 1; i < 20; i++){
+			int mi = LINF;
+			for(int j = 1; j < 20; j++) if(i != j) mi = min(mi, dp[v][j]);
+			dp[u][i] += mi;
+		}
+	}
 }
 
-int main(){ _
-    int ttt = 1; // cin >> ttt;
+void solve(){
+	cin >> n;
+	g = vector<vector<int>>(n), a = vector<int>(n), dp = vector<vector<int>>(n, vector<int>(20));
+	for(auto& x: a) cin >> x;
+	for(int i = 0; i < n-1; i++){ int x, y; cin >> x >> y; --x, --y; g[x].emplace_back(y), g[y].emplace_back(x); }
+
+	dfs(0, -1);
+
+	int mi = LINF;
+	for(int i = 1; i < 20; i++) mi = min(mi, dp[0][i]);
+	cout << mi << endl;
+}
+
+int32_t main(){ _
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

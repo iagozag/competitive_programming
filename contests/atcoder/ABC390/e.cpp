@@ -19,8 +19,8 @@ vector<vector<int>> f(int vit){
 	int k = v[vit].size();
 
 	vector<vector<int>> dp(k+1, vector<int>(x+1));
-	for(int i = 1; i <= k; i++) for(int j = x; j >= v[vit][i-1].second; j--) 
-		dp[i][j] = max(dp[i-1][j], dp[i-1][j-v[vit][i-1].second]+v[vit][i-1].first);
+	for(int i = 1; i <= k; i++) for(int j = x; j >= 0; j--) 
+		dp[i][j] = max(dp[i-1][j], (j >= v[vit][i-1].second ? dp[i-1][j-v[vit][i-1].second]+v[vit][i-1].first : 0));
 
 	return dp;
 }
@@ -28,11 +28,9 @@ vector<vector<int>> f(int vit){
 int bs(vector<vector<int>>& dp, int vit, int need){
 	int l = 0, r = x, ans = x+1;
 	while(l <= r){
-		int m = l+(r-l)/2; bool can = false;
-		for(int i = 1; i <= (int)v[vit].size(); i++)
-			if(dp[i][m] >= need){ can = true; break; }
+		int m = l+(r-l)/2;
 
-		if(can) ans = m, r = m-1;
+		if(dp.back()[m] >= need) ans = m, r = m-1;
 		else l = m+1;
 	}
 

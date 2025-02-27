@@ -41,23 +41,9 @@ void solve(){
 	int n; cin >> n;
 	vector<int> v(n); for(auto& x: v) cin >> x;
 
-	int k = 0;
-	map<int, int> mp; for(auto x: primes) mp[x] = k++;
-
-	vector<vector<int>> pref(k, vector<int>(n+1));
-	vector<int> tmp = fact(v[0]);
-	for(auto x: tmp) pref[mp[x]][1] = 1;
-
-	for(int i = 1; i < n; i++){
-		for(int j = 0; j < k; j++) pref[j][i+1] = pref[j][i];
-
-		vector<int> f = fact(v[i]);
-		for(auto x: f) sum(pref[mp[x]][i+1], pref[mp[x]][i+1]);
-	}
-
-	int ans = 0;
-	for(int i = 0; i < k; i++) sum(ans, pref[i][n]);
-	cout << ans << endl;
+	vector<int> dp(MAX); dp[v[0]] = 1;
+	wq
+	
 }
 
 int main(){ _

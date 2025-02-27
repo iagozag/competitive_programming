@@ -13,30 +13,30 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 int n;
-vector<int> v;
+vector<int> v, nv;
 unordered_set<int> ans;
 
-void f(int i, int x){
+void f(int i){
 	if(i == n){
-		ans.insert(x);
+		int y = 0;
+		for(int j = 0; j < n; j++) y ^= nv[j];
+		ans.insert(y);
 		return;
 	}
 
-	for(int j = i+1; j < n; j++) if(v[j]){
-		int tmp = v[i];
-		v[i] = 0, x ^= v[j], v[j] += tmp, x ^= tmp, x ^= v[j];
-		f(i+1, x);
-		x ^= v[j], x ^= tmp, v[j] -= tmp, x ^= v[j], v[i] = tmp;
+	for(int j = 0; j <= i; j++) if(nv[j]){
+		nv[j] += v[i], nv[i] -= v[i];
+		f(i+1);
+		nv[j] -= v[i], nv[i] += v[i];
 	}
-	f(i+1, x);
 }
 
 void solve(){
 	cin >> n; v = vector<int>(n); 
-	int y = 0;
-	for(auto& x: v) cin >> x, y ^= x;
+	for(auto& x: v) cin >> x;
+	nv = v;
 
-	f(0, y);
+	f(0);
 
 	cout << ans.size() << endl;
 }
@@ -48,3 +48,4 @@ int32_t main(){ _
 
     exit(0);
 }
+
