@@ -3,28 +3,18 @@ using namespace std;
 
 #define _ ios_base::sync_with_stdio(0);cin.tie(0);
 #define endl '\n'
-#define int ll
-
-typedef long long ll;
 
 const int INF = 0x3f3f3f3f;
-const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-const int MAX = 2e5+10, MOD = 1e9+7;
-
-int n, m;
-vector<vector<int>> v, dist, vis, cnt, pref;
+int n, m, more;
+vector<vector<int>> dist, prefl, prefr;
+vector<vector<bool>> v, vis;
 
 vector<pair<int, int>> moves = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
-void printt(vector<vector<int>> mat){
-	for(int i = 0; i < n; i++) for(int j = 0; j < m; j++) cout << mat[i][j] << " \n"[j==m-1];
-	cout << endl;
-}
-
 void bfs(){
 	dist = vector<vector<int>>(n, vector<int>(m, INF));
-	vis = vector<vector<int>>(n, vector<int>(m));
+	vis = vector<vector<bool>>(n, vector<bool>(m));
 
 	queue<pair<int, int>> q;
 	for(int i = 0; i < n; i++) for(int j = 0; j < m; j++) if(v[i][j]) q.push({i, j}), dist[i][j] = 0;
@@ -43,27 +33,65 @@ void bfs(){
 }
 
 tuple<bool, int, int> good(int mid){
-	cout << mid << endl;
-	int need = 0;
-	for(int i = 0; i < n; i++) for(int j = 0; j < m; j++){
-		if(dist[i][j] > mid) cnt[i][j] = 1, need++;
-		else cnt[i][j] = 0;
-	}
-
-	printt(cnt);
-
-	for(int i = 0; i < n; i++) for(int j = 0; j < m; j++) 
-		pref[i][j] = (i ? pref[i-1][j] : 0) + (j ? pref[i][j-1] : 0) - (i and j ? pref[i-1][j-1] : 0) + cnt[i][j];
-
-	printt(pref);
-
-	auto get_sum = [&](int a, int b, int c, int d) -> int{
-		return pref[c][d] - (a ? pref[a-1][d] : 0) - (b ? pref[c][b-1] : 0) + (a and b ? pref[a-1][b-1] : 0);
+	auto ok = [&](int i, int j) -> bool{
+		return dist[i][j] > mid;
 	};
 
+	prefl = prefr = vector<vector<int>>(n, vector<int>(m));
+
+	int need = 0;
 	for(int i = 0; i < n; i++) for(int j = 0; j < m; j++){
-		int a = max(0LL, i-mid), b = max(0LL, j-mid), c = min(n-1, i+mid), d = min(m-1, j+mid);
-		if(get_sum(a, b, c, d) == need) return {true, i, j};
+		if(i and j) prefr[i][j] = prefr[i-1][j-1];
+		if(i and j+1 < m) prefl[i][j] = prefl[i-1][j+1];
+		if(ok(i, j)) prefr[i][j]++, prefl[i][j]++, need++;
+	}
+
+	auto val = [&](int a, int b){
+		return a >= 0 and a < n and b >= 0 and b < m;
+	};
+
+	auto get_sum_l = [&](int a, int b, int c, int d) -> int{
+		if(a >= n) b += a-(n-1), a = n-1;
+		if(b < 0) a += b, b = 0;
+		if(c < 0) d += c, c = 0;
+		if(d >= m) c += d-(m-1), d = m-1;
+
+		if(!val(a, b) or !val(c, d)) return 0;
+
+		return prefl[a][b]-(c > 0 and d+1 < m ? prefl[c-1][d+1] : 0);
+	};
+
+	auto get_sum_r = [&](int a, int b, int c, int d) -> int{
+		if(a >= n) b -= a-(n-1), a = n-1;
+		if(b >= m) a -= b-(m-1), b = m-1;
+		if(c < 0) d -= c, c = 0;
+		if(d < 0) c -= d, d = 0;
+		
+		if(!val(a, b) or !val(c, d)) return 0;
+
+		return prefr[a][b]-(c > 0 and d > 0 ? prefr[c-1][d-1] : 0);
+	};
+
+	int first = 0;
+	for(int i = 0; i <= min(n-1, mid); i++) for(int j = 0; i+j <= min(m-1, mid); j++) first += ok(i, j);
+
+	for(int i = 0; i < n; i++){
+		if(i) first += get_sum_l(i+mid, 0, i, mid), first -= get_sum_r(i-1, mid, i-1-mid, 0);
+
+		if(first == need and !v[i][0]) return {true, i, 0};
+
+		int have = first;
+		for(int j = 1; j < m; j++){
+			if(j+mid < m) have -= ok(i, j+mid);
+			if(j-1-mid >= 0) have += ok(i, j-1-mid);
+
+			have -= get_sum_l(i, j-1-mid, i-mid, j-1);
+			have -= get_sum_r(i+mid, j-1, i, j-1-mid);
+			have += get_sum_l(i+mid, j, i, j+mid);
+			have += get_sum_r(i, j+mid, i-mid, j);
+						
+			if(have == need and !v[i][j]) return {true, i, j};
+		}
 	}
 
 	return {false, -1, -1};
@@ -71,17 +99,27 @@ tuple<bool, int, int> good(int mid){
 
 void solve(){
 	cin >> n >> m;
-	v = dist = cnt = pref = vector<vector<int>>(n, vector<int>(m));
+	v = vector<vector<bool>>(n, vector<bool>(m));
+
+	int qnt = 0;
 	for(int i = 0; i < n; i++){
 		string s; cin >> s;
-		for(int j = 0; j < m; j++) v[i][j] = (s[j] == '#');
+		for(int j = 0; j < m; j++) if(s[j] == '#') v[i][j] = 1, qnt++;
+	}
+
+	if(!qnt){
+		v[n/2][m/2] = 1;
+		cout << n/2+m/2 << endl;
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < m; j++) cout << (v[i][j] ? '#' : '.');
+			cout << endl;
+		}
+		return;
 	}
 
 	bfs();
 
-	printt(dist);
-
-	int l = 0, r = n*m, ans = r, cx = -1, cy = -1;
+	int l = 0, r = n/2+m/2, ans = r, cx = -1, cy = -1;
 	while(l <= r){
 		int mid = l+(r-l)/2;
 
