@@ -14,13 +14,17 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	string s; cin >> s;
 
-	auto dp = [&](auto&& self, int i){
+	vector<int> v(26);
+	for(auto x: s) v[x-'a']++;
+	
+	int ans = n*(n+1)/2;
 
-	};
+	for(int i = 0; i < n; i++){
+		v[s[i]-'a']--;
+		ans -= v[s[i]-'a'];
+	}
 
 	cout << ans << endl;
 }

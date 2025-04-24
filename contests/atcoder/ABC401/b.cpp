@@ -14,15 +14,15 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	int cnt = 0, login = 0;
+	for(int i = 0; i < n; i++){
+		string s; cin >> s;
+		if(s == "login") login = 1;
+		else if(s == "logout") login = 0;
+		else if(s == "private") cnt += !login;
+	}
 
-	auto dp = [&](auto&& self, int i){
-
-	};
-
-	cout << ans << endl;
+	cout << cnt << endl;
 }
 
 int32_t main(){ _

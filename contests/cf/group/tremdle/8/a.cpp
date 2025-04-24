@@ -13,19 +13,12 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-
-	auto dp = [&](auto&& self, int i){
-
-	};
-
-	cout << ans << endl;
+	cout << "? 6" << endl;
+	int x; cin >> x;
+	cout << "! " << (x^6) << endl;
 }
 
-int32_t main(){ _
+int32_t main(){
     int ttt = 1; // cin >> ttt;
 
     while(ttt--) solve();

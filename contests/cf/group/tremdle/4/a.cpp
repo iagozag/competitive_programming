@@ -12,17 +12,26 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
+void yes(vector<string> v){
+	cout << "YES" << endl;
+	for(auto s: v) cout << s << endl;
+}
+
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	vector<string> v(n); for(auto& x: v) cin >> x;
 
-	auto dp = [&](auto&& self, int i){
+	for(int i = 0; i < n; i++){
+		if(v[i][0] == 'O' and v[i][1] == 'O'){
+			v[i][0] = v[i][1] = '+';
+			return yes(v);
+		} else if(v[i][3] == 'O' and v[i][4] == 'O'){
+			v[i][3] = v[i][4] = '+';
+			return yes(v);
+		}
+	}
 
-	};
-
-	cout << ans << endl;
+	cout << "NO" << endl;
 }
 
 int32_t main(){ _

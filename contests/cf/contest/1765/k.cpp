@@ -12,17 +12,20 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
+int n;
+int v[210][210];
+
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	cin >> n; int ans = 0;
+	for(int i = 0; i < n; i++)
+		for(int j = 0; j < n; j++)
+			cin >> v[i][j], ans += v[i][j];
 
-	auto dp = [&](auto&& self, int i){
+	int mi = LINF;
+	for(int i = 0; i < n; i++)
+		mi = min(mi, v[i][n-i-1]);
 
-	};
-
-	cout << ans << endl;
+	cout << ans-mi << endl;
 }
 
 int32_t main(){ _

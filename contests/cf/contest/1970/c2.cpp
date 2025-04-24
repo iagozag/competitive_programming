@@ -16,14 +16,16 @@ int n, t, r;
 vector<vector<int>> g;
 
 bool dfs(int v, int p, int rnd){
-	if(g[v].size() == 1) return !rnd;
 
-	int can = !rnd;
+	int can = !rnd; bool ok = 0;
 	for(auto ve: g[v]) if(ve != p){
+		ok = 1;
 		int x = dfs(ve, v, !rnd);
 		if(rnd) can |= x;
 		else can &= x;
 	}
+
+	if(!ok) return !rnd;
 
 	return can;
 }

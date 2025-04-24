@@ -14,19 +14,28 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	vector<int> bit(32);
+	vector<int> v(n); for(auto& x: v){
+		cin >> x;
+		for(int i = 0; i <= 30; i++) if(x&(1LL<<i)) bit[i]++;
+	}
 
-	auto dp = [&](auto&& self, int i){
+	int ans = 0;
+	for(int i = 0; i < n; i++){
+		int sum = 0;
+		for(int j = 0; j < 31; j++){
+			if(v[i]&(1LL<<j)) sum += (n-bit[j])*(1LL<<j);
+			else sum += bit[j]*(1LL<<j);
+		}
 
-	};
+		ans = max(ans, sum);
+	}
 
 	cout << ans << endl;
 }
 
 int32_t main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

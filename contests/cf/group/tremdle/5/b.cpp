@@ -14,14 +14,15 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	vector<string> v(n); for(auto& x: v) cin >> x;
 
-	auto dp = [&](auto&& self, int i){
+	vector<int> row(n), col(n);
+	for(int i = 0; i < n; i++) for(int j = 0; j < n; j++) if(v[i][j] == 'C'){
+		row[i]++, col[j]++;
+	}
 
-	};
-
+	int ans = 0;
+	for(int i = 0; i < n; i++) ans += row[i]*(row[i]-1)/2+col[i]*(col[i]-1)/2;
 	cout << ans << endl;
 }
 

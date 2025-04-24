@@ -14,19 +14,23 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	vector<int> v;
+	for(int i = 0; i < n; i++){ int x; cin >> x; v.emplace_back(x); }
+	sort(v.begin(), v.end());
 
-	auto dp = [&](auto&& self, int i){
+	int ans = -1;
+	for(int i = 0; i <= n; i++){
+		int liar = 0;
+		for(int j = 0; j < n; j++) if(v[j] > i) liar++;
+		if(liar == i){ ans = i; break; }
+	}
 
-	};
 
 	cout << ans << endl;
 }
 
 int32_t main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

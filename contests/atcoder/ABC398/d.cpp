@@ -13,14 +13,20 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	int n, x, y; cin >> n >> x >> y;
+	string ans = "";
+	string s; cin >> s; int px = 0, py = 0;
+	set<pair<int, int>> st; st.insert({px, py});
+	for(auto c: s){
+		if(c == 'N') x++, px++;
+		if(c == 'S') x--, px--;
+		if(c == 'W') y++, py++;
+		if(c == 'E') y--, py--;
 
-	auto dp = [&](auto&& self, int i){
+		st.insert({px, py});
 
-	};
+		ans += (st.count({x, y}) ? '1' : '0');
+	}
 
 	cout << ans << endl;
 }

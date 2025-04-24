@@ -14,14 +14,13 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-
-	auto dp = [&](auto&& self, int i){
-
-	};
-
+	string a, b; cin >> a >> b;
+	int ans = 0;
+	for(int i = 0; i < n; i++){
+		int x = a[i]-'0', y = b[i]-'0';
+		if(x > y) swap(x, y);
+		ans += min(y-x, x+9-y+1);
+	}
 	cout << ans << endl;
 }
 

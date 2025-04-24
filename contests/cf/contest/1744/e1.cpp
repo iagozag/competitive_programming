@@ -13,20 +13,28 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	int a, b, c, d; cin >> a >> b >> c >> d;
 
-	auto dp = [&](auto&& self, int i){
+	for(int x = a+1; x <= c; x++){
+		int g = __gcd(a*b, x);
 
-	};
+		int y = -1;
+		int m = (a*b)/g;
+		y = m*(d/m);
 
-	cout << ans << endl;
+		if(y <= b or y > d) y = -1;
+
+		if(y == -1 or (x*y)%(a*b) != 0) continue;
+
+		cout << x << ' ' << y << endl;
+		return;
+	}
+
+	cout << -1 << ' ' << -1 << endl;
 }
 
 int32_t main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

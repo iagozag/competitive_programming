@@ -13,16 +13,9 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-
-	auto dp = [&](auto&& self, int i){
-
-	};
-
-	cout << ans << endl;
+	int a, b; cin >> a >> b;
+	if(a < b) swap(a, b);
+	cout << b << ' ' << (a-b)/2 << endl;
 }
 
 int32_t main(){ _

@@ -13,20 +13,18 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	string s; cin >> s; int n = s.size();
+	int mi = INF, cnt = 0;
+	for(int i = 0; i < n; i++){
+		if(s[i] == '0') cnt++;
+		else mi = min(mi, i-cnt+n-i-1);
+	}
 
-	auto dp = [&](auto&& self, int i){
-
-	};
-
-	cout << ans << endl;
+	cout << mi << endl;
 }
 
 int32_t main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

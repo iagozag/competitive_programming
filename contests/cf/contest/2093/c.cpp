@@ -12,21 +12,28 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
+void yes(){
+	cout << "YES" << endl;
+}
+
+void no(){
+	cout << "NO" << endl;
+}
+
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	int n, k; cin >> n >> k;
 
-	auto dp = [&](auto&& self, int i){
+	if(n == 1 and k == 2) return yes();
+	
+	int prime = (n != 1);
+	for(int i = 2; i <= sqrt(n); i++) if(n%i == 0) prime = 0;
 
-	};
-
-	cout << ans << endl;
+	if(prime and k == 1) return yes();
+	return no();
 }
 
 int32_t main(){ _
-    int ttt = 1; // cin >> ttt;
+    int ttt = 1; cin >> ttt;
 
     while(ttt--) solve();
 

@@ -10,19 +10,23 @@ typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int N = 60, MOD = 1e9+7;
+
+void alice(){
+	cout << "Alice" << endl;
+}
+
+void bob(){
+	cout << "Bob" << endl;
+}
 
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-
-	auto dp = [&](auto&& self, int i){
-
-	};
-
-	cout << ans << endl;
+	vector<int> v(n); for(auto& x: v) cin >> x;
+	sort(v.begin(), v.end());
+ 
+	if(v[n/2] == v[0]) return bob();
+	return alice();
 }
 
 int32_t main(){ _

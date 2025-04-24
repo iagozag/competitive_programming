@@ -14,15 +14,12 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	map<string, int> mp;
+	for(int i = 0; i < n; i++){ string s; cin >> s; mp[s]++; }
 
-	auto dp = [&](auto&& self, int i){
+	for(auto [a, b]: mp) if(b > n/2){ cout << a << endl; return; }
 
-	};
-
-	cout << ans << endl;
+	cout << "vixe" << endl;
 }
 
 int32_t main(){ _

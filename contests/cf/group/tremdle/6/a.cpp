@@ -13,16 +13,8 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
-
-	auto dp = [&](auto&& self, int i){
-
-	};
-
-	cout << ans << endl;
+	int a, b, c; cin >> a >> b >> c;
+	cout << min({2*a+2*b, a+b+c, 2*a+2*c, 2*b+2*c}) << endl;
 }
 
 int32_t main(){ _
@@ -32,3 +24,4 @@ int32_t main(){ _
 
     exit(0);
 }
+

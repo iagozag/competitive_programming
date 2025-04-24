@@ -13,16 +13,16 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	int x, y, z; cin >> x >> y >> z;
 
-	auto dp = [&](auto&& self, int i){
+	for(int a = 1; a <= 1e4; a++){
+		int c = y/a, b = z/c;
 
-	};
-
-	cout << ans << endl;
+		if(a*b == x and a*c == y and b*c == z){
+			cout << 4*(a+b+c) << endl;
+			return;
+		}
+	}
 }
 
 int32_t main(){ _

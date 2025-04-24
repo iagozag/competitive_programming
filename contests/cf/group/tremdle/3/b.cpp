@@ -12,17 +12,20 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
+void no(){
+	cout << "NO" << endl;
+}
+
 void solve(){
-	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	int n, k; cin >> n >> k;
+	string s; cin >> s;
+	for(int i = 0; i < n-1; i++){
+		bool can = 0;
+		for(int j = min(n-1, i+k); j > i; j--) if(s[j] == '.'){ i = j-1, can = 1; break; }
+		if(!can) return no();
+	}
 
-	auto dp = [&](auto&& self, int i){
-
-	};
-
-	cout << ans << endl;
+	cout << "YES" << endl;
 }
 
 int32_t main(){ _

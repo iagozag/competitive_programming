@@ -14,15 +14,26 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	int n; cin >> n;
-	vector<int> a(n), b(n);
-	for(auto& x: a) cin >> x;
-	for(auto& x: b) cin >> x;
+	vector<int> v(n); for(auto& x: v) cin >> x;
 
-	auto dp = [&](auto&& self, int i){
+	int one = 0;
+	for(int i = 0; i < n; i++) one += (v[i] == 1);
 
-	};
+	if(one){ cout << n-one << endl; return; }
 
-	cout << ans << endl;
+	int mi = LINF;
+	for(int i = 0; i < n; i++){
+		int g = v[i];
+		for(int j = i+1; j < n; j++){
+			g = __gcd(g, v[j]);
+			if(g == 1){
+				mi = min(mi, j-i);
+				break;
+			}
+		}
+	}
+
+	cout << (mi == LINF ? -1 : n+mi-1) << endl;
 }
 
 int32_t main(){ _
