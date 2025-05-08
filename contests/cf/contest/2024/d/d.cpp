@@ -18,9 +18,29 @@ void solve(){
 	for(auto& x: a) cin >> x;
 	for(auto& x: b) cin >> x;
 
-	auto dp = [&](auto&& self, int i){
+	vector<int> pref(n);
+	for(int i = 0; i < n; i++) pref[i] = (i ? pref[i-1] : 0)+a[i];
 
+	auto get_sum = [&](int a, int b) -> int{
+		return pref[b]-(a ? pref[a-1] : 0);
 	};
+
+	vector<int> vis(n);
+	int j = 0, ans = 0, tot = 0;
+	while(j >= 0){
+		while(j >= 0 and vis[j]) j--;
+		if(j < 0) break;
+
+		if(b[j] > j and ){
+			
+			ans = max(ans, pref[j]-took);
+			took += a[j];
+		}
+
+		vis[j] = 1;
+	}
+
+	ans = max(ans, pref[n-1]-took);
 
 	cout << ans << endl;
 }

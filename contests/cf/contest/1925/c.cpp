@@ -17,21 +17,29 @@ void no(string ans){ cout << "NO" << endl << ans << endl; }
 void solve(){
 	int n, m, k; cin >> n >> k >> m;
 	string s; cin >> s;
-	vector<vector<int>> pos(k);
-	for(int i = 0; i < m; i++) pos[s[i]-'a'].emplace_back(i);
-
-	for(int i = 0; i < k; i++) if(pos[i].size() == 0) return no(string(n, (char)(i+'a')));
-	
-	string ans = ""; vector<bool> vis(k);
-	for(int i = 0; i < m; i++) if(!vis[s[i]-'a']){
-		vis[s[i]-'a'] = 1;
-		for(int j = 0; j < k; j++){
-			int ub = upper_bound(pos[j].begin(), pos[j].end(), i)-pos[j].begin();
-			if(pos[j].size()-ub < n-1) return no(string(1, s[i])+string(n-1, j+'a'));
-		}
+	vector<vector<int>> nxt(m+1, vector<int>(k, m));
+	for(int i = m-1; i >= 0; i--){
+		for(int j = 0; j < k; j++) nxt[i][j] = nxt[i+1][j];
+		nxt[i][s[i]-'a'] = i;
 	}
 
-	cout << "YES" << endl;
+	string ans = ""; char f;
+	int cur = -1;
+	for(int i = 0; i < n; i++){
+		int let = 0;
+		for(int j = 1; j < k; j++) if(nxt[cur+1][j] > nxt[cur+1][let]) let = j;
+
+		if(nxt[cur+1][let] == m){ f = let+'a'; break; }
+		cur = nxt[cur+1][let];
+
+		ans += s[cur];
+	}
+
+	if(ans.size() == n){ cout << "YES" << endl; return; }
+
+	ans += string(n-(int)ans.size(), f);
+
+	cout << "NO" << endl << ans << endl;
 }
 
 int32_t main(){ _
