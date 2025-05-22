@@ -12,25 +12,26 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int n;
-vector<int> a;
-
 void solve(){
-	cin >> n;
-	for(auto& x: a) cin >> x;
+	int n; cin >> n; n++;
+	vector<int> v(n); for(int i = 1; i < n; i++) cin >> v[i];
 
-	vector<int> last(501, -1); vector<vector<int>> pos(n, vector<int>(501, -1));
-	for(int i = 0; i < n; i++){
-		last[a[i]] = i;
-		for(int j = 0; j < a[i]; j++) if(last[j] != -1) pos[last[j]][a[i]] = i;
-	}
-	
-	vector<vector<bool>> dp(n, vector<bool>(501)); dp[0][0] = 1;
-	for(int i = 0; i < n; i++){
-		for(int j = a[i]+1; j <= 500; j++) if(dp[i][j]){
-			
+	vector<int> dp(512, LINF); dp[0] = 0;
+	for(int i = 1; i < n; i++){
+		vector<pair<int, int>> ins;
+		for(int j = 511; j >= 0; j--){
+			if(v[i] > dp[j]) ins.emplace_back(v[i]^j, v[i]);
 		}
+
+		for(auto [a, b]: ins) dp[a] = min(dp[a], b);
 	}
+
+	vector<int> ans;
+	for(int j = 0; j < 512; j++) if(dp[j] < LINF) ans.emplace_back(j);
+	
+	cout << ans.size() << endl;
+	for(auto x: ans) cout << x << ' ';
+	cout << endl;
 }
 
 int32_t main(){ _

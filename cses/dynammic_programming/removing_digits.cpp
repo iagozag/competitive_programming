@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define _ ios_base::sync_with_stdio(0);cin.tie(0);
+#define endl '\n'
+#define int ll
+
+typedef long long ll;
+
+const int INF = 0x3f3f3f3f;
+const ll LINF = 0x3f3f3f3f3f3f3f3fll;
+
+const int MAX = 2e5+10, MOD = 1e9+7;
+
+void solve(){
+	int n; cin >> n;
+	vector<int> dp(n+1, LINF); dp[n] = 0;
+	for(int i = n; i; i--){
+		int cur = i;
+		while(cur){
+			int d = cur%10;
+			dp[i-d] = min(dp[i-d], dp[i]+1);
+			cur /= 10;
+		}
+	}
+
+	cout << dp[0] << endl;
+}
+
+int32_t main(){ _
+    int ttt = 1; // cin >> ttt;
+
+    while(ttt--) solve();
+
+    exit(0);
+}
