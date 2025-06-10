@@ -74,9 +74,9 @@ void solve(){
 		update(b, 1);
 	}
  
-	for(auto x: in) cout << x << ' ';
+	for(auto x: in) cout << min(1LL, x) << ' ';
 	cout << endl;
-	for(auto x: out) cout << x << ' ';
+	for(auto x: out) cout << min(1LL, x) << ' ';
 	cout << endl;
 }
  

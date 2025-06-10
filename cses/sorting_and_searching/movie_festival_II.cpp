@@ -15,14 +15,20 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 void solve(){
 	int n, k; cin >> n >> k;
 	vector<pair<int, int>> v(n); 
-	for(auto& [a, b]: v) cin >> b >> a;
-	sort(v.begin(), v.end()); for(auto& [a, b]: v) swap(a, b);
+	for(auto& [a, b]: v) cin >> a >> b;
+	sort(v.begin(), v.end(), [&](pair<int, int> a, pair<int, int> b){
+		if(a.second != b.second) return a.second < b.second;
+		return a.first > b.first;
+	});
 
 	int ans = 0; multiset<int> st;
 	for(int i = 0; i < n; i++){
 		auto [a, b] = v[i];
-		while(st.size() and *st.begin() <= a) st.erase(st.begin());
-		if(st.size() < k) ans++, st.insert(b);
+		if(!st.empty() and *st.begin() <= a){
+			auto it = st.upper_bound(a); it--;
+			st.erase(it);
+		}
+		if((int)st.size() < k) ans++, st.insert(b);
 	}
 
 	cout << ans << endl;

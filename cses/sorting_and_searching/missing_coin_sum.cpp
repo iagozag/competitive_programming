@@ -13,11 +13,17 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	vector<string> v = {"arid", "dash", "draini","heard", "lost", "nose", "shun", "slate", "snare", "thread"};
-	set<char> st;
-	for(auto & x: v) for(auto y: x) st.insert(y);
-	for(auto x: st) cout << x << ' ';
-	cout << endl;
+	int n; cin >> n;
+	vector<int> v(n); for(auto& x: v) cin >> x;
+	sort(v.begin(), v.end());
+
+	int best = 0;
+	for(int i = 0; i < n; i++){
+		if(v[i] > best+1){ cout << best+1 << endl; return; }
+		best += v[i];
+	}
+
+	cout << best+1 << endl;
 }
 
 int32_t main(){ _

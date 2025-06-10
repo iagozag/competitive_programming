@@ -14,12 +14,19 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	int n; cin >> n;
-	vector<int> v(n); int sum = 0;
-	for(auto& x: v) cin >> x, sum += x;
-	sort(v.begin(), v.end());
+	vector<int> child(n);
+	for(auto& x: child) cin >> x, --x;
 
-	sum -= v.back();
-	cout << max(sum+v.back(), v.back()*2) << endl;
+	vector<int> ans(n, -1); vector<int> vis(n);
+	auto dfs = [&](auto&& self, int v) -> int{
+		int c = ans[child[v]]; vis[v] = 1;
+		return ans[v] = 1+(c == -1 ? self(self, child[v]) : c);
+		
+	};
+
+	for(int i = 0; i < n; i++) if(ans[i] == -1) dfs(dfs, i);
+
+	for(int i = 0; i < n; i++) cout << ans[i] << endl;
 }
 
 int32_t main(){ _

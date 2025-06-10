@@ -17,28 +17,31 @@ void solve(){
 	vector<int> v(n), nums(n);
 	for(int i = 0; i < n; i++){ int x; cin >> x; nums[i] = x-1, v[x-1] = i; }
 
-	int ans = 0;
+	int ans = 1;
 	for(int i = 1; i < n; i++) if(v[i] < v[i-1]) ans++;
 
 	for(int Q = 0; Q < q; Q++){
-		int a, b; cin >> a >> b; --a, --b; if(a > b) swap(a, b);
-		if(a and v[a] < v[a-1]) ans--;
-		if(b > a+1 and v[a+1] < v[a]) ans--;
+		int a, b; cin >> a >> b; --a, --b;
 
-		if(v[b] < v[b-1]) ans--;
-		if(b < n-1 and v[b+1] < v[b]) ans--;
+		if(a == b){ cout << ans << endl; continue; }
 
 		int x = nums[a], y = nums[b];
+
+		if(x > y) swap(x, y);
+
+		int l1 = max(1LL, x), r1 = (y == x+1 ? x : x+1);
+		int l2 = y, r2 = min(n-1, y+1);
+
+		for(int i = l1; i <= r1; i++) if(v[i] < v[i-1]) ans--;
+		for(int i = l2; i <= r2; i++) if(v[i] < v[i-1]) ans--;
+
 		swap(nums[a], nums[b]);
 		swap(v[x], v[y]);
 
-		if(a and v[a] < v[a-1]) ans++;
-		if(b > a+1 and v[a+1] < v[a]) ans++;
+		for(int i = l1; i <= r1; i++) if(v[i] < v[i-1]) ans++;
+		for(int i = l2; i <= r2; i++) if(v[i] < v[i-1]) ans++;
 
-		if(v[b] < v[b-1]) ans++;
-		if(b < n-1 and v[b+1] < v[b]) ans++;
-		
-		cout << ans+1 << endl;
+		cout << ans << endl;
 	}
 }
 

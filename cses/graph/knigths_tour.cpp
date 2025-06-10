@@ -13,13 +13,9 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	int n; cin >> n;
-	vector<int> v(n); int sum = 0;
-	for(auto& x: v) cin >> x, sum += x;
-	sort(v.begin(), v.end());
+	int x, y; cin >> x >> y;
 
-	sum -= v.back();
-	cout << max(sum+v.back(), v.back()*2) << endl;
+	int dp[8][8][1<<
 }
 
 int32_t main(){ _
