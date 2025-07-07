@@ -12,33 +12,25 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
-	string s, p; cin >> s >> p;
-	int n = p.size(), m = s.size();
+string s;
 
+void solve(){
+	int n = s.size();
 	vector<int> pi(n+1, -1);
 	int i = 0, j = -1;
 	while(i < n){
-		while(j >= 0 and p[i] != p[j]) j = pi[j];
+		while(j >= 0 and s[i] != s[j]) j = pi[j];
 		i++, j++;
 		pi[i] = j;
 	}
 
-	int ans = 0;
-	i = 0, j = 0;
-	while(i < m){
-		while(j >= 0 and s[i] != p[j]) j = pi[j];
-		i++, j++;
-		if(j == n) ans++, j = pi[j];
-	}
-
-	cout << ans << endl;
+	cout << (pi[n] != 0 and n%(n-pi[n]) == 0 ? n/(n-pi[n]) : 1) << endl;
 }
 
 int32_t main(){ _
     int ttt = 1; // cin >> ttt;
 
-    while(ttt--) solve();
+    while(cin >> s and s != ".") solve();
 
     exit(0);
 }

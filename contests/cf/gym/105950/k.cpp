@@ -13,26 +13,17 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
-	string s, p; cin >> s >> p;
-	int n = p.size(), m = s.size();
+	int n; cin >> n;
+	vector<int> v(n); for(int i = 0; i < n; i++) cin >> v[i];
 
-	vector<int> pi(n+1, -1);
-	int i = 0, j = -1;
-	while(i < n){
-		while(j >= 0 and p[i] != p[j]) j = pi[j];
-		i++, j++;
-		pi[i] = j;
+	map<int, int> mp; vector<int> dp(n, INF); dp[0] = 1; mp[v[0]] = 1;
+	for(int i = 1; i < n; i++){
+		dp[i] = dp[i-1]+1;
+		if(mp.count(v[i])) dp[i] = min(dp[i], mp[v[i]]), mp[v[i]] = min(dp[i], mp[v[i]]);
+		else mp[v[i]] = dp[i];
 	}
 
-	int ans = 0;
-	i = 0, j = 0;
-	while(i < m){
-		while(j >= 0 and s[i] != p[j]) j = pi[j];
-		i++, j++;
-		if(j == n) ans++, j = pi[j];
-	}
-
-	cout << ans << endl;
+	cout << dp.back() << endl;
 }
 
 int32_t main(){ _
