@@ -19,21 +19,20 @@ void solve(){
 	for(int i = 0; i < n; i++){
 		string s; cin >> s;
 
-		for(int j = 0; j < m/2; j++) sets[i].emplace_back((((int)(s[m-j-1]-s[j])%26)+26)%26);
+		for(int j = 0; j < m/2; j++) 
+			sets[i].emplace_back((((int)(s[m-j-1]-'a')-(int)(s[j]-'a'))+26)%26);
+
 		mp[sets[i]]++;
 	}
 
-	int ans = 0, pal = 0;
+	int ans = 0;
 	for(int i = 0; i < n; i++){
-		pal += (sets[i] == vector<int>(m/2));
-
 		vector<int> need;
-		for(auto x: sets[i]) need.emplace_back(((-x%26)+26)%26);
-		mp[sets[i]]--;
+		for(auto x: sets[i]) need.emplace_back((26-x)%26);
 		ans += mp[need];
 	}
 
-	cout << ans*2+pal << endl;
+	cout << ans << endl;
 }
 
 int32_t main(){ _

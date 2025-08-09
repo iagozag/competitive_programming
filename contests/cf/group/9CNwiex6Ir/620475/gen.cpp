@@ -13,5 +13,10 @@ int rand(int a, int b) {
 }
 
 int main() {
-    
+	int n = rand(2, 10000), m = rand(1, 10);
+	cout << n << ' ' << m << endl;
+	for(int j = 0; j < n; j++){
+		for(int i = 0; i < m; i++) cout << (char)(rand(0, 25)+'a');
+		cout << endl;
+	}
 }
