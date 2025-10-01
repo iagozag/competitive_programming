@@ -14,22 +14,21 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 int n, m;
 vector<vector<int>> g;
-int dp[1<<21][21];
+int memo[20][1<<20];
 
-int f(int mask, int v){
-	if(!(mask&(1<<v))){ cout << "NO"; exit(0); }
-	if(v == 0) return dp[mask][v] = (mask == 1);
+int dp(int v, int mask){
+	auto& p = memo[v][mask];
+	if(v == n-1) return p = (mask == (1<<n)-1);
+	if(p != -1) return p;
 
-	if(dp[mask][v] != -1) return dp[mask][v];
-
-	int ans = 0;
-	cerr << mask << ' ' << v << endl;
-	for(auto ve: g[v]) if(mask&(1<<ve)){
-		ans += f(mask^(1<<v), ve);
-		ans %= MOD;
+	int resposta = 0;
+	for(auto ve: g[v]) if(!((mask>>ve)&1)){
+		int new_mask = mask|(1<<ve);
+		resposta += dp(ve, new_mask);
+		resposta %= MOD;
 	}
 
-	return dp[mask][v] = ans;
+	return p = resposta;
 }
 
 void solve(){
@@ -37,13 +36,12 @@ void solve(){
 	g = vector<vector<int>>(n);
 	for(int i = 0; i < m; i++){
 		int a, b; cin >> a >> b; --a, --b;
-		g[b].emplace_back(a);
+		g[a].emplace_back(b);
 	}
 
-	for(int i = 0; i < (1<<n); i++) for(int j = 0; j < n; j++)
-		dp[i][j] = -1;
+	for(int i = 0; i < 20; i++) for(int j = 0; j < (1<<n); j++) memo[i][j] = -1;
 
-	cout << f((1<<n)-1, n-1) << endl;
+	cout << dp(0, 1) << endl;
 }
 
 int32_t main(){ _

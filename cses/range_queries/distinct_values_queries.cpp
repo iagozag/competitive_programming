@@ -15,12 +15,56 @@ vector<int> last;
 
 void solve(){
 	int n, q; cin >> n >> q; int k = 0;
-	map<int, int> mp; vector<int> v(n);
-	for(int i = 0; i < n; i++){
-		int a; cin >> a; if(!mp.count(a)) mp[a] = k++;
-		v[i] = mp[a];
+	const int B = sqrt(n);
+
+	set<int> st; vector<int> v(n);
+	for(int i = 0; i < n; i++){ cin >> v[i]; st.insert(v[i]); }
+
+	map<int, int> mp;
+	for(auto x: st) mp[x] = k++;
+
+	vector<int> qnt(MAX);
+	for(int i = 0; i < n; i++) v[i] = mp[v[i]];
+
+	vector<pair<pair<int, int>, int>> qu(q); 
+	for(int i = 0; i < q; i++){ int a, b; cin >> a >> b; --a, --b; qu[i] = {{a, b}, i}; }
+	sort(qu.begin(), qu.end(), [&](pair<pair<int, int>, int> q1, pair<pair<int, int>, int> q2){
+		auto [x, idx] = q1;
+		auto [a, b] = x;
+		auto [y, idy] = q2;
+		auto [c, d] = y;
+		
+		if(a/B != c/B) return a/B < c/B;
+		return ((a/B)&1 ? b > d : b < d);
+	});
+
+	int f = 0;
+
+	auto insert = [&](int i){
+		qnt[i]++;
+		if(qnt[i] == 1) f++;
+	};
+
+	auto erase = [&](int i){
+		qnt[i]--;
+		if(qnt[i] == 0) f--;
+	};
+	
+	vector<int> ans(q);
+
+	int l = 0, r = -1;
+	for(int i = 0; i < q; i++){
+		auto [x, id] = qu[i];
+		auto [a, b] = x;
+		while(r < b) insert(v[++r]);
+		while(l > a) insert(v[--l]);
+		while(l < a) erase(v[l++]);
+		while(r > b) erase(v[r--]);
+
+		ans[id] = f;
 	}
 
+	for(auto x: ans) cout << x << endl;
 }
 
 int main(){ _

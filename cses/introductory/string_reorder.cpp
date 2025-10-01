@@ -14,22 +14,26 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 
 void solve(){
 	string s; cin >> s; int n = s.size();
-	vector<int> v(26); for(auto c: s) v[c-'A']++;
-	vector<int> mi(26, n);
-	for(int i = 0; i < 26; i++) if(v[i]) mi[i] = n-1-2*(v[i]-1);
-	
-	vector<char> ans(n, '-');
 
-	for(int i = 0; i < 26; i++){
-		int letter = i;
-		int j = 0;
-		while(j < n and ans[j] != '-') j++;
-		for(; j < n and v[i]; j += 2, v[i]--) ans[j] = (char)(i+'A');
+	vector<int> qnt(26);
+	for(int i = 0; i < n; i++) qnt[s[i]-'A']++;
 
-		if(j >= n and v[i]){ cout << -1 << endl; return; }
+	string ans = string(n+1, ' ');
+	for(int i = 1; i <= n; i++){
+		for(int c = 0; c < 26; c++) if(qnt[c]){
+			char ch = c+'A';
+			if(ans[i-1] == ch) continue;
+			
+			qnt[c]--;
+			int ma = *max_element(qnt.begin(), qnt.end());
+			if(ma <= (n-i+1)/2){ ans[i] = ch; break; }
+			else qnt[c]++;
+		}
+
+		if(ans[i] == ' '){ cout << -1 << endl; return; }
 	}
 
-	for(auto c: ans) cout << c << ' ';
+	for(int i = 1; i <= n; i++) cout << ans[i];
 	cout << endl;
 }
 
