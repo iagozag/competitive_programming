@@ -12,28 +12,26 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 1e5+10, MOD = 1e9+7;
 
-int v[MAX], dp[MAX][21], qnt[MAX];
+int v[MAX], dp[MAX][21], qnt[MAX], cl, cr, cost;
 
 void f(int k, int l, int r, int optl, int optr){
 	if(l > r) return;
 
-	int mid = l+(r-l)/2, opt = optl, cost = 0;
+	int mid = l+(r-l)/2, opt = optl, lim = min(optr, mid-1);
 
-	for(int i = mid-1; i > min(optr, mid-1); i--) 
-		qnt[v[i+1]]++, cost += qnt[v[i+1]]-1;
+	while(cr < mid-1) cr++, qnt[v[cr+1]]++, cost += qnt[v[cr+1]]-1;
+	while(cr > mid-1) cost -= qnt[v[cr+1]]-1, qnt[v[cr+1]]--, cr--;
 
-	for(int i = min(optr, mid-1); i >= optl; i--){
+	while(cl > lim+1) cl--, qnt[v[cl+1]]++, cost += qnt[v[cl+1]]-1;
+	while(cl < lim+1) cost -= qnt[v[cl+1]]-1, qnt[v[cl+1]]--, cl++;
+
+	for(int i = lim; i >= optl; i--){
 		qnt[v[i+1]]++, cost += qnt[v[i+1]]-1;
+		cl = min(cl, i);
 
 		if(dp[mid][k] >= dp[i][k-1]+cost)
 			dp[mid][k] = dp[i][k-1]+cost, opt = i;
 	}
-
-	for(int i = mid-1; i > min(optr, mid-1); i--) 
-		cost -= qnt[v[i+1]]-1, qnt[v[i+1]]--;
-
-	for(int i = min(optr, mid-1); i >= optl; i--)
-		cost -= qnt[v[i+1]]-1, qnt[v[i+1]]--;
 
 	f(k, l, mid-1, optl, opt);
 	f(k, mid+1, r, opt, optr);
@@ -46,7 +44,12 @@ void solve(){
 	for(int i = 0; i < MAX; i++) for(int j = 0; j <= 20; j++) dp[i][j] = LINF;
 	dp[0][0] = 0;
 
-	for(int i = 1; i <= k; i++) f(i, 1, n, 0, n-1);
+	for(int i = 1; i <= k; i++){
+		for(int j = 0; j < MAX; j++) qnt[j] = 0;
+
+		cl = 0, cr = -1, cost = 0;
+		f(i, 1, n, 0, n-1);
+	}
 
 	cout << dp[n][k] << endl;
 }
