@@ -10,31 +10,43 @@ typedef long long ll;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 16, MOD = 1e9+7;
+
+int dp[1<<MAX][MAX][MAX];
 
 void solve(){
 	int n, m; cin >> n >> m;
-	int mat[n][m], mi[n][n];
+	int mat[n][m], mi[n][n], mi2[n][n];
 	for(int i = 0; i < n; i++) for(int j = 0; j < m; j++) cin >> mat[i][j];
 
+	for(int i = 0; i < n; i++) for(int j = 0; j < n; j++) mi[i][j] = mi2[i][j] = LINF;
+
 	for(int i = 0; i < n; i++) for(int j = 0; j < n; j++){
-		mi[i][j] = LINF;
-		for(int k = 0; k < m; k++) mi[i][j] = min(mi[i][j], abs(mat[i][k]-mat[j][k]));
+		for(int k = 0; k < m; k++){
+			mi[i][j] = min(mi[i][j], abs(mat[i][k]-mat[j][k]));
+			if(k+1 < m) mi2[i][j] = min(mi2[i][j], abs(mat[i][k]-mat[j][k+1]));
+		}
 	}
 
 	// 1<<n mask, begin in i, finish in j
-	int dp[1<<n][n][n]; memset(dp, 0, sizeof dp);
+	for(int i = 0; i < (1<<n); i++) for(int j = 0; j < n; j++) for(int k = 0; k < n; k++) dp[i][j][k] = 0;
 
 	for(int i = 1; i < (1<<n); i++){
-		for(int j = 0; j < n; j++) if((i>>j)&1){
-			for(int k = 0; k < n; k++) if(!((i>>k)&1)){
-				dp[i|(1<<k)][k] = max(dp[i|(1<<k)][k], mi[j][k]);
-			}
+		if(__builtin_popcount(i) == 1){
+			int bit = __builtin_ctz(i);
+			dp[i][bit][bit] = LINF;
 		}
+
+		for(int l = 0; l < n; l++) // begin
+			for(int j = 0; j < n; j++) if((i>>j)&1){ // finish
+				for(int k = 0; k < n; k++) if(!((i>>k)&1)){ // adding
+						dp[i|(1<<k)][l][k] = max(dp[i|(1<<k)][l][k], min(dp[i][l][j], mi[j][k]));
+				}
+			}
 	}
 	
 	int ans = 0;
-	for(int i = 0; i < n; i++) ans = max(ans, dp[(1<<n)-1][i]);
+	for(int i = 0; i < n; i++) for(int j = 0; j < n; j++) ans = max(ans, min(dp[(1<<n)-1][i][j], mi2[j][i]));
 	cout << ans << endl;
 }
 
