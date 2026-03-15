@@ -12,56 +12,55 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-// charreap Implicita
-//
-// charodas as operacoes custam
-// O(log(n)) com alta probabilidade
-
 mt19937 rng((int) chrono::steady_clock::now().time_since_epoch().count());
+
+const int m_ = 27;
+int fexp(int x, int y) {
+    int ans = 1;
+    while(y){
+        if(y&1) ans = ans*x%MOD;
+        x = x*x%MOD;
+        y >>= 1;
+    }
+    return ans;
+}
+
+struct Value {
+    int hash, rhash, size;
+
+    Value operator+(const Value& oth) const {
+        Value res {};
+        res.hash = ((hash * fexp(m_, oth.size)) % MOD + oth.hash) % MOD;
+        res.rhash = (rhash + (oth.rhash * fexp(m_, size)) % MOD) % MOD;
+        res.size = size + oth.size;
+        return res;
+    }
+};
 
 struct node {
 	node *l, *r;
 	int p, sz;
-	char val, sub, lazy;
-	bool rev;
-	node(char v) : l(NULL), r(NULL), p(rng()), sz(1), val(v), sub(v), lazy(0), rev(0) {}
-	void prop() {
-		if (lazy) {
-			val += lazy, sub += lazy*sz;
-			if (l) l->lazy += lazy;
-			if (r) r->lazy += lazy;
-		}
-		if (rev) {
-			swap(l, r);
-			if (l) l->rev ^= 1;
-			if (r) r->rev ^= 1;
-		}
-		lazy = 0, rev = 0;
-	}
+	Value val, agg;
+	node(Value v) : l(NULL), r(NULL), p(rng()), sz(1), val(v), agg(v) {}
+
 	void update() {
-		sz = 1, sub = val;
-		if (l) l->prop(), sz += l->sz, sub += l->sub;
-		if (r) r->prop(), sz += r->sz, sub += r->sub;
+		sz = 1, agg = val;
+		if (l) sz += l->sz, agg = l->agg + agg;
+		if (r) sz += r->sz, agg = agg + r->agg;
 	}
+
+	~node() {
+        delete l;
+        delete r;
+    }
 };
 
 node* root = NULL;
-
-void destroy() {
-	vector<node*> q = {root};
-	while (q.size()) {
-		node* x = q.back(); q.pop_back();
-		if (!x) continue;
-		q.push_back(x->l), q.push_back(x->r);
-		delete x;
-	}
-}
 
 int size(node* x) { return x ? x->sz : 0; }
 
 void join(node* l, node* r, node*& i) { // assume que l < r
 	if (!l or !r) return void(i = l ? l : r);
-	l->prop(), r->prop();
 	if (l->p > r->p) join(l->r, r, l->r), i = l;
 	else join(l, r->l, r->l), i = r;
 	i->update();
@@ -69,42 +68,39 @@ void join(node* l, node* r, node*& i) { // assume que l < r
 
 void split(node* i, node*& l, node*& r, int v, int key = 0) {
 	if (!i) return void(r = l = NULL);
-	i->prop();
 	if (key + size(i->l) < v) split(i->r, i->r, r, v, key+size(i->l)+1), l = i;
 	else split(i->l, l, i->l, v, key), r = i;
 	i->update();
 }
 
-void push_back(char v) {
-	node* i = new node(v);
+void push_back(int v) {
+	node* i = new node({v, v, 1});
 	join(root, i, root);
 }
 
-char query(int l, int r) {
+Value query(int l, int r) {
 	node *L, *M, *R;
 	split(root, M, R, r+1), split(M, L, M, l);
-	char ans = M->sub;
+	Value ans = M->agg;
 	join(L, M, M), join(M, R, root);
 	return ans;
 }
 
-void update(int l, int r, char s) {
+void update(int l, int r, int s) {
 	node *L, *M, *R;
 	split(root, M, R, r+1), split(M, L, M, l);
-	M->lazy += s;
 	join(L, M, M), join(M, R, root);
 }
 
 void reverse(int l, int r) {
 	node *L, *M, *R;
 	split(root, M, R, r+1), split(M, L, M, l);
-	M->rev ^= 1;
 	join(L, M, M), join(M, R, root);
 }
 
 void solve(){
 	int n, q; cin >> n >> q;
-	for(int i = 0; i < n; i++){ char c; cin >> c; push_back(c); }
+	for(int i = 0; i < n; i++){ char c; cin >> c; push_back((int)(c-'a'+1)); }
 
 	for(int i = 0; i < q; i++){
 		int op; cin >> op;
@@ -120,7 +116,7 @@ void solve(){
 		} else if(op == 2){
 			char c; int p; cin >> c >> p; --p; n++;
 
-			node *m = new node(c);
+			node *m = new node({(int)(c-'a'+1), (int)(c-'a'+1), 1});
 
 			node *l, *r, *tmp;
 			split(root, l, r, p);
@@ -131,14 +127,10 @@ void solve(){
 			root = tmp;
 		} else{
 			int a, b; cin >> a >> b; --a, --b;
-			cout << "yes" << endl;
+			Value ans = query(a, b);
+			cout << (ans.hash == ans.rhash ? "yes" : "no") << endl;
 		}
-
-		for(int i = 0; i < n; i++) cout << query(i, i);
-		cout << endl;
 	}
-
-	destroy();
 }
 
 int32_t main(){ _
